@@ -1,0 +1,10 @@
+PODS:
+  - FrameAccessor (1.1.0)
+
+DEPENDENCIES:
+  - FrameAccessor (~> 1.1.0)
+
+SPEC CHECKSUMS:
+  FrameAccessor: 1900268ec0c4872ce0948baaf71f995ea6d0f28c
+
+COCOAPODS: 0.33.1
