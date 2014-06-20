@@ -34,6 +34,10 @@ Implement...
 * ```numberOfTokensInTokenField:``` to specify how many tokens you have.
 * ```tokenFieldCollapsedText:``` to specify what you want the token field shoud say in the collapsed state.
 
+Sample Project
+--------------
+Check out the [sample project](https://github.com/venmo/VENTokenField/tree/master/VENTokenFieldSample) in this repo for sample usage.
+
 Contributing
 ------------
 
