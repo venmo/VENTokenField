@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.author       = { 'Venmo' => 'ios@venmo.com'}
   s.source       = { :git => 'git@github.com:venmo/VENTokenField.git', :tag => "v#{s.version}" }
   s.source_files = 'VENTokenField/**/*.{h,m}'
-   s.resources   = ["VENTokenField/**/*.{xib,png}"]
+  s.resources   = ["VENTokenField/**/*.{xib,png}"]
   s.dependency 'FrameAccessor', '~> 2.0'
   s.platform     = :ios, '7.0'
   s.requires_arc = true
