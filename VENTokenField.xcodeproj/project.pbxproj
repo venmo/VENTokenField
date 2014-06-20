@@ -34,6 +34,28 @@
 			<key>showEnvVarsInLog</key>
 			<string>0</string>
 		</dict>
+		<key>0CD24887D17F41CB9A2D8AF8</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods-VENTokenFieldSampleTests.xcconfig</string>
+			<key>path</key>
+			<string>Pods/Pods-VENTokenFieldSampleTests.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0F6F46E7D9B04242884425DB</key>
+		<dict>
+			<key>fileRef</key>
+			<string>48054D1FB265443498AE9571</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
 		<key>2803779BB60049739FFA6935</key>
 		<dict>
 			<key>includeInIndex</key>
@@ -55,6 +77,19 @@
 			<string>7A002D98BC58468DB3B8E6C4</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
+		</dict>
+		<key>48054D1FB265443498AE9571</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>archive.ar</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>libPods-VENTokenFieldSampleTests.a</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
 		</dict>
 		<key>50CB7BF075094249AF9DF3BD</key>
 		<dict>
@@ -97,6 +132,30 @@ error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or up
 EOM
     exit 1
 fi
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
+		<key>745245AF77574DF0A11EFB13</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Copy Pods Resources</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>"${SRCROOT}/Pods/Pods-VENTokenFieldSampleTests-resources.sh"
 </string>
 			<key>showEnvVarsInLog</key>
 			<string>0</string>
@@ -187,6 +246,7 @@ fi
 				<string>B6173DFD1952760200E293BB</string>
 				<string>2803779BB60049739FFA6935</string>
 				<string>50CB7BF075094249AF9DF3BD</string>
+				<string>0CD24887D17F41CB9A2D8AF8</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -372,6 +432,7 @@ fi
 				<string>7A002D98BC58468DB3B8E6C4</string>
 				<string>B692A4711954D9CA00344E36</string>
 				<string>F5DB7503CF2443B686EA59B7</string>
+				<string>48054D1FB265443498AE9571</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -1400,6 +1461,7 @@ fi
 				<string>B692A48D1954D9CA00344E36</string>
 				<string>B692A48F1954D9CA00344E36</string>
 				<string>B692A48E1954D9CA00344E36</string>
+				<string>0F6F46E7D9B04242884425DB</string>
 			</array>
 			<key>isa</key>
 			<string>PBXFrameworksBuildPhase</string>
@@ -1425,9 +1487,11 @@ fi
 			<string>B692A49D1954D9CA00344E36</string>
 			<key>buildPhases</key>
 			<array>
+				<string>D5857AF01C324E059F218F89</string>
 				<string>B692A4881954D9CA00344E36</string>
 				<string>B692A4891954D9CA00344E36</string>
 				<string>B692A48A1954D9CA00344E36</string>
+				<string>745245AF77574DF0A11EFB13</string>
 			</array>
 			<key>buildRules</key>
 			<array/>
@@ -1689,6 +1753,8 @@ fi
 		</dict>
 		<key>B692A49E1954D9CA00344E36</key>
 		<dict>
+			<key>baseConfigurationReference</key>
+			<string>0CD24887D17F41CB9A2D8AF8</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>BUNDLE_LOADER</key>
@@ -1724,6 +1790,8 @@ fi
 		</dict>
 		<key>B692A49F1954D9CA00344E36</key>
 		<dict>
+			<key>baseConfigurationReference</key>
+			<string>0CD24887D17F41CB9A2D8AF8</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>BUNDLE_LOADER</key>
@@ -1751,6 +1819,36 @@ fi
 			<string>XCBuildConfiguration</string>
 			<key>name</key>
 			<string>Release</string>
+		</dict>
+		<key>D5857AF01C324E059F218F89</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Check Pods Manifest.lock</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
+if [[ $? != 0 ]] ; then
+    cat &lt;&lt; EOM
+error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
+EOM
+    exit 1
+fi
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
 		</dict>
 		<key>F5DB7503CF2443B686EA59B7</key>
 		<dict>

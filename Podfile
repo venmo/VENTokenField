@@ -1,4 +1,3 @@
-# Uncomment this line to define a global platform for your project
 platform :ios, "7.0"
 
 target "VENTokenField" do
@@ -7,5 +6,9 @@ end
 
 target "VENTokenFieldSample" do
   pod 'VENTokenField', :path => '.'
+end
+
+target "VENTokenFieldSampleTests" do
+  pod 'KIF', '~> 3.0.4'
 end
 

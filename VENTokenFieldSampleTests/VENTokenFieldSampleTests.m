@@ -7,28 +7,35 @@
 //
 
 #import <XCTest/XCTest.h>
+#import <KIF/KIF.h>
 
 @interface VENTokenFieldSampleTests : XCTestCase
-
 @end
 
 @implementation VENTokenFieldSampleTests
 
-- (void)setUp
+- (void)testBasicFlow
 {
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
+    [tester enterTextIntoCurrentFirstResponder:@"Ayaka\n"];
+    [tester waitForViewWithAccessibilityLabel:@"Ayaka,"];
 
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
+    [tester enterTextIntoCurrentFirstResponder:@"Mark\n"];
+    [tester waitForViewWithAccessibilityLabel:@"Mark,"];
 
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    [tester enterTextIntoCurrentFirstResponder:@"Neeraj\n"];
+    [tester waitForViewWithAccessibilityLabel:@"Neeraj,"];
+
+    [tester enterTextIntoCurrentFirstResponder:@"Octocat\n"];
+    [tester waitForViewWithAccessibilityLabel:@"Octocat,"];
+
+    // Make sure everything else is still there.
+    [tester waitForViewWithAccessibilityLabel:@"Ayaka,"];
+    [tester waitForViewWithAccessibilityLabel:@"Mark,"];
+
+    // Delete
+    [tester enterTextIntoCurrentFirstResponder:@"\b"];
+    [tester enterTextIntoCurrentFirstResponder:@"\b"];
+    [tester waitForAbsenceOfViewWithAccessibilityLabel:@"Octocat,"];
 }
 
 @end
