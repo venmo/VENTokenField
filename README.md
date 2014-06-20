@@ -3,6 +3,8 @@ VENTokenField
 
 ```VENTokenField``` is the recipients token field that is used in the Venmo compose screen.
 
+![alt text](http://i.imgur.com/a1FfEBi.gif "VENTokenField demo")
+
 Installation
 ------------
 The easiest way to get started is to use [CocoaPods](http://cocoapods.org/). Just add the following line to your Podfile:
