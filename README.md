@@ -26,6 +26,14 @@ This protocol notifies you when things happen in the token field that you might 
 * ```tokenField:didChangeText:``` is called when a user changes the text in the input field.
 * ```tokenFieldDidBeginEditing:``` is called when the input field becomes first responder.
 
+### VENTokenFieldDataSource
+This protocol allows you to provide info about what you want to present in the token field.
+
+Implement...
+* ```tokenField:titleForTokenAtIndex:``` to specify what the title for the token at a particular index should be.
+* ```numberOfTokensInTokenField:``` to specify how many tokens you have.
+* ```tokenFieldCollapsedText:``` to specify what you want the token field shoud say in the collapsed state.
+
 Contributing
 ------------
 
