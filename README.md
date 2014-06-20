@@ -18,7 +18,7 @@ If you've ever used a ```UITableView```, using ```VENTokenField``` should be a b
 
 Similar to ```UITableView```, ```VENTokenField``` provides two protocols: ```<VENTokenFieldDelegate>``` and ```<VENTokenFieldDataSource>```.
 
-### <VENTokenFieldDelegate>
+### VENTokenFieldDelegate
 This protocol notifies you when things happen in the token field that you might want to know about.
 
 * ```tokenField:didEnterText:``` is called when a user hits the return key on the input field.
