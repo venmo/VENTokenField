@@ -1,0 +1,7 @@
+language: objective-c
+before_install:
+- gem i cocoapods --no-ri --no-rdoc
+- brew uninstall xctool; brew install xctool --HEAD;
+xcode_workspace: VENTokenField.xcworkspace
+xcode_scheme: VENTokenField
+xcode_sdk: iphonesimulator
