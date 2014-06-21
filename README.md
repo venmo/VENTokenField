@@ -11,7 +11,7 @@ Installation
 The easiest way to get started is to use [CocoaPods](http://cocoapods.org/). Just add the following line to your Podfile:
 
 ```ruby
-pod 'VENTokenField', '~>1.0.0'
+pod 'VENTokenField', '~> 1.0.0'
 ```
 
 Usage
