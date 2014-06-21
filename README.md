@@ -1,5 +1,6 @@
 VENTokenField
 =============
+[![Build Status](https://travis-ci.org/venmo/VENTokenField.svg?branch=master)](https://travis-ci.org/venmo/VENTokenField)
 
 ```VENTokenField``` is the recipients token field that is used in the Venmo compose screen.
 
