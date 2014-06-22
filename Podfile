@@ -5,7 +5,7 @@ target "VENTokenField" do
 end
 
 target "VENTokenFieldSample" do
-  pod 'VENTokenField', :path => '.'
+  pod 'VENTokenField', :podspec => 'VENTokenField.podspec'
 end
 
 target "VENTokenFieldSampleTests" do
