@@ -30,6 +30,11 @@
     [self.tokenField collapse];
 }
 
+- (IBAction)didTapResignFirstResponderButton:(id)sender
+{
+    [self.tokenField resignFirstResponder];
+}
+
 
 #pragma mark - VENTokenFieldDelegate
 
@@ -39,7 +44,8 @@
     [self.tokenField reloadData];
 }
 
-- (void)tokenField:(VENTokenField *)tokenField didDeleteTokenAtIndex:(NSUInteger)index {
+- (void)tokenField:(VENTokenField *)tokenField didDeleteTokenAtIndex:(NSUInteger)index
+{
     [self.names removeObjectAtIndex:index];
     [self.tokenField reloadData];
 }

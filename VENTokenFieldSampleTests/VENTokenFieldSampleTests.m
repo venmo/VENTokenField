@@ -38,4 +38,11 @@
     [tester waitForAbsenceOfViewWithAccessibilityLabel:@"Octocat,"];
 }
 
+- (void)testResignFirstResponder
+{
+    [tester tapViewWithAccessibilityLabel:@"To"];
+    [tester tapViewWithAccessibilityLabel:@"Resign First Responder"];
+    [tester waitForAbsenceOfKeyboard];
+}
+
 @end
