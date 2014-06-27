@@ -5,3 +5,4 @@ before_install:
 xcode_workspace: VENTokenField.xcworkspace
 xcode_scheme: VENTokenField
 xcode_sdk: iphonesimulator
+after_success: slather
