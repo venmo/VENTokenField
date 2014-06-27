@@ -1,14 +1,17 @@
 platform :ios, "7.0"
 
-target "VENTokenField" do
-  pod 'FrameAccessor', '~> 1.1.0'
-end
-
 target "VENTokenFieldSample" do
-  pod 'VENTokenField', :podspec => 'VENTokenField.podspec'
+  pod 'VENTokenField', :path => '.'
 end
 
 target "VENTokenFieldSampleTests" do
   pod 'KIF', '~> 3.0.4'
+end
+
+begin
+  require 'slather'
+  Slather.prepare_pods(self)
+rescue LoadError
+  puts 'Slather has been disabled (not installed).'
 end
 
