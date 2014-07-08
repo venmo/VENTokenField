@@ -131,11 +131,18 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self adjustHeightForCurrentY:currentY];
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, currentY + [self heightForToken])];
 
+    [self updateInputTextField];
     [self.inputTextField becomeFirstResponder];
 
     if ([self.delegate respondsToSelector:@selector(tokenFieldDidBeginEditing:)]) {
         [self.delegate tokenFieldDidBeginEditing:self];
     }
+}
+
+- (void)setPlaceholderText:(NSString *)placeholderText
+{
+    _placeholderText = placeholderText;
+    self.inputTextField.placeholder = _placeholderText;
 }
 
 - (void)setColorScheme:(UIColor *)color
@@ -289,6 +296,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         _inputTextField.autocorrectionType = UITextAutocorrectionTypeNo;
         _inputTextField.tintColor = self.colorScheme;
         _inputTextField.delegate = self;
+        _inputTextField.placeholder = self.placeholderText;
         [_inputTextField addTarget:self action:@selector(inputTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     }
     return _inputTextField;
@@ -337,6 +345,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     } else {
         [self.invisibleTextField becomeFirstResponder];
     }
+}
+
+- (void)updateInputTextField
+{
+    self.inputTextField.placeholder = [self.tokens count] ? nil : self.placeholderText;
 }
 
 
