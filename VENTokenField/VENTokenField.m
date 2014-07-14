@@ -66,6 +66,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (BOOL)becomeFirstResponder
 {
+    if ([self.delegate respondsToSelector:@selector(tokenFieldDidBeginEditing:)]) {
+        [self.delegate tokenFieldDidBeginEditing:self];
+    }
     [self reloadData];
     return YES;
 }
@@ -132,11 +135,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, currentY + [self heightForToken])];
 
     [self updateInputTextField];
-//    [self.inputTextField becomeFirstResponder];
-
-    if ([self.delegate respondsToSelector:@selector(tokenFieldDidBeginEditing:)]) {
-        [self.delegate tokenFieldDidBeginEditing:self];
-    }
 }
 
 - (void)setPlaceholderText:(NSString *)placeholderText
