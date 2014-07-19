@@ -258,6 +258,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)inputTextFieldBecomeFirstResponder
 {
+    if (self.inputTextField.isFirstResponder) {
+        return;
+    }
+
     [self.inputTextField becomeFirstResponder];
     if ([self.delegate respondsToSelector:@selector(tokenFieldDidBeginEditing:)]) {
         [self.delegate tokenFieldDidBeginEditing:self];
