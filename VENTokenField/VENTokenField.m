@@ -118,6 +118,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)reloadData
 {
+    BOOL inputFieldShouldBecomeFirstResponder = self.inputTextField.isFirstResponder;
+
     [self.collapsedLabel removeFromSuperview];
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.scrollView.hidden = NO;
@@ -136,6 +138,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, currentY + [self heightForToken])];
 
     [self updateInputTextField];
+
+    if (inputFieldShouldBecomeFirstResponder) {
+        [self inputTextFieldBecomeFirstResponder];
+    }
 }
 
 - (void)setPlaceholderText:(NSString *)placeholderText
@@ -253,6 +259,17 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self addSubview:self.invisibleTextField];
 }
 
+- (void)inputTextFieldBecomeFirstResponder
+{
+    if (self.inputTextField.isFirstResponder) {
+        return;
+    }
+
+    [self.inputTextField becomeFirstResponder];
+    if ([self.delegate respondsToSelector:@selector(tokenFieldDidBeginEditing:)]) {
+        [self.delegate tokenFieldDidBeginEditing:self];
+    }
+}
 
 - (UILabel *)toLabel
 {
@@ -340,7 +357,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }]];
     BOOL visible = [highlightedTokens count] == 0;
     if (visible) {
-        [self.inputTextField becomeFirstResponder];
+        [self inputTextFieldBecomeFirstResponder];
     } else {
         [self.invisibleTextField becomeFirstResponder];
     }
