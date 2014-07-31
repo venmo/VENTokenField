@@ -157,6 +157,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
 }
 
+- (NSString *)inputText
+{
+    return self.inputTextField.text;
+}
 
 #pragma mark - View Layout
 
