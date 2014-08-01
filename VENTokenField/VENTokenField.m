@@ -138,6 +138,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
     if (inputFieldShouldBecomeFirstResponder) {
         [self inputTextFieldBecomeFirstResponder];
+    } else {
+        [self focusInputTextField];
     }
 }
 
@@ -369,6 +371,14 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.inputTextField.placeholder = [self.tokens count] ? nil : self.placeholderText;
 }
 
+- (void)focusInputTextField
+{
+    CGPoint contentOffset = self.scrollView.contentOffset;
+    CGFloat targetY = self.inputTextField.y + [self heightForToken] - self.maxHeight;
+    if (targetY > contentOffset.y) {
+        [self.scrollView setContentOffset:CGPointMake(contentOffset.x, targetY) animated:NO];
+    }
+}
 
 #pragma mark - Data Source
 
