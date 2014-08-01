@@ -380,6 +380,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
 }
 
+
 #pragma mark - Data Source
 
 - (NSString *)titleForTokenAtIndex:(NSUInteger)index
