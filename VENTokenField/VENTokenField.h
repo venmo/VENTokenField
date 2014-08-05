@@ -60,6 +60,7 @@
 @property (assign, nonatomic) CGFloat tokenPadding;
 @property (assign, nonatomic) CGFloat minInputWidth;
 
+@property (assign, nonatomic) UIKeyboardType inputTextFieldKeyboardType;
 @property (strong, nonatomic) UIColor *toLabelTextColor;
 @property (strong, nonatomic) UIColor *inputTextFieldTextColor;
 

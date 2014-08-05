@@ -309,6 +309,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 {
     if (!_inputTextField) {
         _inputTextField = [[VENBackspaceTextField alloc] init];
+        [_inputTextField setKeyboardType:self.inputTextFieldKeyboardType];
         _inputTextField.textColor = self.inputTextFieldTextColor;
         _inputTextField.font = [UIFont fontWithName:@"HelveticaNeue" size:15.5];
         _inputTextField.accessibilityLabel = NSLocalizedString(@"To", nil);
@@ -319,6 +320,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         [_inputTextField addTarget:self action:@selector(inputTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     }
     return _inputTextField;
+}
+
+- (void)setInputTextFieldKeyboardType:(UIKeyboardType)inputTextFieldKeyboardType
+{
+    _inputTextFieldKeyboardType = inputTextFieldKeyboardType;
+    [self.inputTextField setKeyboardType:self.inputTextFieldKeyboardType];
 }
 
 - (void)inputTextFieldDidChange:(UITextField *)textField
