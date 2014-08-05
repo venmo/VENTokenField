@@ -322,10 +322,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return _inputTextField;
 }
 
-- (void)setInputTextFieldKeyboardType:(UIKeyboardType)anInputTextFieldKeyboardType
+- (void)setInputTextFieldKeyboardType:(UIKeyboardType)inputTextFieldKeyboardType
 {
-    _inputTextFieldKeyboardType = anInputTextFieldKeyboardType;
-    [_inputTextField setKeyboardType:self.inputTextFieldKeyboardType];
+    _inputTextFieldKeyboardType = inputTextFieldKeyboardType;
+    [self.inputTextField setKeyboardType:self.inputTextFieldKeyboardType];
 }
 
 - (void)inputTextFieldDidChange:(UITextField *)textField
