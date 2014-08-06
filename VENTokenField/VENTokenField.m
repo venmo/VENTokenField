@@ -149,6 +149,16 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.inputTextField.placeholder = _placeholderText;
 }
 
+- (void)setInputTextFieldTextColor:(UIColor *)inputTextFieldTextColor {
+    _inputTextFieldTextColor = inputTextFieldTextColor;
+    self.inputTextField.textColor = _inputTextFieldTextColor;
+}
+
+- (void)setToLabelTextColor:(UIColor *)toLabelTextColor {
+    _toLabelTextColor = toLabelTextColor;
+    self.toLabel.textColor = _toLabelTextColor;
+}
+
 - (void)setColorScheme:(UIColor *)color
 {
     _colorScheme = color;
