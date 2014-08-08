@@ -84,10 +84,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.horizontalInset = VENTokenFieldDefaultHorizontalInset;
     self.tokenPadding = VENTokenFieldDefaultTokenPadding;
     self.minInputWidth = VENTokenFieldDefaultMinInputWidth;
-    self.toLabelText = NSLocalizedString(@"To:", nil);
     self.colorScheme = [UIColor blueColor];
     self.toLabelTextColor = [UIColor colorWithRed:112/255.0f green:124/255.0f blue:124/255.0f alpha:1.0f];
     self.inputTextFieldTextColor = [UIColor colorWithRed:38/255.0f green:39/255.0f blue:41/255.0f alpha:1.0f];
+    
+    // Accessing bare value to avoid kicking off a premature layout run.
+    _toLabelText = NSLocalizedString(@"To:", nil);
 
     self.originalHeight = CGRectGetHeight(self.frame);
 
