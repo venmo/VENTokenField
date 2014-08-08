@@ -62,6 +62,7 @@
 
 @property (assign, nonatomic) UIKeyboardType inputTextFieldKeyboardType;
 @property (strong, nonatomic) UIColor *toLabelTextColor;
+@property (strong, nonatomic) NSString *toLabelText;
 @property (strong, nonatomic) UIColor *inputTextFieldTextColor;
 
 @property (strong, nonatomic) UILabel *toLabel;
