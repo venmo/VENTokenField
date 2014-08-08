@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "VENTokenField.h"
+#import "VENToken.h"
 
 @interface ViewController () <VENTokenFieldDelegate, VENTokenFieldDataSource>
 @property (weak, nonatomic) IBOutlet VENTokenField *tokenField;
@@ -19,6 +20,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [VENToken setLineBreakMode:NSLineBreakByTruncatingMiddle];
+    
     self.names = [NSMutableArray array];
     self.tokenField.delegate = self;
     self.tokenField.dataSource = self;

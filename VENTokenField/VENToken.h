@@ -28,6 +28,8 @@
 @property (copy, nonatomic) void (^didTapTokenBlock) (void);
 @property (strong, nonatomic) UIColor *colorScheme;
 
++ (void)setLineBreakMode:(NSLineBreakMode)lineBreakMode;
+
 - (void)setTitleText:(NSString *)text;
 
 @end
