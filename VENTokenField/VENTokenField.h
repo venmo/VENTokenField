@@ -68,7 +68,5 @@
 
 @property (copy, nonatomic) NSString *placeholderText;
 
-- (void)setColorScheme:(UIColor *)color;
-
 @end
 
