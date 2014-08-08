@@ -24,7 +24,6 @@
     self.tokenField.dataSource = self;
     self.tokenField.placeholderText = NSLocalizedString(@"Enter names here", nil);
     [self.tokenField setTintColor:[UIColor colorWithRed:61/255.0f green:149/255.0f blue:206/255.0f alpha:1.0f]];
-    self.tokenField.tint
     [self.tokenField becomeFirstResponder];
 }
 
