@@ -26,6 +26,7 @@
 
 @property (assign, nonatomic) BOOL highlighted;
 @property (copy, nonatomic) void (^didTapTokenBlock) (void);
+@property (strong, nonatomic) UIColor *colorScheme DEPRECATED_ATTRIBUTE;
 
 - (void)setTitleText:(NSString *)text;
 

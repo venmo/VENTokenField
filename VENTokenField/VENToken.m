@@ -71,6 +71,15 @@
     [self setHighlighted:_highlighted];
 }
 
+// proxy color scheme out to tint color to avoid a major release.
+- (UIColor *)colorScheme {
+    return self.tintColor;
+}
+
+- (void)setColorScheme:(UIColor *)colorScheme
+{
+    self.tintColor = colorScheme;
+}
 
 #pragma mark - Private
 

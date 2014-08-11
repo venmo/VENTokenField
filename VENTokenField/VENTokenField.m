@@ -165,6 +165,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.inputTextField.tintColor = self.tintColor;
 }
 
+- (void)setColorScheme:(UIColor *)color
+{
+    self.tintColor = color;
+}
+
 - (NSString *)inputText
 {
     return self.inputTextField.text;
