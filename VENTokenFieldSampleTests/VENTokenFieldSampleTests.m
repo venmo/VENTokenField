@@ -38,6 +38,12 @@
     [tester waitForAbsenceOfViewWithAccessibilityLabel:@"Octocat,"];
 }
 
+- (void)testAutocompletePresence
+{
+    [tester enterTextIntoCurrentFirstResponder:@"Be"];
+    [tester waitForViewWithAccessibilityLabel:@"Ben"];
+}
+
 - (void)testResignFirstResponder
 {
     [tester tapViewWithAccessibilityLabel:@"To"];

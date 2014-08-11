@@ -12,6 +12,7 @@
 @interface ViewController () <VENTokenFieldDelegate, VENTokenFieldDataSource>
 @property (weak, nonatomic) IBOutlet VENTokenField *tokenField;
 @property (strong, nonatomic) NSMutableArray *names;
+@property (strong, nonatomic) NSArray *knownNames;
 @end
 
 @implementation ViewController
@@ -20,6 +21,7 @@
 {
     [super viewDidLoad];
     self.names = [NSMutableArray array];
+    self.knownNames = @[@"Ayaka", @"Mark", @"Neeraj", @"Octocat", @"Octavius", @"Ben"];
     self.tokenField.delegate = self;
     self.tokenField.dataSource = self;
     self.tokenField.placeholderText = NSLocalizedString(@"Enter names here", nil);
@@ -68,6 +70,16 @@
 - (NSString *)tokenFieldCollapsedText:(VENTokenField *)tokenField
 {
     return [NSString stringWithFormat:@"%lu people", [self.names count]];
+}
+
+- (BOOL)tokenFieldShouldPresentAutocompleteSelection:(VENTokenField *)tokenField
+{
+    return YES;
+}
+
+- (NSArray *)tokenField:(VENTokenField *)tokenField autocompleteTitlesForText:(NSString *)text
+{
+    return [self.knownNames filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF BEGINSWITH[c] %@", text]];
 }
 
 @end

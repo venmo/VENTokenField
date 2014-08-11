@@ -25,6 +25,7 @@
 #import <FrameAccessor/FrameAccessor.h>
 #import "VENToken.h"
 #import "VENBackspaceTextField.h"
+#import "VENAutocompleteTableViewManager.h"
 
 static const CGFloat VENTokenFieldDefaultVerticalInset      = 7.0;
 static const CGFloat VENTokenFieldDefaultHorizontalInset    = 15.0;
@@ -34,7 +35,7 @@ static const CGFloat VENTokenFieldDefaultMinInputWidth      = 80.0;
 static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 
-@interface VENTokenField () <VENBackspaceTextFieldDelegate>
+@interface VENTokenField () <VENBackspaceTextFieldDelegate, VENAutocompleteTableViewManagerDelegate>
 
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) NSMutableArray *tokens;
@@ -44,6 +45,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 @property (strong, nonatomic) VENBackspaceTextField *inputTextField;
 @property (strong, nonatomic) UIColor *colorScheme;
 @property (strong, nonatomic) UILabel *collapsedLabel;
+@property (strong, nonatomic) VENAutocompleteTableViewManager *tableViewManager;
 
 @end
 
@@ -259,7 +261,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
 }
 
-
 #pragma mark - Private
 
 - (CGFloat)heightForToken
@@ -345,6 +346,25 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     if ([self.delegate respondsToSelector:@selector(tokenField:didChangeText:)]) {
         [self.delegate tokenField:self didChangeText:textField.text];
     }
+    if ([self autocompletes]) {
+        if (textField.text.length > 0) {
+            if ([self.dataSource respondsToSelector:@selector(tokenField:autocompleteTitlesForText:)]) {
+                self.tableViewManager.autocompleteOptions = [self.dataSource tokenField:self autocompleteTitlesForText:textField.text];
+            }
+        } else {
+            self.tableViewManager.autocompleteOptions = nil;
+        }
+        
+    }
+}
+
+- (VENAutocompleteTableViewManager *)tableViewManager
+{
+    if (!_tableViewManager) {
+        _tableViewManager = [[VENAutocompleteTableViewManager alloc] init];
+        _tableViewManager.delegate = self;
+    }
+    return _tableViewManager;
 }
 
 - (void)handleSingleTap:(UITapGestureRecognizer *)gestureRecognizer
@@ -416,6 +436,14 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         return [self.dataSource numberOfTokensInTokenField:self];
     }
     return 0;
+}
+
+- (BOOL)autocompletes
+{
+    if ([self.dataSource respondsToSelector:@selector(tokenFieldShouldPresentAutocompleteSelection:)]) {
+        return [self.dataSource tokenFieldShouldPresentAutocompleteSelection:self];
+    }
+    return NO;
 }
 
 - (NSString *)collapsedText

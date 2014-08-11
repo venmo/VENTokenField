@@ -36,6 +36,8 @@
 - (NSString *)tokenField:(VENTokenField *)tokenField titleForTokenAtIndex:(NSUInteger)index;
 - (NSUInteger)numberOfTokensInTokenField:(VENTokenField *)tokenField;
 - (NSString *)tokenFieldCollapsedText:(VENTokenField *)tokenField;
+- (BOOL)tokenFieldShouldPresentAutocompleteSelection:(VENTokenField *)tokenField;
+- (NSArray *)tokenField:(VENTokenField *)tokenField autocompleteTitlesForText:(NSString *)text;
 @end
 
 
