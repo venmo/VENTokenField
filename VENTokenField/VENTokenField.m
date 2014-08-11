@@ -237,7 +237,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     newFrame.origin = origin;
     
     [self.toLabel sizeToFit];
-    newFrame.size.width = self.toLabel.frame.size.width;
+    newFrame.size.width = CGRectGetWidth(self.toLabel.frame);
     
     self.toLabel.frame = newFrame;
     
@@ -313,7 +313,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         [_toLabel sizeToFit];
         [_toLabel setHeight:[self heightForToken]];
     }
-    if (_toLabel.text != _toLabelText) {
+    if (![_toLabel.text isEqualToString:_toLabelText]) {
         _toLabel.text = _toLabelText;
     }
     return _toLabel;
