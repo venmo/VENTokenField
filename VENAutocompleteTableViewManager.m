@@ -7,8 +7,24 @@
 //
 
 #import "VENAutocompleteTableViewManager.h"
+#import "VENTokenField.h"
+
+@interface VENAutocompleteTableViewManager ()
+
+@property (nonatomic, strong) NSArray *options;
+
+@end
 
 @implementation VENAutocompleteTableViewManager
+
+- (instancetype)initWithTokenField:(VENTokenField *)tokenField
+{
+    self = [super init];
+    if (self) {
+        self.tokenField = tokenField;
+    }
+    return self;
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -17,14 +33,18 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.autocompleteOptions.count;
+    return self.options.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"autocompleteCell" forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"autocompleteCell"];
     
-    cell.detailTextLabel.text = self.autocompleteOptions[indexPath.row];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"autocompleteCell"];
+    }
+    
+    cell.textLabel.text = self.options[indexPath.row];
     
     return cell;
 }
@@ -34,12 +54,18 @@
 #warning implement this
 }
 
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.tokenField resignFirstResponder];
+}
+
 - (void)setAutocompleteOptions:(NSArray *)autocompleteOptions
 {
-    if (!_autocompleteOptions) {
+    if (!self.options) {
         [self displayTableView];
     }
-    _autocompleteOptions = autocompleteOptions;
+    self.options = autocompleteOptions;
     if (autocompleteOptions != nil) {
         [self.tableView reloadData];
     } else {
@@ -49,23 +75,26 @@
 
 - (void)displayTableView
 {
-    [[[UIAlertView alloc] initWithTitle:@"Would show table"
-                                message:@""
-                               delegate:nil
-                      cancelButtonTitle:@"OK"
-                      otherButtonTitles:nil] show];
-#warning implement this
-#warning add a reusable basic cell with @"autocompleteCell" identifier
+    [self.tokenField.superview addSubview:self.tableView];
 }
 
 - (void)hideTableView
 {
-    [[[UIAlertView alloc] initWithTitle:@"Would hide table"
-                                message:@""
-                               delegate:nil
-                      cancelButtonTitle:@"OK"
-                      otherButtonTitles:nil] show];
-#warning implement this
+    [self.tableView removeFromSuperview];
+}
+
+- (UITableView *)tableView
+{
+    if (!_tableView) {
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.tokenField.frame),
+                                                                   CGRectGetMaxY(self.tokenField.frame),
+                                                                   CGRectGetWidth(self.tokenField.frame),
+                                                                   CGRectGetHeight(self.tokenField.superview.frame) - CGRectGetHeight(self.tokenField.frame))
+                                                  style:UITableViewStylePlain];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+    }
+    return _tableView;
 }
 
 @end

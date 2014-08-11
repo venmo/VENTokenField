@@ -8,17 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
+@class VENTokenField;
+
 @protocol VENAutocompleteTableViewManagerDelegate <NSObject>
 
 @end
 
-@interface VENAutocompleteTableViewManager : NSObject < UITableViewDataSource, UITableViewDelegate >
+@interface VENAutocompleteTableViewManager : NSObject < UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate >
 
 @property (strong, nonatomic) UITableView *tableView;
-@property (strong, nonatomic) NSArray *autocompleteOptions;
+@property (strong, nonatomic) VENTokenField *tokenField;
+//@property (strong, nonatomic) NSArray *autocompleteOptions;
 @property (assign, nonatomic) id<VENAutocompleteTableViewManagerDelegate> delegate;
+
+- (instancetype)initWithTokenField:(VENTokenField *)tokenField;
 
 - (void)displayTableView;
 - (void)hideTableView;
+
+- (void)setAutocompleteOptions:(NSArray *)autocompleteOptions;
 
 @end

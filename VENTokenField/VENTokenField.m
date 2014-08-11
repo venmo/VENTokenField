@@ -104,6 +104,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self.collapsedLabel removeFromSuperview];
     self.scrollView.hidden = YES;
     [self setHeight:self.originalHeight];
+    
+    [self.tableViewManager hideTableView];
 
     CGFloat currentX = 0;
 
@@ -361,7 +363,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (VENAutocompleteTableViewManager *)tableViewManager
 {
     if (!_tableViewManager) {
-        _tableViewManager = [[VENAutocompleteTableViewManager alloc] init];
+        _tableViewManager = [[VENAutocompleteTableViewManager alloc] initWithTokenField:self];
         _tableViewManager.delegate = self;
     }
     return _tableViewManager;
@@ -462,6 +464,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
         if ([textField.text length]) {
             [self.delegate tokenField:self didEnterText:textField.text];
+            if ([self autocompletes]) {
+                self.tableViewManager.autocompleteOptions = nil;
+            }
         }
     }
     return NO;
