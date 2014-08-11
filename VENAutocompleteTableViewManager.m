@@ -75,7 +75,7 @@
 
 - (void)displayTableView
 {
-    [self.tokenField.superview addSubview:self.tableView];
+    [self.tokenField.window addSubview:self.tableView];
 }
 
 - (void)hideTableView
@@ -85,14 +85,17 @@
 
 - (UITableView *)tableView
 {
+    CGRect newFrame = CGRectMake(CGRectGetMinX(self.tokenField.frame),
+                                 CGRectGetMaxY(self.tokenField.frame),
+                                 CGRectGetWidth(self.tokenField.frame),
+                                 CGRectGetHeight(self.tokenField.window.frame) - CGRectGetMaxY(self.tokenField.frame));
     if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.tokenField.frame),
-                                                                   CGRectGetMaxY(self.tokenField.frame),
-                                                                   CGRectGetWidth(self.tokenField.frame),
-                                                                   CGRectGetHeight(self.tokenField.superview.frame) - CGRectGetHeight(self.tokenField.frame))
+        _tableView = [[UITableView alloc] initWithFrame:newFrame
                                                   style:UITableViewStylePlain];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+    } else {
+        _tableView.frame = newFrame;
     }
     return _tableView;
 }
