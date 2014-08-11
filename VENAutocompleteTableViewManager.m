@@ -26,6 +26,11 @@
     return self;
 }
 
+- (NSString *)valueForIndexPath:(NSIndexPath *)indexPath
+{
+    return self.options[indexPath.row];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -44,14 +49,16 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"autocompleteCell"];
     }
     
-    cell.textLabel.text = self.options[indexPath.row];
+    cell.textLabel.text = [self valueForIndexPath:indexPath];
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-#warning implement this
+    [self.delegate autocompleteManagerDidSelectValue:[self valueForIndexPath:indexPath]];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 

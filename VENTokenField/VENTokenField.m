@@ -125,6 +125,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.scrollView.hidden = NO;
     [self removeGestureRecognizer:self.tapGestureRecognizer];
+    [self.tableViewManager setAutocompleteOptions:nil];
 
     self.tokens = [NSMutableArray array];
 
@@ -456,6 +457,14 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return @"";
 }
 
+#pragma mark - VENAutocompleteTableViewManagerDelegate
+
+- (void)autocompleteManagerDidSelectValue:(NSString *)value
+{
+    if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
+        [self.delegate tokenField:self didEnterText:value];
+    }
+}
 
 #pragma mark - UITextFieldDelegate
 

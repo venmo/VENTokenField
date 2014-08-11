@@ -11,7 +11,7 @@
 @class VENTokenField;
 
 @protocol VENAutocompleteTableViewManagerDelegate <NSObject>
-
+- (void)autocompleteManagerDidSelectValue:(NSString *)value;
 @end
 
 @interface VENAutocompleteTableViewManager : NSObject < UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate >
