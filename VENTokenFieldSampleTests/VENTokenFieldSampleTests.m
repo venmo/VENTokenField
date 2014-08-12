@@ -38,10 +38,12 @@
     [tester waitForAbsenceOfViewWithAccessibilityLabel:@"Octocat,"];
 }
 
-- (void)testAutocompletePresence
+- (void)testAutocompleteFlow
 {
     [tester enterTextIntoCurrentFirstResponder:@"Be"];
     [tester waitForViewWithAccessibilityLabel:@"Ben"];
+    [tester tapViewWithAccessibilityLabel:@"Ben"];
+    [tester waitForViewWithAccessibilityLabel:@"Ben,"];
 }
 
 - (void)testResignFirstResponder
