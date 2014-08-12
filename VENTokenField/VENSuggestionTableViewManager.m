@@ -80,10 +80,11 @@
 
 - (UITableView *)tableView
 {
-    CGRect newFrame = CGRectMake(CGRectGetMinX(self.tokenField.frame),
-                                 CGRectGetMaxY(self.tokenField.frame),
-                                 CGRectGetWidth(self.tokenField.frame),
-                                 CGRectGetHeight(self.tokenField.window.frame) - CGRectGetMaxY(self.tokenField.frame));
+    CGRect globalTokenViewFrame = [self.tokenField convertRect:self.tokenField.bounds toView:self.tokenField.window];
+    CGRect newFrame = CGRectMake(CGRectGetMinX(globalTokenViewFrame),
+                                 CGRectGetMaxY(globalTokenViewFrame),
+                                 CGRectGetWidth(globalTokenViewFrame),
+                                 CGRectGetHeight(self.tokenField.window.frame) - CGRectGetMaxY(globalTokenViewFrame));
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:newFrame
                                                   style:UITableViewStylePlain];
