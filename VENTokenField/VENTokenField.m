@@ -468,6 +468,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
         [self.delegate tokenField:self didEnterText:value];
     }
+    if ([self.delegate respondsToSelector:@selector(tokenField:didSelectSuggestion:)]) {
+        [self.delegate tokenField:self didSelectSuggestion:value];
+    }
 }
 
 #pragma mark - UITextFieldDelegate
@@ -477,9 +480,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
         if ([textField.text length]) {
             [self.delegate tokenField:self didEnterText:textField.text];
-            if ([self autocompletes]) {
-                [self.tableViewManager hideTableView];
-            }
         }
     }
     return NO;

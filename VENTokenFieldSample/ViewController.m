@@ -50,6 +50,11 @@
     [self.tokenField reloadData];
 }
 
+- (void)tokenField:(VENTokenField *)tokenField didSelectSuggestion:(NSString *)suggestion
+{
+    NSLog(@"Added value through autocomplete: %@", suggestion);
+}
+
 - (void)tokenField:(VENTokenField *)tokenField didDeleteTokenAtIndex:(NSUInteger)index
 {
     [self.names removeObjectAtIndex:index];
@@ -73,6 +78,8 @@
 {
     return [NSString stringWithFormat:@"%lu people", [self.names count]];
 }
+
+#pragma mark - VENTokenAutocompleteDataSource
 
 - (BOOL)tokenFieldShouldPresentAutocompleteSelection:(VENTokenField *)tokenField
 {
