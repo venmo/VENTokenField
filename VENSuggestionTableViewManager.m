@@ -1,21 +1,21 @@
 //
-//  VENAutocompleteTableViewManager.m
+//  VENSuggestionTableViewManager
 //  Pods
 //
-//  Created by bnicholas on 8/8/14.
+//  Created by Ben Nicholas on 8/8/14.
 //
 //
 
-#import "VENAutocompleteTableViewManager.h"
+#import "VENSuggestionTableViewManager.h"
 #import "VENTokenField.h"
 
-@interface VENAutocompleteTableViewManager ()
+@interface VENSuggestionTableViewManager ()
 
 @property (nonatomic, strong) NSArray *options;
 
 @end
 
-@implementation VENAutocompleteTableViewManager
+@implementation VENSuggestionTableViewManager
 
 - (instancetype)initWithTokenField:(VENTokenField *)tokenField
 {
@@ -43,10 +43,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"autocompleteCell"];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"suggestionCell"];
     
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"autocompleteCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"suggestionCell"];
     }
     
     cell.textLabel.text = [self valueForIndexPath:indexPath];
@@ -56,7 +56,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.delegate autocompleteManagerDidSelectValue:[self valueForIndexPath:indexPath]];
+    [self.delegate suggestionManagerDidSelectValue:[self valueForIndexPath:indexPath]];
     
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }

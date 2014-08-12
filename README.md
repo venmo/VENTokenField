@@ -19,7 +19,7 @@ Usage
 
 If you've ever used a ```UITableView```, using ```VENTokenField``` should be a breeze.
 
-Similar to ```UITableView```, ```VENTokenField``` provides three protocols: ```<VENTokenFieldDelegate>```, ```<VENTokenFieldDataSource>``` and ```<VENTokenAutocompleteDataSource>```.
+Similar to ```UITableView```, ```VENTokenField``` provides three protocols: ```<VENTokenFieldDelegate>```, ```<VENTokenFieldDataSource>``` and ```<VENTokenSuggestionDataSource>```.
 
 ### VENTokenFieldDelegate
 This protocol notifies you when things happen in the token field that you might want to know about.
@@ -38,11 +38,11 @@ Implement...
 * ```numberOfTokensInTokenField:``` to specify how many tokens you have.
 * ```tokenFieldCollapsedText:``` to specify what you want the token field should say in the collapsed state.
 
-### VENTokenAutocompleteDataSource
-This entirely optional protocol allows you to provide info for the autosuggest feature.
+### VENTokenSuggestionDataSource
+This entirely optional protocol allows you to provide info for any suggestions presented to the user.
 
 Implement...
-* ```tokenFieldShouldPresentAutocompleteSelection:``` to specify that you want to use autocomplete in the token field.
+* ```tokenFieldShouldPresentSuggestions:``` to specify that you want to present suggested values for tokens.
 * ```tokenField:numberOfSuggestionsForPartialText:``` to specify the number of suggestions for a given input.
 * ```tokenField:suggestionTitleForPartialText:atIndex:``` to specify what the title for a suggestion at a particular index should be.
 

@@ -25,7 +25,7 @@
 #import <FrameAccessor/FrameAccessor.h>
 #import "VENToken.h"
 #import "VENBackspaceTextField.h"
-#import "VENAutocompleteTableViewManager.h"
+#import "VENSuggestionTableViewManager.h"
 
 static const CGFloat VENTokenFieldDefaultVerticalInset      = 7.0;
 static const CGFloat VENTokenFieldDefaultHorizontalInset    = 15.0;
@@ -35,7 +35,7 @@ static const CGFloat VENTokenFieldDefaultMinInputWidth      = 80.0;
 static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 
-@interface VENTokenField () <VENBackspaceTextFieldDelegate, VENAutocompleteTableViewManagerDelegate>
+@interface VENTokenField () <VENBackspaceTextFieldDelegate, VENSuggestionTableViewManagerDelegate>
 
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) NSMutableArray *tokens;
@@ -45,7 +45,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 @property (strong, nonatomic) VENBackspaceTextField *inputTextField;
 @property (strong, nonatomic) UIColor *colorScheme;
 @property (strong, nonatomic) UILabel *collapsedLabel;
-@property (strong, nonatomic) VENAutocompleteTableViewManager *tableViewManager;
+@property (strong, nonatomic) VENSuggestionTableViewManager *tableViewManager;
 
 @end
 
@@ -176,10 +176,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
 }
 
-- (void)setAutocompleteDataSource:(id<VENTokenAutocompleteDataSource>)autocompleteDataSource
+- (void)setSuggestionDataSource:(id<VENTokenSuggestionDataSource>)suggestionDataSource
 {
-    _autocompleteDataSource = autocompleteDataSource;
-    self.tableViewManager.dataSource = autocompleteDataSource;
+    _suggestionDataSource = suggestionDataSource;
+    self.tableViewManager.dataSource = suggestionDataSource;
 }
 
 - (NSString *)inputText
@@ -355,7 +355,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     if ([self.delegate respondsToSelector:@selector(tokenField:didChangeText:)]) {
         [self.delegate tokenField:self didChangeText:textField.text];
     }
-    if ([self autocompletes]) {
+    if ([self suggests]) {
         if (textField.text.length > 0) {
             [self.tableViewManager displayTableView];
         } else {
@@ -365,10 +365,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
 }
 
-- (VENAutocompleteTableViewManager *)tableViewManager
+- (VENSuggestionTableViewManager *)tableViewManager
 {
     if (!_tableViewManager) {
-        _tableViewManager = [[VENAutocompleteTableViewManager alloc] initWithTokenField:self];
+        _tableViewManager = [[VENSuggestionTableViewManager alloc] initWithTokenField:self];
         _tableViewManager.delegate = self;
     }
     return _tableViewManager;
@@ -445,10 +445,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return 0;
 }
 
-- (BOOL)autocompletes
+- (BOOL)suggests
 {
-    if ([self.autocompleteDataSource respondsToSelector:@selector(tokenFieldShouldPresentAutocompleteSelection:)]) {
-        return [self.autocompleteDataSource tokenFieldShouldPresentAutocompleteSelection:self];
+    if ([self.suggestionDataSource respondsToSelector:@selector(tokenFieldShouldPresentSuggestions:)]) {
+        return [self.suggestionDataSource tokenFieldShouldPresentSuggestions:self];
     }
     return NO;
 }
@@ -461,9 +461,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return @"";
 }
 
-#pragma mark - VENAutocompleteTableViewManagerDelegate
+#pragma mark - VENSuggestionTableViewManagerDelegate
 
-- (void)autocompleteManagerDidSelectValue:(NSString *)value
+- (void)suggestionManagerDidSelectValue:(NSString *)value
 {
     if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
         [self.delegate tokenField:self didEnterText:value];

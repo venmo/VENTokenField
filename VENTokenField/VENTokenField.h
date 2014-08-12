@@ -39,9 +39,9 @@
 - (NSString *)tokenFieldCollapsedText:(VENTokenField *)tokenField;
 @end
 
-@protocol VENTokenAutocompleteDataSource <NSObject>
+@protocol VENTokenSuggestionDataSource <NSObject>
 @optional
-- (BOOL)tokenFieldShouldPresentAutocompleteSelection:(VENTokenField *)tokenField;
+- (BOOL)tokenFieldShouldPresentSuggestions:(VENTokenField *)tokenField;
 - (NSInteger)tokenField:(VENTokenField *)tokenField numberOfSuggestionsForPartialText:(NSString *)text;
 - (NSString *)tokenField:(VENTokenField *)tokenField suggestionTitleForPartialText:(NSString *)text atIndex:(NSInteger)index;
 @end
@@ -51,7 +51,7 @@
 
 @property (weak, nonatomic) id<VENTokenFieldDelegate> delegate;
 @property (weak, nonatomic) id<VENTokenFieldDataSource> dataSource;
-@property (weak, nonatomic) id<VENTokenAutocompleteDataSource> autocompleteDataSource;
+@property (weak, nonatomic) id<VENTokenSuggestionDataSource> suggestionDataSource;
 
 - (void)reloadData;
 - (void)collapse;

@@ -38,7 +38,7 @@
     [tester waitForAbsenceOfViewWithAccessibilityLabel:@"Octocat,"];
 }
 
-- (void)testAutocompleteFlow
+- (void)testSuggestionFlow
 {
     [tester enterTextIntoCurrentFirstResponder:@"Be"];
     [tester waitForViewWithAccessibilityLabel:@"Ben"];
