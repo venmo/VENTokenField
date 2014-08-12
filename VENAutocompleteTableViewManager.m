@@ -28,7 +28,7 @@
 
 - (NSString *)valueForIndexPath:(NSIndexPath *)indexPath
 {
-    return self.options[indexPath.row];
+    return [self.dataSource tokenField:self.tokenField suggestionTitleForPartialText:self.tokenField.inputText atIndex:indexPath.row];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -38,7 +38,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.options.count;
+    return [self.dataSource tokenField:self.tokenField numberOfSuggestionsForPartialText:self.tokenField.inputText];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -67,21 +67,9 @@
     [self.tokenField resignFirstResponder];
 }
 
-- (void)setAutocompleteOptions:(NSArray *)autocompleteOptions
-{
-    if (!self.options) {
-        [self displayTableView];
-    }
-    self.options = autocompleteOptions;
-    if (autocompleteOptions != nil) {
-        [self.tableView reloadData];
-    } else {
-        [self hideTableView];
-    }
-}
-
 - (void)displayTableView
 {
+    [self.tableView reloadData];
     [self.tokenField.window addSubview:self.tableView];
 }
 

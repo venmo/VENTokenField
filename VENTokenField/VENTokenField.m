@@ -125,7 +125,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.scrollView.hidden = NO;
     [self removeGestureRecognizer:self.tapGestureRecognizer];
-    [self.tableViewManager setAutocompleteOptions:nil];
+    [self.tableViewManager hideTableView];
 
     self.tokens = [NSMutableArray array];
 
@@ -174,6 +174,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     for (VENToken *token in self.tokens) {
         [token setColorScheme:color];
     }
+}
+
+- (void)setAutocompleteDataSource:(id<VENTokenAutocompleteDataSource>)autocompleteDataSource
+{
+    _autocompleteDataSource = autocompleteDataSource;
+    self.tableViewManager.dataSource = autocompleteDataSource;
 }
 
 - (NSString *)inputText
@@ -351,11 +357,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
     if ([self autocompletes]) {
         if (textField.text.length > 0) {
-            if ([self.dataSource respondsToSelector:@selector(tokenField:autocompleteTitlesForText:)]) {
-                self.tableViewManager.autocompleteOptions = [self.dataSource tokenField:self autocompleteTitlesForText:textField.text];
-            }
+            [self.tableViewManager displayTableView];
         } else {
-            self.tableViewManager.autocompleteOptions = nil;
+            [self.tableViewManager hideTableView];
         }
         
     }
@@ -443,8 +447,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (BOOL)autocompletes
 {
-    if ([self.dataSource respondsToSelector:@selector(tokenFieldShouldPresentAutocompleteSelection:)]) {
-        return [self.dataSource tokenFieldShouldPresentAutocompleteSelection:self];
+    if ([self.autocompleteDataSource respondsToSelector:@selector(tokenFieldShouldPresentAutocompleteSelection:)]) {
+        return [self.autocompleteDataSource tokenFieldShouldPresentAutocompleteSelection:self];
     }
     return NO;
 }
@@ -474,7 +478,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         if ([textField.text length]) {
             [self.delegate tokenField:self didEnterText:textField.text];
             if ([self autocompletes]) {
-                self.tableViewManager.autocompleteOptions = nil;
+                [self.tableViewManager hideTableView];
             }
         }
     }

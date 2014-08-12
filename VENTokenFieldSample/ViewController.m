@@ -9,10 +9,11 @@
 #import "ViewController.h"
 #import "VENTokenField.h"
 
-@interface ViewController () <VENTokenFieldDelegate, VENTokenFieldDataSource>
+@interface ViewController () <VENTokenFieldDelegate, VENTokenFieldDataSource, VENTokenAutocompleteDataSource>
 @property (weak, nonatomic) IBOutlet VENTokenField *tokenField;
 @property (strong, nonatomic) NSMutableArray *names;
 @property (strong, nonatomic) NSArray *knownNames;
+@property (strong, nonatomic) NSArray *filteredNames;
 @end
 
 @implementation ViewController
@@ -24,6 +25,7 @@
     self.knownNames = @[@"Ayaka", @"Mark", @"Neeraj", @"Octocat", @"Octavius", @"Ben"];
     self.tokenField.delegate = self;
     self.tokenField.dataSource = self;
+    self.tokenField.autocompleteDataSource = self;
     self.tokenField.placeholderText = NSLocalizedString(@"Enter names here", nil);
     [self.tokenField setColorScheme:[UIColor colorWithRed:61/255.0f green:149/255.0f blue:206/255.0f alpha:1.0f]];
     [self.tokenField becomeFirstResponder];
@@ -77,9 +79,16 @@
     return YES;
 }
 
-- (NSArray *)tokenField:(VENTokenField *)tokenField autocompleteTitlesForText:(NSString *)text
+- (NSInteger)tokenField:(VENTokenField *)tokenField numberOfSuggestionsForPartialText:(NSString *)text
 {
-    return [self.knownNames filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF BEGINSWITH[c] %@", text]];
+    self.filteredNames = [self.knownNames filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF BEGINSWITH[c] %@", text]];
+    
+    return self.filteredNames.count;
+}
+
+- (NSString *)tokenField:(VENTokenField *)tokenField suggestionTitleForPartialText:(NSString *)text atIndex:(NSInteger)index
+{
+    return self.filteredNames[index];
 }
 
 @end
