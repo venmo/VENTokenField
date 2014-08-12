@@ -87,6 +87,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.colorScheme = [UIColor blueColor];
     self.toLabelTextColor = [UIColor colorWithRed:112/255.0f green:124/255.0f blue:124/255.0f alpha:1.0f];
     self.inputTextFieldTextColor = [UIColor colorWithRed:38/255.0f green:39/255.0f blue:41/255.0f alpha:1.0f];
+    
+    // Accessing bare value to avoid kicking off a premature layout run.
+    _toLabelText = NSLocalizedString(@"To:", nil);
 
     self.originalHeight = CGRectGetHeight(self.frame);
 
@@ -161,6 +164,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.toLabel.textColor = _toLabelTextColor;
 }
 
+- (void)setToLabelText:(NSString *)toLabelText
+{
+    _toLabelText = toLabelText;
+    [self reloadData];
+}
+
 - (void)setColorScheme:(UIColor *)color
 {
     _colorScheme = color;
@@ -223,7 +232,15 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 {
     [self.toLabel removeFromSuperview];
     self.toLabel = [self toLabel];
-    self.toLabel.origin = origin;
+    
+    CGRect newFrame = self.toLabel.frame;
+    newFrame.origin = origin;
+    
+    [self.toLabel sizeToFit];
+    newFrame.size.width = CGRectGetWidth(self.toLabel.frame);
+    
+    self.toLabel.frame = newFrame;
+    
     [view addSubview:self.toLabel];
     *currentX += self.toLabel.hidden ? CGRectGetMinX(self.toLabel.frame) : CGRectGetMaxX(self.toLabel.frame) + VENTokenFieldDefaultToLabelPadding;
 }
@@ -292,10 +309,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         _toLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _toLabel.textColor = self.toLabelTextColor;
         _toLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:15.5];
-        _toLabel.text = NSLocalizedString(@"To:", nil);
         _toLabel.x = 0;
         [_toLabel sizeToFit];
         [_toLabel setHeight:[self heightForToken]];
+    }
+    if (![_toLabel.text isEqualToString:_toLabelText]) {
+        _toLabel.text = _toLabelText;
     }
     return _toLabel;
 }
