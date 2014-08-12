@@ -16,7 +16,8 @@
 
 - (void)testBasicFlow
 {
-    [tester enterTextIntoCurrentFirstResponder:@"Ayaka\n"];
+    [tester enterText:@"Ayaka" intoViewWithAccessibilityLabel:@"To"];
+    [tester enterTextIntoCurrentFirstResponder:@"\n"];
     [tester waitForViewWithAccessibilityLabel:@"Ayaka,"];
 
     [tester enterTextIntoCurrentFirstResponder:@"Mark\n"];
@@ -40,7 +41,7 @@
 
 - (void)testSuggestionFlow
 {
-    [tester enterTextIntoCurrentFirstResponder:@"Be"];
+    [tester enterText:@"Be" intoViewWithAccessibilityLabel:@"To"];
     [tester waitForViewWithAccessibilityLabel:@"Ben"];
     [tester tapViewWithAccessibilityLabel:@"Ben"];
     [tester waitForViewWithAccessibilityLabel:@"Ben,"];
