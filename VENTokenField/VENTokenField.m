@@ -463,13 +463,14 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 #pragma mark - VENSuggestionTableViewManagerDelegate
 
-- (void)suggestionManagerDidSelectValue:(NSString *)value
+- (void)suggestionManagerDidSelectValue:(NSString *)value atIndex:(NSInteger)index
 {
+    NSString *fieldText = self.inputText;
     if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
         [self.delegate tokenField:self didEnterText:value];
     }
-    if ([self.delegate respondsToSelector:@selector(tokenField:didSelectSuggestion:)]) {
-        [self.delegate tokenField:self didSelectSuggestion:value];
+    if ([self.delegate respondsToSelector:@selector(tokenField:didSelectSuggestion:forPartialText:atIndex:)]) {
+        [self.delegate tokenField:self didSelectSuggestion:value forPartialText:fieldText atIndex:index];
     }
 }
 

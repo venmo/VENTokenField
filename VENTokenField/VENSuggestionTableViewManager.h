@@ -12,7 +12,7 @@
 @protocol VENTokenSuggestionDataSource;
 
 @protocol VENSuggestionTableViewManagerDelegate <NSObject>
-- (void)suggestionManagerDidSelectValue:(NSString *)value;
+- (void)suggestionManagerDidSelectValue:(NSString *)value atIndex:(NSInteger)index;
 @end
 
 @interface VENSuggestionTableViewManager : NSObject < UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate >

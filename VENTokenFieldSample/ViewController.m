@@ -50,7 +50,7 @@
     [self.tokenField reloadData];
 }
 
-- (void)tokenField:(VENTokenField *)tokenField didSelectSuggestion:(NSString *)suggestion
+- (void)tokenField:(VENTokenField *)tokenField didSelectSuggestion:(NSString *)suggestion forPartialText:(NSString *)text atIndex:(NSInteger)index
 {
     NSLog(@"Added suggested value: %@", suggestion);
 }

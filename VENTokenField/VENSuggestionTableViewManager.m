@@ -56,7 +56,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.delegate suggestionManagerDidSelectValue:[self valueForIndexPath:indexPath]];
+    [self.delegate suggestionManagerDidSelectValue:[self valueForIndexPath:indexPath] atIndex:indexPath.row];
     
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
