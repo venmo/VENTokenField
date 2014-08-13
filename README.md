@@ -25,7 +25,7 @@ Similar to ```UITableView```, ```VENTokenField``` provides three protocols: ```<
 This protocol notifies you when things happen in the token field that you might want to know about.
 
 * ```tokenField:didEnterText:``` is called when a user hits the return key on the input field or after a suggestion is tapped..
-* ```tokenField:didSelectSuggestion:``` is called when a user taps on a suggested value in the suggestion list.
+* ```tokenField:didSelectSuggestion:forPartialText:atIndex:``` is called when a user taps on a suggested value in the suggestion list.
 * ```tokenField:didDeleteTokenAtIndex:``` is called when a user deletes a token at a particular index.
 * ```tokenField:didChangeText:``` is called when a user changes the text in the input field.
 * ```tokenFieldDidBeginEditing:``` is called when the input field becomes first responder.
