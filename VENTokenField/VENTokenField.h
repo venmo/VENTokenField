@@ -68,7 +68,7 @@
 @property (strong, nonatomic) UILabel *toLabel;
 
 @property (copy, nonatomic) NSString *placeholderText;
-
+@property BOOL textFieldShouldReturn;
 - (void)setColorScheme:(UIColor *)color;
 
 @end
