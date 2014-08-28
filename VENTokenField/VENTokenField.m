@@ -187,6 +187,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 #pragma mark - View Layout
 
+- (CGSize)intrinsicContentSize
+{
+    return CGSizeMake(UIViewNoIntrinsicMetric, [self estimatedHeightForCurrentTokens]);
+}
+
 - (void)layoutScrollView
 {
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))];
@@ -334,6 +339,58 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
             [self setHeight:self.originalHeight];
         }
     }
+    
+    [self invalidateIntrinsicContentSize];
+}
+
+- (CGFloat) estimatedHeightForCurrentTokens
+{
+    CGFloat currentX = self.toLabel.hidden ? CGRectGetMinX(self.toLabel.frame) : CGRectGetMaxX(self.toLabel.frame) + VENTokenFieldDefaultToLabelPadding;
+    CGFloat currentY = 0.0;
+
+    for (NSUInteger i = 0; i < [self numberOfTokens]; i++) {
+        NSString *title = [self titleForTokenAtIndex:i];
+        VENToken *token = [[VENToken alloc] init];
+        [token setTitleText:[NSString stringWithFormat:@"%@,", title]];
+        
+        if (currentX + token.width <= self.scrollView.contentSize.width)
+        {
+            // token fits in current line
+        }
+        else
+        {
+            currentY += token.height;
+            currentX = 0;
+            CGFloat tokenWidth = token.width;
+            if (tokenWidth > self.scrollView.contentSize.width) { // token is wider than max width
+                tokenWidth = self.scrollView.contentSize.width;
+            }
+        }
+        currentX += token.width + self.tokenPadding;
+    }
+    
+    CGFloat inputTextFieldWidth = self.scrollView.contentSize.width - currentX;
+    if (inputTextFieldWidth < self.minInputWidth) {
+        currentY += [self heightForToken];
+    }
+
+    CGFloat estimatedHeightForCurrentTokens = 0;
+
+    if (currentY + [self heightForToken] > CGRectGetHeight(self.frame)) { // needs to grow
+        if (currentY + [self heightForToken] <= self.maxHeight) {
+            estimatedHeightForCurrentTokens = currentY + [self heightForToken] + self.verticalInset * 2;
+        } else {
+            estimatedHeightForCurrentTokens = self.maxHeight;
+        }
+    } else { // needs to shrink
+        if (currentY + [self heightForToken] > self.originalHeight) {
+            estimatedHeightForCurrentTokens = currentY + [self heightForToken] + self.verticalInset * 2;
+        } else {
+            estimatedHeightForCurrentTokens = self.originalHeight;
+        }
+    }
+
+    return estimatedHeightForCurrentTokens;
 }
 
 - (VENBackspaceTextField *)inputTextField
