@@ -127,15 +127,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
     self.tokens = [NSMutableArray array];
 
-    CGFloat currentX = 0;
-    CGFloat currentY = 0;
-
-    [self layoutToLabelInView:self.scrollView origin:CGPointZero currentX:&currentX];
-    [self layoutTokensWithCurrentX:&currentX currentY:&currentY];
-    [self layoutInputTextFieldWithCurrentX:&currentX currentY:&currentY];
-
-    [self adjustHeightForCurrentY:currentY];
-    [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, currentY + [self heightForToken])];
+    [self __commitLayoutSubviews];
 
     [self updateInputTextField];
 
@@ -186,6 +178,26 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 }
 
 #pragma mark - View Layout
+
+- (void)layoutSubviews {
+
+    [super layoutSubviews];
+    
+    [self __commitLayoutSubviews];
+}
+
+- (void)__commitLayoutSubviews {
+
+    CGFloat currentX = 0;
+    CGFloat currentY = 0;
+    
+    [self layoutToLabelInView:self.scrollView origin:CGPointZero currentX:&currentX];
+    [self layoutTokensWithCurrentX:&currentX currentY:&currentY];
+    [self layoutInputTextFieldWithCurrentX:&currentX currentY:&currentY];
+    
+    [self adjustHeightForCurrentY:currentY];
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, currentY + [self heightForToken])];
+}
 
 - (void)layoutScrollView
 {
