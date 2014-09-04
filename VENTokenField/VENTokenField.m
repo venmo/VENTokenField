@@ -188,6 +188,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)__commitLayoutSubviews {
 
+    self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame) - self.horizontalInset * 2, CGRectGetHeight(self.frame) - self.verticalInset * 2);
+    self.scrollView.contentInset = UIEdgeInsetsMake(self.verticalInset,
+                                                    self.horizontalInset,
+                                                    self.verticalInset,
+                                                    self.horizontalInset);
+    
     CGFloat currentX = 0;
     CGFloat currentY = 0;
     
