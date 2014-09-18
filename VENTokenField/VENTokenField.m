@@ -127,7 +127,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
     self.tokens = [NSMutableArray array];
 
-    [self __commitLayoutSubviews];
+    [self commitLayoutSubviews];
 
     [self updateInputTextField];
 
@@ -183,10 +183,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
     [super layoutSubviews];
     
-    [self __commitLayoutSubviews];
+    [self commitLayoutSubviews];
 }
 
-- (void)__commitLayoutSubviews {
+- (void)commitLayoutSubviews {
 
     self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame) - self.horizontalInset * 2, CGRectGetHeight(self.frame) - self.verticalInset * 2);
     self.scrollView.contentInset = UIEdgeInsetsMake(self.verticalInset,
