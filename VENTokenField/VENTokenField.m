@@ -87,6 +87,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.colorScheme = [UIColor blueColor];
     self.toLabelTextColor = [UIColor colorWithRed:112/255.0f green:124/255.0f blue:124/255.0f alpha:1.0f];
     self.inputTextFieldTextColor = [UIColor colorWithRed:38/255.0f green:39/255.0f blue:41/255.0f alpha:1.0f];
+    self.textFieldShouldReturn = TRUE;
     
     // Accessing bare value to avoid kicking off a premature layout run.
     _toLabelText = NSLocalizedString(@"To:", nil);
@@ -455,7 +456,16 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
             [self.delegate tokenField:self didEnterText:textField.text];
         }
     }
-    return NO;
+    
+    if (self.textFieldShouldReturn && textField.text.length)
+    {
+        [textField resignFirstResponder];
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
