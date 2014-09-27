@@ -44,6 +44,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 @property (strong, nonatomic) VENBackspaceTextField *inputTextField;
 @property (strong, nonatomic) UIColor *colorScheme;
 @property (strong, nonatomic) UILabel *collapsedLabel;
+@property (nonatomic, readonly) BOOL isAttributedToken;
 
 @end
 
@@ -248,7 +249,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (void)layoutTokensWithCurrentX:(CGFloat *)currentX currentY:(CGFloat *)currentY
 {
     for (NSUInteger i = 0; i < [self numberOfTokens]; i++) {
-        NSString *title = [self titleForTokenAtIndex:i];
         VENToken *token = [[VENToken alloc] init];
         token.colorScheme = self.colorScheme;
 
@@ -256,8 +256,13 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         token.didTapTokenBlock = ^{
             [self didTapToken:weakToken];
         };
-
-        [token setTitleText:[NSString stringWithFormat:@"%@,", title]];
+        
+        if ([self isAttributedToken]) {
+            [token setAttributedTitleText:[self attributedTitleForTokenAtIndex:i]];
+        } else {
+            [token setTitleText:[NSString stringWithFormat:@"%@",[self titleForTokenAtIndex:i]]];
+        }
+        
         [self.tokens addObject:token];
 
         if (*currentX + token.width <= self.scrollView.contentSize.width) { // token fits in current line
@@ -282,6 +287,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (CGFloat)heightForToken
 {
     return 30;
+}
+
+- (BOOL)isAttributedToken
+{
+    return [self.dataSource respondsToSelector:@selector(tokenField:attributedTitleForTokenAtIndex:)];
 }
 
 - (void)layoutInvisibleTextField
@@ -427,6 +437,14 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         return [self.dataSource tokenField:self titleForTokenAtIndex:index];
     }
     return [NSString string];
+}
+
+- (NSAttributedString *)attributedTitleForTokenAtIndex:(NSUInteger)index
+{
+    if([self isAttributedToken]) {
+        return [self.dataSource tokenField:self attributedTitleForTokenAtIndex:index];
+    }
+    return [NSAttributedString new];
 }
 
 - (NSUInteger)numberOfTokens
