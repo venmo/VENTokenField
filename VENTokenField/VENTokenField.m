@@ -258,9 +258,15 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         };
         
         if ([self isAttributedToken]) {
-            [token setAttributedTitleText:[self attributedTitleForTokenAtIndex:i]];
+            NSAttributedString *attributedString = [self attributedTitleForTokenAtIndex:i];
+            NSRange range = NSMakeRange(0, attributedString.length);
+            attributedString = [[NSAttributedString alloc]
+                                initWithString:[NSString stringWithFormat:@"%@,", attributedString.string]
+                                attributes:[attributedString attributesAtIndex:0 effectiveRange:&range]];
+            
+            [token setAttributedTitleText:attributedString];
         } else {
-            [token setTitleText:[NSString stringWithFormat:@"%@",[self titleForTokenAtIndex:i]]];
+            [token setTitleText:[NSString stringWithFormat:@"%@,",[self titleForTokenAtIndex:i]]];
         }
         
         [self.tokens addObject:token];
