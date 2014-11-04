@@ -191,6 +191,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 {
     [super layoutSubviews];
     self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame) - self.horizontalInset * 2, CGRectGetHeight(self.frame) - self.verticalInset * 2);
+    [self reloadData];
 }
 
 - (void)layoutScrollView
