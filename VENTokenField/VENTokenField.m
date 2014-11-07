@@ -288,6 +288,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (void)layoutInvisibleTextField
 {
     self.invisibleTextField = [[VENBackspaceTextField alloc] initWithFrame:CGRectZero];
+    [self.invisibleTextField setAutocorrectionType:self.textAutocorrectionType];
     self.invisibleTextField.delegate = self;
     [self addSubview:self.invisibleTextField];
 }
@@ -352,6 +353,17 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         [_inputTextField addTarget:self action:@selector(inputTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     }
     return _inputTextField;
+}
+
+- (void)setTextAutocorrectionType:(UITextAutocorrectionType)textAutocorrectionType {
+    _textAutocorrectionType = textAutocorrectionType;
+    if (self.inputTextField) {
+        [self.inputTextField setAutocorrectionType:textAutocorrectionType];
+    }
+    
+    if (self.invisibleTextField) {
+        [self.invisibleTextField setAutocorrectionType:textAutocorrectionType];
+    }
 }
 
 - (void)setInputTextFieldKeyboardType:(UIKeyboardType)inputTextFieldKeyboardType
