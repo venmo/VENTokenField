@@ -11,7 +11,6 @@ end
 
 begin
   require 'slather'
-  Slather.prepare_pods(self)
 rescue LoadError
   puts 'Slather has been disabled (not installed).'
 end
