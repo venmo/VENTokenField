@@ -66,7 +66,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (BOOL)becomeFirstResponder
 {
-    [self reloadData];
+    [self layoutTokensAndInput];
     [self inputTextFieldBecomeFirstResponder];
     return YES;
 }
@@ -102,48 +102,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)collapse
 {
-    [self.collapsedLabel removeFromSuperview];
-    self.scrollView.hidden = YES;
-    [self setHeight:self.originalHeight];
-
-    CGFloat currentX = 0;
-
-    [self layoutToLabelInView:self origin:CGPointMake(self.horizontalInset, self.verticalInset) currentX:&currentX];
-    [self layoutCollapsedLabelWithCurrentX:&currentX];
-
-    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                        action:@selector(handleSingleTap:)];
-    [self addGestureRecognizer:self.tapGestureRecognizer];
+    [self layoutCollapsedLabel];
 }
 
 - (void)reloadData
 {
-    BOOL inputFieldShouldBecomeFirstResponder = self.inputTextField.isFirstResponder;
-
-    [self.collapsedLabel removeFromSuperview];
-    [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    self.scrollView.hidden = NO;
-    [self removeGestureRecognizer:self.tapGestureRecognizer];
-
-    self.tokens = [NSMutableArray array];
-
-    CGFloat currentX = 0;
-    CGFloat currentY = 0;
-
-    [self layoutToLabelInView:self.scrollView origin:CGPointZero currentX:&currentX];
-    [self layoutTokensWithCurrentX:&currentX currentY:&currentY];
-    [self layoutInputTextFieldWithCurrentX:&currentX currentY:&currentY];
-
-    [self adjustHeightForCurrentY:currentY];
-    [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, currentY + [self heightForToken])];
-
-    [self updateInputTextField];
-
-    if (inputFieldShouldBecomeFirstResponder) {
-        [self inputTextFieldBecomeFirstResponder];
-    } else {
-        [self focusInputTextField];
-    }
+    [self layoutTokensAndInput];
 }
 
 - (void)setPlaceholderText:(NSString *)placeholderText
@@ -185,7 +149,68 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return self.inputTextField.text;
 }
 
+
 #pragma mark - View Layout
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame) - self.horizontalInset * 2, CGRectGetHeight(self.frame) - self.verticalInset * 2);
+    if ([self isCollapsed]) {
+        [self layoutCollapsedLabel];
+    } else {
+        [self layoutTokensAndInput];
+    }
+}
+
+- (void)layoutCollapsedLabel
+{
+    [self.collapsedLabel removeFromSuperview];
+    self.scrollView.hidden = YES;
+    [self setHeight:self.originalHeight];
+
+    CGFloat currentX = 0;
+    [self layoutToLabelInView:self origin:CGPointMake(self.horizontalInset, self.verticalInset) currentX:&currentX];
+    [self layoutCollapsedLabelWithCurrentX:&currentX];
+
+    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                        action:@selector(handleSingleTap:)];
+    [self addGestureRecognizer:self.tapGestureRecognizer];
+}
+
+- (void)layoutTokensAndInput
+{
+    [self.collapsedLabel removeFromSuperview];
+    BOOL inputFieldShouldBecomeFirstResponder = self.inputTextField.isFirstResponder;
+    [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    self.scrollView.hidden = NO;
+    [self removeGestureRecognizer:self.tapGestureRecognizer];
+
+    self.tokens = [NSMutableArray array];
+
+    CGFloat currentX = 0;
+    CGFloat currentY = 0;
+
+    [self layoutToLabelInView:self.scrollView origin:CGPointZero currentX:&currentX];
+    [self layoutTokensWithCurrentX:&currentX currentY:&currentY];
+    [self layoutInputTextFieldWithCurrentX:&currentX currentY:&currentY];
+
+    [self adjustHeightForCurrentY:currentY];
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, currentY + [self heightForToken])];
+
+    [self updateInputTextField];
+
+    if (inputFieldShouldBecomeFirstResponder) {
+        [self inputTextFieldBecomeFirstResponder];
+    } else {
+        [self focusInputTextField];
+    }
+}
+
+- (BOOL)isCollapsed
+{
+    return self.collapsedLabel.superview != nil;
+}
 
 - (void)layoutScrollView
 {

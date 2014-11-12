@@ -45,4 +45,15 @@
     [tester waitForAbsenceOfKeyboard];
 }
 
+- (void)testResignFirstResponderAndCollapse
+{
+    [tester tapViewWithAccessibilityLabel:@"To"];
+    [tester tapViewWithAccessibilityLabel:@"Resign First Responder"];
+
+    [tester waitForAbsenceOfKeyboard];
+
+    [tester tapViewWithAccessibilityLabel:@"Collapse token field"];
+    [tester waitForViewWithAccessibilityLabel:@"3 people"];
+}
+
 @end
