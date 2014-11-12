@@ -9,9 +9,3 @@ target "VENTokenFieldSampleTests" do
   pod 'KIF', '~> 3.0.4'
 end
 
-begin
-  require 'slather'
-rescue LoadError
-  puts 'Slather has been disabled (not installed).'
-end
-
