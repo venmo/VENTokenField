@@ -9,9 +9,11 @@
 #import "ViewController.h"
 #import "VENTokenField.h"
 
-@interface ViewController () <VENTokenFieldDelegate, VENTokenFieldDataSource>
+@interface ViewController () <VENTokenFieldDelegate, VENTokenFieldDataSource, VENTokenSuggestionDataSource>
 @property (weak, nonatomic) IBOutlet VENTokenField *tokenField;
 @property (strong, nonatomic) NSMutableArray *names;
+@property (strong, nonatomic) NSArray *knownNames;
+@property (strong, nonatomic) NSArray *filteredNames;
 @end
 
 @implementation ViewController
@@ -20,8 +22,10 @@
 {
     [super viewDidLoad];
     self.names = [NSMutableArray array];
+    self.knownNames = @[@"Ayaka", @"Mark", @"Neeraj", @"Octocat", @"Octavius", @"Ben"];
     self.tokenField.delegate = self;
     self.tokenField.dataSource = self;
+    self.tokenField.suggestionDataSource = self;
     self.tokenField.placeholderText = NSLocalizedString(@"Enter names here", nil);
     self.tokenField.toLabelText = NSLocalizedString(@"Post to:", nil);
     [self.tokenField setColorScheme:[UIColor colorWithRed:61/255.0f green:149/255.0f blue:206/255.0f alpha:1.0f]];
@@ -47,6 +51,11 @@
     [self.tokenField reloadData];
 }
 
+- (void)tokenField:(VENTokenField *)tokenField didSelectSuggestion:(NSString *)suggestion forPartialText:(NSString *)text atIndex:(NSInteger)index
+{
+    NSLog(@"Added suggested value: %@", suggestion);
+}
+
 - (void)tokenField:(VENTokenField *)tokenField didDeleteTokenAtIndex:(NSUInteger)index
 {
     [self.names removeObjectAtIndex:index];
@@ -69,6 +78,25 @@
 - (NSString *)tokenFieldCollapsedText:(VENTokenField *)tokenField
 {
     return [NSString stringWithFormat:@"%tu people", [self.names count]];
+}
+
+#pragma mark - VENTokenSuggestionDataSource
+
+- (BOOL)tokenFieldShouldPresentSuggestions:(VENTokenField *)tokenField
+{
+    return YES;
+}
+
+- (NSInteger)tokenField:(VENTokenField *)tokenField numberOfSuggestionsForPartialText:(NSString *)text
+{
+    self.filteredNames = [self.knownNames filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF BEGINSWITH[c] %@", text]];
+    
+    return self.filteredNames.count;
+}
+
+- (NSString *)tokenField:(VENTokenField *)tokenField suggestionTitleForPartialText:(NSString *)text atIndex:(NSInteger)index
+{
+    return self.filteredNames[index];
 }
 
 @end

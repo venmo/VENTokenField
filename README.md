@@ -19,12 +19,13 @@ Usage
 
 If you've ever used a ```UITableView```, using ```VENTokenField``` should be a breeze.
 
-Similar to ```UITableView```, ```VENTokenField``` provides two protocols: ```<VENTokenFieldDelegate>``` and ```<VENTokenFieldDataSource>```.
+Similar to ```UITableView```, ```VENTokenField``` provides three protocols: ```<VENTokenFieldDelegate>```, ```<VENTokenFieldDataSource>``` and ```<VENTokenSuggestionDataSource>```.
 
 ### VENTokenFieldDelegate
 This protocol notifies you when things happen in the token field that you might want to know about.
 
-* ```tokenField:didEnterText:``` is called when a user hits the return key on the input field.
+* ```tokenField:didEnterText:``` is called when a user hits the return key on the input field or after a suggestion is tapped..
+* ```tokenField:didSelectSuggestion:forPartialText:atIndex:``` is called when a user taps on a suggested value in the suggestion list.
 * ```tokenField:didDeleteTokenAtIndex:``` is called when a user deletes a token at a particular index.
 * ```tokenField:didChangeText:``` is called when a user changes the text in the input field.
 * ```tokenFieldDidBeginEditing:``` is called when the input field becomes first responder.
@@ -36,6 +37,14 @@ Implement...
 * ```tokenField:titleForTokenAtIndex:``` to specify what the title for the token at a particular index should be.
 * ```numberOfTokensInTokenField:``` to specify how many tokens you have.
 * ```tokenFieldCollapsedText:``` to specify what you want the token field should say in the collapsed state.
+
+### VENTokenSuggestionDataSource
+This entirely optional protocol allows you to provide info for any suggestions presented to the user.
+
+Implement...
+* ```tokenFieldShouldPresentSuggestions:``` to specify that you want to present suggested values for tokens.
+* ```tokenField:numberOfSuggestionsForPartialText:``` to specify the number of suggestions for a given input.
+* ```tokenField:suggestionTitleForPartialText:atIndex:``` to specify what the title for a suggestion at a particular index should be.
 
 Sample Project
 --------------

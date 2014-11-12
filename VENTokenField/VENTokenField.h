@@ -26,6 +26,7 @@
 @protocol VENTokenFieldDelegate <NSObject>
 @optional
 - (void)tokenField:(VENTokenField *)tokenField didEnterText:(NSString *)text;
+- (void)tokenField:(VENTokenField *)tokenField didSelectSuggestion:(NSString *)suggestion forPartialText:(NSString *)text atIndex:(NSInteger) index;
 - (void)tokenField:(VENTokenField *)tokenField didDeleteTokenAtIndex:(NSUInteger)index;
 - (void)tokenField:(VENTokenField *)tokenField didChangeText:(NSString *)text;
 - (void)tokenFieldDidBeginEditing:(VENTokenField *)tokenField;
@@ -38,11 +39,19 @@
 - (NSString *)tokenFieldCollapsedText:(VENTokenField *)tokenField;
 @end
 
+@protocol VENTokenSuggestionDataSource <NSObject>
+@optional
+- (BOOL)tokenFieldShouldPresentSuggestions:(VENTokenField *)tokenField;
+- (NSInteger)tokenField:(VENTokenField *)tokenField numberOfSuggestionsForPartialText:(NSString *)text;
+- (NSString *)tokenField:(VENTokenField *)tokenField suggestionTitleForPartialText:(NSString *)text atIndex:(NSInteger)index;
+@end
+
 
 @interface VENTokenField : UIView
 
 @property (weak, nonatomic) id<VENTokenFieldDelegate> delegate;
 @property (weak, nonatomic) id<VENTokenFieldDataSource> dataSource;
+@property (weak, nonatomic) id<VENTokenSuggestionDataSource> suggestionDataSource;
 
 - (void)reloadData;
 - (void)collapse;

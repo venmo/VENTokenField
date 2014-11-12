@@ -25,6 +25,7 @@
 #import <FrameAccessor/FrameAccessor.h>
 #import "VENToken.h"
 #import "VENBackspaceTextField.h"
+#import "VENSuggestionTableViewManager.h"
 
 static const CGFloat VENTokenFieldDefaultVerticalInset      = 7.0;
 static const CGFloat VENTokenFieldDefaultHorizontalInset    = 15.0;
@@ -34,7 +35,7 @@ static const CGFloat VENTokenFieldDefaultMinInputWidth      = 80.0;
 static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 
-@interface VENTokenField () <VENBackspaceTextFieldDelegate>
+@interface VENTokenField () <VENBackspaceTextFieldDelegate, VENSuggestionTableViewManagerDelegate>
 
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) NSMutableArray *tokens;
@@ -44,6 +45,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 @property (strong, nonatomic) VENBackspaceTextField *inputTextField;
 @property (strong, nonatomic) UIColor *colorScheme;
 @property (strong, nonatomic) UILabel *collapsedLabel;
+@property (strong, nonatomic) VENSuggestionTableViewManager *tableViewManager;
 
 @end
 
@@ -105,6 +107,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self.collapsedLabel removeFromSuperview];
     self.scrollView.hidden = YES;
     [self setHeight:self.originalHeight];
+    
+    [self.tableViewManager hideTableView];
 
     CGFloat currentX = 0;
 
@@ -124,6 +128,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.scrollView.hidden = NO;
     [self removeGestureRecognizer:self.tapGestureRecognizer];
+    [self.tableViewManager hideTableView];
 
     self.tokens = [NSMutableArray array];
 
@@ -178,6 +183,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     for (VENToken *token in self.tokens) {
         [token setColorScheme:color];
     }
+}
+
+- (void)setSuggestionDataSource:(id<VENTokenSuggestionDataSource>)suggestionDataSource
+{
+    _suggestionDataSource = suggestionDataSource;
+    self.tableViewManager.dataSource = suggestionDataSource;
 }
 
 - (NSString *)inputText
@@ -277,7 +288,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
 }
 
-
 #pragma mark - Private
 
 - (CGFloat)heightForToken
@@ -365,6 +375,23 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     if ([self.delegate respondsToSelector:@selector(tokenField:didChangeText:)]) {
         [self.delegate tokenField:self didChangeText:textField.text];
     }
+    if ([self suggests]) {
+        if (textField.text.length > 0) {
+            [self.tableViewManager displayTableView];
+        } else {
+            [self.tableViewManager hideTableView];
+        }
+        
+    }
+}
+
+- (VENSuggestionTableViewManager *)tableViewManager
+{
+    if (!_tableViewManager) {
+        _tableViewManager = [[VENSuggestionTableViewManager alloc] initWithTokenField:self];
+        _tableViewManager.delegate = self;
+    }
+    return _tableViewManager;
 }
 
 - (void)handleSingleTap:(UITapGestureRecognizer *)gestureRecognizer
@@ -438,6 +465,14 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return 0;
 }
 
+- (BOOL)suggests
+{
+    if ([self.suggestionDataSource respondsToSelector:@selector(tokenFieldShouldPresentSuggestions:)]) {
+        return [self.suggestionDataSource tokenFieldShouldPresentSuggestions:self];
+    }
+    return NO;
+}
+
 - (NSString *)collapsedText
 {
     if ([self.dataSource respondsToSelector:@selector(tokenFieldCollapsedText:)]) {
@@ -446,6 +481,18 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return @"";
 }
 
+#pragma mark - VENSuggestionTableViewManagerDelegate
+
+- (void)suggestionManagerDidSelectValue:(NSString *)value atIndex:(NSInteger)index
+{
+    NSString *fieldText = self.inputText;
+    if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
+        [self.delegate tokenField:self didEnterText:value];
+    }
+    if ([self.delegate respondsToSelector:@selector(tokenField:didSelectSuggestion:forPartialText:atIndex:)]) {
+        [self.delegate tokenField:self didSelectSuggestion:value forPartialText:fieldText atIndex:index];
+    }
+}
 
 #pragma mark - UITextFieldDelegate
 
