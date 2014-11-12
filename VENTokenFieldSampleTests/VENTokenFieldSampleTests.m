@@ -49,9 +49,19 @@
 {
     [tester tapViewWithAccessibilityLabel:@"To"];
     [tester tapViewWithAccessibilityLabel:@"Resign First Responder"];
+    
     [tester waitForAbsenceOfKeyboard];
+    
     [tester tapViewWithAccessibilityLabel:@"Collapse token field"];
+    
+    // Make sure the collapsed text appears
     [tester waitForViewWithAccessibilityLabel:@"3 people"];
+    
+    [tester tapViewWithAccessibilityLabel:@"Uncollapse token field"];
+    
+    // Make sure the tokens are shown again
+    [tester waitForViewWithAccessibilityLabel:@"Ayaka,"];
+    [tester waitForViewWithAccessibilityLabel:@"Mark,"];
 }
 
 @end
