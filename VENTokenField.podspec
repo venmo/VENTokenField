@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'VENTokenField'
-  s.version      = '2.2.1'
+  s.version      = '2.2.3'
   s.summary      = 'Token field used in the Venmo app.'
   s.description   = <<-DESC
                    An easy to use token field that in used in the Venmo app.
