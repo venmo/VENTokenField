@@ -260,19 +260,26 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
         [token setTitleText:[NSString stringWithFormat:@"%@,", title]];
         [self.tokens addObject:token];
-
-        if (*currentX + token.width <= self.scrollView.contentSize.width) { // token fits in current line
-            token.frame = CGRectMake(*currentX, *currentY, token.width, token.height);
-        } else {
+        
+        CGFloat tokenWidth = token.width;
+        if (tokenWidth > self.scrollView.contentSize.width) { // Token is wider than max width
+            // Take all of the remaining space
+            token.frame = CGRectMake(*currentX, *currentY, self.scrollView.contentSize.width - *currentX, token.height);
             *currentY += token.height;
             *currentX = 0;
-            CGFloat tokenWidth = token.width;
-            if (tokenWidth > self.scrollView.contentSize.width) { // token is wider than max width
-                tokenWidth = self.scrollView.contentSize.width;
+            
+        } else {
+            if (*currentX + token.width <= self.scrollView.contentSize.width) { // token fits in current line
+                token.frame = CGRectMake(*currentX, *currentY, token.width, token.height);
             }
-            token.frame = CGRectMake(*currentX, *currentY, tokenWidth, token.height);
+            else { // Go to next line
+                *currentY += token.height;
+                *currentX = 0;
+                token.frame = CGRectMake(*currentX, *currentY, token.width, token.height);
+            }
+            *currentX += token.width + self.tokenPadding;
         }
-        *currentX += token.width + self.tokenPadding;
+        
         [self.scrollView addSubview:token];
     }
 }
