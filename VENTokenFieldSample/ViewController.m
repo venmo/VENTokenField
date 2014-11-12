@@ -33,9 +33,17 @@
     [self.tokenField collapse];
 }
 
+- (IBAction)didTapUncollapseButton:(id)sender {
+    [self.tokenField uncollapse];
+}
+
 - (IBAction)didTapResignFirstResponderButton:(id)sender
 {
     [self.tokenField resignFirstResponder];
+}
+
+- (IBAction)didTapReloadButton:(id)sender {
+    [self.tokenField reloadData];
 }
 
 
