@@ -46,6 +46,7 @@
 
 - (void)reloadData;
 - (void)collapse;
+- (void)uncollapse;
 - (NSString *)inputText;
 
 

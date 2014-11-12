@@ -44,6 +44,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 @property (strong, nonatomic) VENBackspaceTextField *inputTextField;
 @property (strong, nonatomic) UIColor *colorScheme;
 @property (strong, nonatomic) UILabel *collapsedLabel;
+@property (assign, nonatomic) BOOL collapsed;
 
 @end
 
@@ -66,6 +67,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (BOOL)becomeFirstResponder
 {
+    self.collapsed = NO;
     [self reloadData];
     [self inputTextFieldBecomeFirstResponder];
     return YES;
@@ -87,6 +89,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.colorScheme = [UIColor blueColor];
     self.toLabelTextColor = [UIColor colorWithRed:112/255.0f green:124/255.0f blue:124/255.0f alpha:1.0f];
     self.inputTextFieldTextColor = [UIColor colorWithRed:38/255.0f green:39/255.0f blue:41/255.0f alpha:1.0f];
+    self.collapsed = NO;
     
     // Accessing bare value to avoid kicking off a premature layout run.
     _toLabelText = NSLocalizedString(@"To:", nil);
@@ -102,43 +105,63 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)collapse
 {
+    self.collapsed = YES;
+
+    [self layoutCollapsedLabel];
+}
+
+- (void)uncollapse
+{
+    self.collapsed = NO;
+    
+    [self layoutTokensAndInput];
+}
+
+- (void)reloadData
+{
+    self.tokens = [NSMutableArray array];
+
+    [self layoutTokensAndInput];
+}
+
+- (void)layoutCollapsedLabel
+{
+    CGFloat currentX = 0;
+    
     [self.collapsedLabel removeFromSuperview];
     self.scrollView.hidden = YES;
     [self setHeight:self.originalHeight];
-
-    CGFloat currentX = 0;
-
+    
     [self layoutToLabelInView:self origin:CGPointMake(self.horizontalInset, self.verticalInset) currentX:&currentX];
     [self layoutCollapsedLabelWithCurrentX:&currentX];
-
+    
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                         action:@selector(handleSingleTap:)];
     [self addGestureRecognizer:self.tapGestureRecognizer];
 }
 
-- (void)reloadData
+- (void) layoutTokensAndInput
 {
+    CGFloat currentX = 0;
+    CGFloat currentY = 0;
+    
     BOOL inputFieldShouldBecomeFirstResponder = self.inputTextField.isFirstResponder;
-
+    
     [self.collapsedLabel removeFromSuperview];
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.scrollView.hidden = NO;
+    
     [self removeGestureRecognizer:self.tapGestureRecognizer];
-
-    self.tokens = [NSMutableArray array];
-
-    CGFloat currentX = 0;
-    CGFloat currentY = 0;
-
+    
     [self layoutToLabelInView:self.scrollView origin:CGPointZero currentX:&currentX];
     [self layoutTokensWithCurrentX:&currentX currentY:&currentY];
     [self layoutInputTextFieldWithCurrentX:&currentX currentY:&currentY];
-
+    
     [self adjustHeightForCurrentY:currentY];
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, currentY + [self heightForToken])];
-
+    
     [self updateInputTextField];
-
+    
     if (inputFieldShouldBecomeFirstResponder) {
         [self inputTextFieldBecomeFirstResponder];
     } else {
