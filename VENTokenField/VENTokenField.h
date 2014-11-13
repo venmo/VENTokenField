@@ -61,6 +61,7 @@
 @property (assign, nonatomic) CGFloat minInputWidth;
 
 @property (assign, nonatomic) UIKeyboardType inputTextFieldKeyboardType;
+@property (assign, nonatomic) UITextAutocorrectionType autocorrectionType;
 @property (strong, nonatomic) UIColor *toLabelTextColor;
 @property (strong, nonatomic) NSString *toLabelText;
 @property (strong, nonatomic) UIColor *inputTextFieldTextColor;

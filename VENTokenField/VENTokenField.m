@@ -79,6 +79,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (void)setUpInit
 {
     // Set up default values.
+    _autocorrectionType = UITextAutocorrectionTypeNo;
     self.maxHeight = VENTokenFieldDefaultMaxHeight;
     self.verticalInset = VENTokenFieldDefaultVerticalInset;
     self.horizontalInset = VENTokenFieldDefaultHorizontalInset;
@@ -316,6 +317,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (void)layoutInvisibleTextField
 {
     self.invisibleTextField = [[VENBackspaceTextField alloc] initWithFrame:CGRectZero];
+    [self.invisibleTextField setAutocorrectionType:self.autocorrectionType];
     self.invisibleTextField.delegate = self;
     [self addSubview:self.invisibleTextField];
 }
@@ -373,13 +375,19 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         _inputTextField.textColor = self.inputTextFieldTextColor;
         _inputTextField.font = [UIFont fontWithName:@"HelveticaNeue" size:15.5];
         _inputTextField.accessibilityLabel = NSLocalizedString(@"To", nil);
-        _inputTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+        _inputTextField.autocorrectionType = self.autocorrectionType;
         _inputTextField.tintColor = self.colorScheme;
         _inputTextField.delegate = self;
         _inputTextField.placeholder = self.placeholderText;
         [_inputTextField addTarget:self action:@selector(inputTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     }
     return _inputTextField;
+}
+
+- (void)setAutocorrectionType:(UITextAutocorrectionType)autocorrectionType {
+    _autocorrectionType = autocorrectionType;
+    [self.inputTextField setAutocorrectionType:self.autocorrectionType];
+    [self.invisibleTextField setAutocorrectionType:self.autocorrectionType];
 }
 
 - (void)setInputTextFieldKeyboardType:(UIKeyboardType)inputTextFieldKeyboardType
