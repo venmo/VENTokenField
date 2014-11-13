@@ -79,7 +79,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (void)setUpInit
 {
     // Set up default values.
-    _textAutocorrectionType = UITextAutocorrectionTypeNo;
+    _autocorrectionType = UITextAutocorrectionTypeNo;
     self.maxHeight = VENTokenFieldDefaultMaxHeight;
     self.verticalInset = VENTokenFieldDefaultVerticalInset;
     self.horizontalInset = VENTokenFieldDefaultHorizontalInset;
@@ -289,7 +289,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (void)layoutInvisibleTextField
 {
     self.invisibleTextField = [[VENBackspaceTextField alloc] initWithFrame:CGRectZero];
-    [self.invisibleTextField setAutocorrectionType:self.textAutocorrectionType];
+    [self.invisibleTextField setAutocorrectionType:self.autocorrectionType];
     self.invisibleTextField.delegate = self;
     [self addSubview:self.invisibleTextField];
 }
@@ -347,7 +347,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         _inputTextField.textColor = self.inputTextFieldTextColor;
         _inputTextField.font = [UIFont fontWithName:@"HelveticaNeue" size:15.5];
         _inputTextField.accessibilityLabel = NSLocalizedString(@"To", nil);
-        _inputTextField.autocorrectionType = self.textAutocorrectionType;
+        _inputTextField.autocorrectionType = self.autocorrectionType;
         _inputTextField.tintColor = self.colorScheme;
         _inputTextField.delegate = self;
         _inputTextField.placeholder = self.placeholderText;
@@ -356,10 +356,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return _inputTextField;
 }
 
-- (void)setTextAutocorrectionType:(UITextAutocorrectionType)textAutocorrectionType {
-    _textAutocorrectionType = textAutocorrectionType;
-    [self.inputTextField setAutocorrectionType:self.textAutocorrectionType];
-    [self.invisibleTextField setAutocorrectionType:self.textAutocorrectionType];
+- (void)setAutocorrectionType:(UITextAutocorrectionType)autocorrectionType {
+    _autocorrectionType = autocorrectionType;
+    [self.inputTextField setAutocorrectionType:self.autocorrectionType];
+    [self.invisibleTextField setAutocorrectionType:self.autocorrectionType];
 }
 
 - (void)setInputTextFieldKeyboardType:(UIKeyboardType)inputTextFieldKeyboardType
