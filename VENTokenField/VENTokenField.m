@@ -66,7 +66,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (BOOL)becomeFirstResponder
 {
-    [self layoutTokensAndInput];
+    [self layoutTokensAndInputWithFrameAdjustment:YES];
     [self inputTextFieldBecomeFirstResponder];
     return YES;
 }
@@ -107,7 +107,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)reloadData
 {
-    [self layoutTokensAndInput];
+    [self layoutTokensAndInputWithFrameAdjustment:YES];
 }
 
 - (void)setPlaceholderText:(NSString *)placeholderText
@@ -159,7 +159,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     if ([self isCollapsed]) {
         [self layoutCollapsedLabel];
     } else {
-        [self layoutTokensAndInput];
+        [self layoutTokensAndInputWithFrameAdjustment:NO];
     }
 }
 
@@ -178,7 +178,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self addGestureRecognizer:self.tapGestureRecognizer];
 }
 
-- (void)layoutTokensAndInput
+- (void)layoutTokensAndInputWithFrameAdjustment:(BOOL)shouldAdjustFrame
 {
     [self.collapsedLabel removeFromSuperview];
     BOOL inputFieldShouldBecomeFirstResponder = self.inputTextField.isFirstResponder;
@@ -195,7 +195,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self layoutTokensWithCurrentX:&currentX currentY:&currentY];
     [self layoutInputTextFieldWithCurrentX:&currentX currentY:&currentY];
 
-    [self adjustHeightForCurrentY:currentY];
+    if (shouldAdjustFrame) {
+        [self adjustHeightForCurrentY:currentY];
+    }
+
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, currentY + [self heightForToken])];
 
     [self updateInputTextField];
