@@ -358,13 +358,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)setTextAutocorrectionType:(UITextAutocorrectionType)textAutocorrectionType {
     _textAutocorrectionType = textAutocorrectionType;
-    if (self.inputTextField) {
-        [self.inputTextField setAutocorrectionType:textAutocorrectionType];
-    }
-    
-    if (self.invisibleTextField) {
-        [self.invisibleTextField setAutocorrectionType:textAutocorrectionType];
-    }
+    [self.inputTextField setAutocorrectionType:self.textAutocorrectionType];
+    [self.invisibleTextField setAutocorrectionType:self.textAutocorrectionType];
 }
 
 - (void)setInputTextFieldKeyboardType:(UIKeyboardType)inputTextFieldKeyboardType
