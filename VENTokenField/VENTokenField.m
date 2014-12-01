@@ -109,6 +109,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)reloadData
 {
+    self.inputTextField.text = nil;
     [self layoutTokensAndInputWithFrameAdjustment:YES];
 }
 
