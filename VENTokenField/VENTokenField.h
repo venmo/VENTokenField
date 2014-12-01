@@ -22,13 +22,14 @@
 
 #import <UIKit/UIKit.h>
 
-@class VENTokenField;
+@class VENTokenField, VENBackspaceTextField;
 @protocol VENTokenFieldDelegate <NSObject>
 @optional
 - (void)tokenField:(VENTokenField *)tokenField didEnterText:(NSString *)text;
 - (void)tokenField:(VENTokenField *)tokenField didDeleteTokenAtIndex:(NSUInteger)index;
 - (void)tokenField:(VENTokenField *)tokenField didChangeText:(NSString *)text;
 - (void)tokenFieldDidBeginEditing:(VENTokenField *)tokenField;
+- (void)tokenFieldDidEndEditing:(VENTokenField *) tokenField;
 @end
 
 @protocol VENTokenFieldDataSource <NSObject>
@@ -41,13 +42,12 @@
 
 @interface VENTokenField : UIView
 
-@property (weak, nonatomic) id<VENTokenFieldDelegate> delegate;
-@property (weak, nonatomic) id<VENTokenFieldDataSource> dataSource;
+@property (weak, nonatomic) IBOutlet id<VENTokenFieldDelegate> delegate;
+@property (weak, nonatomic) IBOutlet id<VENTokenFieldDataSource> dataSource;
+@property (nonatomic) NSString *inputText;
 
 - (void)reloadData;
 - (void)collapse;
-- (NSString *)inputText;
-
 
 /**-----------------------------------------------------------------------------
  * @name Customization
@@ -61,10 +61,13 @@
 @property (assign, nonatomic) CGFloat minInputWidth;
 
 @property (assign, nonatomic) UIKeyboardType inputTextFieldKeyboardType;
+@property (assign, nonatomic) UIReturnKeyType inputTextFieldReturnKeyType;
 @property (assign, nonatomic) UITextAutocorrectionType autocorrectionType;
 @property (strong, nonatomic) UIColor *toLabelTextColor;
 @property (strong, nonatomic) NSString *toLabelText;
 @property (strong, nonatomic) UIColor *inputTextFieldTextColor;
+
+@property (strong, nonatomic) VENBackspaceTextField *inputTextField;
 
 @property (strong, nonatomic) UILabel *toLabel;
 
