@@ -117,6 +117,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.inputTextField.placeholder = _placeholderText;
 }
 
+-(void)setInputTextFieldAccessibilityLabel:(NSString *)inputTextFieldAccessibilityLabel {
+    _inputTextFieldAccessibilityLabel = inputTextFieldAccessibilityLabel;
+    self.inputTextField.accessibilityLabel = _inputTextFieldAccessibilityLabel;
+}
+
 - (void)setInputTextFieldTextColor:(UIColor *)inputTextFieldTextColor
 {
     _inputTextFieldTextColor = inputTextFieldTextColor;
@@ -379,7 +384,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         _inputTextField.tintColor = self.colorScheme;
         _inputTextField.delegate = self;
         _inputTextField.placeholder = self.placeholderText;
-        _inputTextField.accessibilityLabel = self.placeholderText;
+        _inputTextField.accessibilityLabel = self.inputTextFieldAccessibilityLabel ?: NSLocalizedString(@"To", nil);
         [_inputTextField addTarget:self action:@selector(inputTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     }
     return _inputTextField;
