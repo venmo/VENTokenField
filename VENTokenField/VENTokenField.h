@@ -70,6 +70,7 @@
 @property (strong, nonatomic) UILabel *toLabel;
 
 @property (copy, nonatomic) NSString *placeholderText;
+@property (copy, nonatomic) NSString *inputTextFieldAccessibilityLabel;
 
 - (void)setColorScheme:(UIColor *)color;
 
