@@ -478,7 +478,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return @"";
 }
 
-
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
