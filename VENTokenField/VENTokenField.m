@@ -151,6 +151,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
 }
 
+- (void)setInputTextFieldAccessoryView:(UIView *)inputTextFieldAccessoryView
+{
+    _inputTextFieldAccessoryView = inputTextFieldAccessoryView;
+    self.inputTextField.inputAccessoryView = _inputTextFieldAccessoryView;
+}
+
 - (NSString *)inputText
 {
     return self.inputTextField.text;
@@ -388,6 +394,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         _inputTextField.delegate = self;
         _inputTextField.placeholder = self.placeholderText;
         _inputTextField.accessibilityLabel = self.inputTextFieldAccessibilityLabel ?: NSLocalizedString(@"To", nil);
+        _inputTextField.inputAccessoryView = self.inputTextFieldAccessoryView;
         [_inputTextField addTarget:self action:@selector(inputTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     }
     return _inputTextField;
