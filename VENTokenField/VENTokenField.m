@@ -77,6 +77,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (BOOL)resignFirstResponder
 {
+	[super resignFirstResponder];
     return [self.inputTextField resignFirstResponder];
 }
 
