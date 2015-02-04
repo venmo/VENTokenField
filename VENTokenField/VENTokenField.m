@@ -64,6 +64,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self setUpInit];
 }
 
+- (BOOL)isFirstResponder {
+	return [self.inputTextField isFirstResponder];
+}
+
 - (BOOL)becomeFirstResponder
 {
     [self layoutTokensAndInputWithFrameAdjustment:YES];
