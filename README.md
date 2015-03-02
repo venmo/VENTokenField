@@ -35,7 +35,7 @@ This protocol allows you to provide info about what you want to present in the t
 Implement...
 * ```tokenField:titleForTokenAtIndex:``` to specify what the title for the token at a particular index should be.
 * ```numberOfTokensInTokenField:``` to specify how many tokens you have.
-* ```tokenFieldCollapsedText:``` to specify what you want the token field should say in the collapsed state.
+* ```tokenFieldCollapsedText:``` to specify what you want the token field to say in the collapsed state.
 
 Sample Project
 --------------
