@@ -34,6 +34,7 @@
 @protocol VENTokenFieldDataSource <NSObject>
 @optional
 - (NSString *)tokenField:(VENTokenField *)tokenField titleForTokenAtIndex:(NSUInteger)index;
+- (NSAttributedString *)tokenField:(VENTokenField *)tokenField attributedTitleForTokenAtIndex:(NSUInteger)index;
 - (NSUInteger)numberOfTokensInTokenField:(VENTokenField *)tokenField;
 - (NSString *)tokenFieldCollapsedText:(VENTokenField *)tokenField;
 @end

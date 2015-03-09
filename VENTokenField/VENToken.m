@@ -51,6 +51,17 @@
 - (void)setTitleText:(NSString *)text
 {
     self.titleLabel.text = text;
+    [self setText];
+}
+
+- (void)setAttributedTitleText:(NSAttributedString *)attributedTitleText
+{
+    self.titleLabel.attributedText = attributedTitleText;
+    [self setText];
+}
+
+- (void)setText
+{
     self.titleLabel.textColor = self.colorScheme;
     [self.titleLabel sizeToFit];
     self.frame = CGRectMake(CGRectGetMinX(self.frame), CGRectGetMinY(self.frame), CGRectGetMaxX(self.titleLabel.frame) + 3, CGRectGetHeight(self.frame));
