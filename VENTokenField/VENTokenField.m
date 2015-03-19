@@ -298,7 +298,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     for (NSUInteger i = 0; i < [self numberOfTokens]; i++) {
         NSString *title = [self titleForTokenAtIndex:i];
         VENToken *token = [[VENToken alloc] init];
-        token.colorScheme = self.colorScheme;
 
         __weak VENToken *weakToken = token;
         __weak VENTokenField *weakSelf = self;
@@ -307,6 +306,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         };
 
         [token setTitleText:[NSString stringWithFormat:@"%@,", title]];
+        token.colorScheme = [self colorSchemeForToken:token];
+        
         [self.tokens addObject:token];
 
         if (*currentX + token.width <= self.scrollView.contentSize.width) { // token fits in current line
@@ -455,6 +456,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     for (VENToken *token in self.tokens) {
         token.highlighted = NO;
     }
+    
     [self setCursorVisibility];
 }
 
@@ -463,6 +465,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     NSArray *highlightedTokens = [self.tokens filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(VENToken *evaluatedObject, NSDictionary *bindings) {
         return evaluatedObject.highlighted;
     }]];
+    
     BOOL visible = [highlightedTokens count] == 0;
     if (visible) {
         [self inputTextFieldBecomeFirstResponder];
@@ -485,6 +488,14 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
 }
 
+- (UIColor *)colorSchemeForToken:(VENToken *)token {
+    
+    if ([self.dataSource respondsToSelector:@selector(colorSchemeForText:inTokenField:)]) {
+        return [self.dataSource colorSchemeForText:token.title inTokenField:self];
+    }
+    
+    return self.colorScheme;
+}
 
 #pragma mark - Data Source
 
@@ -493,6 +504,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     if ([self.dataSource respondsToSelector:@selector(tokenField:titleForTokenAtIndex:)]) {
         return [self.dataSource tokenField:self titleForTokenAtIndex:index];
     }
+    
     return [NSString string];
 }
 
@@ -501,6 +513,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     if ([self.dataSource respondsToSelector:@selector(numberOfTokensInTokenField:)]) {
         return [self.dataSource numberOfTokensInTokenField:self];
     }
+    
     return 0;
 }
 
@@ -509,6 +522,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     if ([self.dataSource respondsToSelector:@selector(tokenFieldCollapsedText:)]) {
         return [self.dataSource tokenFieldCollapsedText:self];
     }
+    
     return @"";
 }
 
@@ -522,6 +536,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
             [self.delegate tokenField:self didEnterText:textField.text];
         }
     }
+    
     return NO;
 }
 
