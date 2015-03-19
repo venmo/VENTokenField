@@ -248,7 +248,7 @@
 		B6173DF41952760200E293BB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = Venmo;
 				TargetAttributes = {
 					B692A48B1954D9CA00344E36 = {
@@ -441,6 +441,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
@@ -514,6 +515,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "VENTokenFieldSample/VENTokenFieldSample-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.venmo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -533,6 +535,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VENTokenFieldSample/VENTokenFieldSample-Prefix.pch";
 				INFOPLIST_FILE = "VENTokenFieldSample/VENTokenFieldSample-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.venmo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -555,6 +558,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "VENTokenFieldSampleTests/VENTokenFieldSampleTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.venmo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -574,6 +578,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VENTokenFieldSample/VENTokenFieldSample-Prefix.pch";
 				INFOPLIST_FILE = "VENTokenFieldSampleTests/VENTokenFieldSampleTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.venmo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
