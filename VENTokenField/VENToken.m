@@ -73,6 +73,10 @@
     [self setHighlighted:_highlighted];
 }
 
+- (NSString *)title {
+    return self.titleLabel.text;
+}
+
 
 #pragma mark - Private
 
