@@ -306,7 +306,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         };
 
         [token setTitleText:[NSString stringWithFormat:@"%@,", title]];
-        token.colorScheme = [self colorSchemeForToken:token];
+        token.colorScheme = [self colorSchemeForTokenAtIndex:i];
         
         [self.tokens addObject:token];
 
@@ -488,10 +488,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
 }
 
-- (UIColor *)colorSchemeForToken:(VENToken *)token {
+- (UIColor *)colorSchemeForTokenAtIndex:(NSUInteger)index {
     
-    if ([self.dataSource respondsToSelector:@selector(colorSchemeForText:inTokenField:)]) {
-        return [self.dataSource colorSchemeForText:token.title inTokenField:self];
+    if ([self.dataSource respondsToSelector:@selector(tokenField:colorSchemeForTokenAtIndex:)]) {
+        return [self.dataSource tokenField:self colorSchemeForTokenAtIndex:index];
     }
     
     return self.colorScheme;
