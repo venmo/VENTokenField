@@ -61,6 +61,11 @@
     return self.names[index];
 }
 
+- (NSString *)tokenField:(VENTokenField *)tokenField underlyingStringForTokenAtIndex:(NSUInteger)index
+{
+    return [NSString stringWithFormat:@"The name is: %@", self.names[index]];
+}
+
 - (NSUInteger)numberOfTokensInTokenField:(VENTokenField *)tokenField
 {
     return [self.names count];

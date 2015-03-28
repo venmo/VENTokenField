@@ -26,8 +26,10 @@
 
 @property (assign, nonatomic) BOOL highlighted;
 @property (copy, nonatomic) void (^didTapTokenBlock) (void);
+@property (copy, nonatomic) void (^didLongPressTokenBlock) (void);
 @property (strong, nonatomic) UIColor *colorScheme;
 
 - (void)setTitleText:(NSString *)text;
+- (void)setUnderlyingString:(NSString *)string;
 
 @end
