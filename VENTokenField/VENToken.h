@@ -29,5 +29,6 @@
 @property (strong, nonatomic) UIColor *colorScheme;
 
 - (void)setTitleText:(NSString *)text;
+- (void)setUnderlyingText:(NSString *)text;
 
 @end

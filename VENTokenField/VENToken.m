@@ -26,6 +26,7 @@
 @property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UIView *backgroundView;
+@property (strong, nonatomic) NSString *underlyingText;
 @end
 
 @implementation VENToken
@@ -55,6 +56,11 @@
     [self.titleLabel sizeToFit];
     self.frame = CGRectMake(CGRectGetMinX(self.frame), CGRectGetMinY(self.frame), CGRectGetMaxX(self.titleLabel.frame) + 3, CGRectGetHeight(self.frame));
     [self.titleLabel sizeToFit];
+}
+
+- (void)setUnderlyingText:(NSString *)text
+{
+    self.underlyingText = text;
 }
 
 - (void)setHighlighted:(BOOL)highlighted
