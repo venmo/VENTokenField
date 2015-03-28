@@ -24,6 +24,7 @@
 
 @interface VENToken ()
 @property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
+@property (strong, nonatomic) UILongPressGestureRecognizer *longPressGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UIView *backgroundView;
 @property (strong, nonatomic) NSString *underlyingText;
@@ -44,9 +45,11 @@
 {
     self.backgroundView.layer.cornerRadius = 5;
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapToken:)];
+    self.longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didLongPressToken:)];
     self.colorScheme = [UIColor blueColor];
     self.titleLabel.textColor = self.colorScheme;
     [self addGestureRecognizer:self.tapGestureRecognizer];
+    [self addGestureRecognizer:self.longPressGestureRecognizer];
 }
 
 - (void)setTitleText:(NSString *)text
@@ -58,9 +61,9 @@
     [self.titleLabel sizeToFit];
 }
 
-- (void)setUnderlyingText:(NSString *)text
+- (void)setUnderlyingString:(NSString *)string
 {
-    self.underlyingText = text;
+    self.underlyingText = string;
 }
 
 - (void)setHighlighted:(BOOL)highlighted
@@ -79,6 +82,22 @@
     [self setHighlighted:_highlighted];
 }
 
+#pragma mark - UIMenuController Actions
+
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    return (action == @selector(copy:));
+}
+
+- (void)copy:(id)sender
+{
+    [[UIPasteboard generalPasteboard] setString:self.underlyingText];
+}
 
 #pragma mark - Private
 
@@ -87,6 +106,18 @@
     if (self.didTapTokenBlock) {
         self.didTapTokenBlock();
     }
+}
+
+- (void)didLongPressToken:(UILongPressGestureRecognizer *)longPressGestureRecognizer
+{
+    if (self.didLongPressTokenBlock) {
+        self.didLongPressTokenBlock();
+        return;
+    }
+    [self becomeFirstResponder];
+    UIMenuController *menuController = [UIMenuController sharedMenuController];
+    [menuController setTargetRect:self.frame inView:self.superview];
+    [menuController setMenuVisible:YES animated:YES];
 }
 
 @end

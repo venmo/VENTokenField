@@ -308,7 +308,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         };
 
         [token setTitleText:[NSString stringWithFormat:@"%@,", title]];
-        [token setUnderlyingText:[NSString stringWithFormat:@"%@,", underlyingString]];
+        [token setUnderlyingString:[NSString stringWithFormat:@"%@,", underlyingString]];
         [self.tokens addObject:token];
 
         if (*currentX + token.width <= self.scrollView.contentSize.width) { // token fits in current line
