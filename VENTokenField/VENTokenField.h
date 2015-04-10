@@ -66,6 +66,7 @@
 @property (assign, nonatomic) UIView *inputTextFieldAccessoryView;
 @property (strong, nonatomic) UIColor *toLabelTextColor;
 @property (strong, nonatomic) NSString *toLabelText;
+@property (strong, nonatomic) UIFont *inputTextFieldFont;
 @property (strong, nonatomic) UIColor *inputTextFieldTextColor;
 
 @property (strong, nonatomic) UILabel *toLabel;

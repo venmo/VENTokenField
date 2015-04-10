@@ -129,6 +129,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.inputTextField.accessibilityLabel = _inputTextFieldAccessibilityLabel;
 }
 
+- (void)setInputTextFieldFont:(UIFont *)inputTextFieldFont
+{
+    _inputTextFieldFont = inputTextFieldFont;
+    self.inputTextField.font = inputTextFieldFont;
+}
+
 - (void)setInputTextFieldTextColor:(UIColor *)inputTextFieldTextColor
 {
     _inputTextFieldTextColor = inputTextFieldTextColor;
