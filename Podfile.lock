@@ -12,11 +12,11 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   VENTokenField:
-    :path: .
+    :path: "."
 
 SPEC CHECKSUMS:
-  FrameAccessor: 5eec95b29b5e9a3afe72a7a2e9ed25b000d3bcc3
-  KIF: 068074b24dd455025e7f2a488ba4fb07b9ce047b
-  VENTokenField: c43e68bcb9936d2772629c6a535b1652b8d1d721
+  FrameAccessor: 0f7ba6ce37be9a5d0302a27c731dca70af8d438b
+  KIF: e08915d78a220480599837e9a760deee64453d76
+  VENTokenField: ec847952d7a6d4ad65cb8ba2fc8141ab26a041fa
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.36.3
