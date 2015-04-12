@@ -68,7 +68,7 @@
     UIView *tokenField = [tester waitForViewWithAccessibilityLabel:@"0 people"];
     [tester tapScreenAtPoint:tokenField.center];
     [tester waitForSoftwareKeyboard];
-    
+
     [tester enterTextIntoCurrentFirstResponder:@"Ayaka\n"];
     [tester waitForViewWithAccessibilityLabel:@"Ayaka,"];
 
