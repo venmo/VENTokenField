@@ -339,7 +339,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.invisibleTextField = [[VENBackspaceTextField alloc] initWithFrame:CGRectZero];
     [self.invisibleTextField setAutocorrectionType:self.autocorrectionType];
     [self.invisibleTextField setAutocapitalizationType:self.autocapitalizationType];
-    self.invisibleTextField.delegate = self;
+    self.invisibleTextField.backspaceDelegate = self;
     [self addSubview:self.invisibleTextField];
 }
 
@@ -399,6 +399,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         _inputTextField.autocapitalizationType = self.autocapitalizationType;
         _inputTextField.tintColor = self.colorScheme;
         _inputTextField.delegate = self;
+        _inputTextField.backspaceDelegate = self;
         _inputTextField.placeholder = self.placeholderText;
         _inputTextField.accessibilityLabel = self.inputTextFieldAccessibilityLabel ?: NSLocalizedString(@"To", nil);
         _inputTextField.inputAccessoryView = self.inputTextFieldAccessoryView;
