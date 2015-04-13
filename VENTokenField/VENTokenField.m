@@ -550,7 +550,14 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    [self unhighlightAllTokens];
+    BOOL isPressedBackspaceAfterSingleSpaceSymbol = [textField.text isEqualToString:@""] && range.location == 0 && range.length == 0 && string.length == 0;
+    if (isPressedBackspaceAfterSingleSpaceSymbol) {
+        if ([self respondsToSelector:@selector(textFieldDidEnterBackspace:)]) {
+            [self textFieldDidEnterBackspace:self.inputTextField];
+        }
+    } else {
+        [self unhighlightAllTokens];
+    }
     return YES;
 }
 
