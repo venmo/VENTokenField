@@ -27,8 +27,8 @@
 - (BOOL)keyboardInputShouldDelete:(UITextField *)textField
 {
     if (self.text.length == 0) {
-        if ([self.delegate respondsToSelector:@selector(textFieldDidEnterBackspace:)]) {
-            [self.delegate textFieldDidEnterBackspace:self];
+        if ([self.backspaceDelegate respondsToSelector:@selector(textFieldDidEnterBackspace:)]) {
+            [self.backspaceDelegate textFieldDidEnterBackspace:self];
         }
     }
 
