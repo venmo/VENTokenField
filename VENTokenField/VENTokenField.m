@@ -297,7 +297,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 {
     for (NSUInteger i = 0; i < [self numberOfTokens]; i++) {
         NSString *title = [self titleForTokenAtIndex:i];
-        NSString *underlyingString = [self underlyingStringForTokenAtIndex:i];
+        NSString *tokenCopyString = [self copyStringForTokenAtIndex:i];
         VENToken *token = [[VENToken alloc] init];
         token.colorScheme = self.colorScheme;
 
@@ -308,7 +308,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         };
 
         [token setTitleText:[NSString stringWithFormat:@"%@,", title]];
-        [token setUnderlyingString:[NSString stringWithFormat:@"%@,", underlyingString]];
+        [token setTokenCopyString:[NSString stringWithFormat:@"%@,", tokenCopyString]];
         [self.tokens addObject:token];
 
         if (*currentX + token.width <= self.scrollView.contentSize.width) { // token fits in current line
@@ -498,10 +498,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return [NSString string];
 }
 
-- (NSString *)underlyingStringForTokenAtIndex:(NSUInteger)index
+- (NSString *)copyStringForTokenAtIndex:(NSUInteger)index
 {
-    if ([self.dataSource respondsToSelector:@selector(tokenField:underlyingStringForTokenAtIndex:)]) {
-        return [self.dataSource tokenField:self underlyingStringForTokenAtIndex:index];
+    if ([self.dataSource respondsToSelector:@selector(tokenField:copyStringForTokenAtIndex:)]) {
+        return [self.dataSource tokenField:self copyStringForTokenAtIndex:index];
     } else if ([self.dataSource respondsToSelector:@selector(tokenField:titleForTokenAtIndex:)]) {
         return [self.dataSource tokenField:self titleForTokenAtIndex:index];
     }

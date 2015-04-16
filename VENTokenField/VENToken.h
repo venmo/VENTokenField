@@ -30,6 +30,6 @@
 @property (strong, nonatomic) UIColor *colorScheme;
 
 - (void)setTitleText:(NSString *)text;
-- (void)setUnderlyingString:(NSString *)string;
+- (void)setTokenCopyString:(NSString *)string;
 
 @end

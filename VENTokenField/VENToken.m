@@ -27,7 +27,7 @@
 @property (strong, nonatomic) UILongPressGestureRecognizer *longPressGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UIView *backgroundView;
-@property (strong, nonatomic) NSString *underlyingText;
+@property (strong, nonatomic) NSString *tokenCopyString;
 @end
 
 @implementation VENToken
@@ -61,9 +61,9 @@
     [self.titleLabel sizeToFit];
 }
 
-- (void)setUnderlyingString:(NSString *)string
+- (void)setTokenCopyString:(NSString *)string
 {
-    self.underlyingText = string;
+    self.tokenCopyString = string;
 }
 
 - (void)setHighlighted:(BOOL)highlighted
@@ -96,7 +96,7 @@
 
 - (void)copy:(id)sender
 {
-    [[UIPasteboard generalPasteboard] setString:self.underlyingText];
+    [[UIPasteboard generalPasteboard] setString:self.tokenCopyString];
 }
 
 #pragma mark - Private

@@ -61,7 +61,7 @@
     return self.names[index];
 }
 
-- (NSString *)tokenField:(VENTokenField *)tokenField underlyingStringForTokenAtIndex:(NSUInteger)index
+- (NSString *)tokenField:(VENTokenField *)tokenField copyStringForTokenAtIndex:(NSUInteger)index
 {
     return [NSString stringWithFormat:@"The name is: %@", self.names[index]];
 }
