@@ -502,6 +502,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 {
     if ([self.dataSource respondsToSelector:@selector(tokenField:underlyingStringForTokenAtIndex:)]) {
         return [self.dataSource tokenField:self underlyingStringForTokenAtIndex:index];
+    } else if ([self.dataSource respondsToSelector:@selector(tokenField:titleForTokenAtIndex:)]) {
+        return [self.dataSource tokenField:self titleForTokenAtIndex:index];
     }
     return [NSString string];
 }
