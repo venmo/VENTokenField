@@ -37,6 +37,7 @@
 - (NSUInteger)numberOfTokensInTokenField:(VENTokenField *)tokenField;
 - (NSString *)tokenFieldCollapsedText:(VENTokenField *)tokenField;
 - (UIColor *)tokenField:(VENTokenField *)tokenField colorSchemeForTokenAtIndex:(NSUInteger)index;
+- (Class)subclassForTokensInTokenField:(VENTokenField *)tokenField;
 @end
 
 

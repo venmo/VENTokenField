@@ -297,7 +297,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 {
     for (NSUInteger i = 0; i < [self numberOfTokens]; i++) {
         NSString *title = [self titleForTokenAtIndex:i];
-        VENToken *token = [[VENToken alloc] init];
+        VENToken *token = [[[self subclassForTokens] alloc] init];
 
         __weak VENToken *weakToken = token;
         __weak VENTokenField *weakSelf = self;
@@ -525,6 +525,20 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
     
     return @"";
+}
+
+- (Class)subclassForTokens
+{
+    Class defaultClass = [VENToken class];
+
+    if ([self.dataSource respondsToSelector:@selector(subclassForTokensInTokenField:)]) {
+        Class providedSubclass = [self.dataSource subclassForTokensInTokenField:self];
+        if ([providedSubclass isSubclassOfClass:defaultClass]) {
+            return providedSubclass;
+        }
+    }
+
+    return defaultClass;
 }
 
 
