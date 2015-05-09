@@ -72,7 +72,6 @@
 @property (strong, nonatomic) UILabel *toLabel;
 
 @property (strong, nonatomic) NSArray *delimiters;
-
 @property (copy, nonatomic) NSString *placeholderText;
 @property (copy, nonatomic) NSString *inputTextFieldAccessibilityLabel;
 
