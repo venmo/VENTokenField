@@ -551,11 +551,16 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     [self unhighlightAllTokens];
-    if ([self.delimiters containsObject:string]) {
-        if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
-            if ([textField.text length]) {
-                [self.delegate tokenField:self didEnterText:textField.text];
-                return NO;
+    NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    for (NSString *delimiter in self.delimiters) {
+        if (newString.length > delimiter.length &&
+            [[newString substringFromIndex:newString.length - delimiter.length] isEqualToString:delimiter]) {
+            NSString *enteredString = [textField.text substringToIndex:newString.length - delimiter.length];
+            if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
+                if (enteredString.length) {
+                    [self.delegate tokenField:self didEnterText:enteredString];
+                    return NO;
+                }
             }
         }
     }
