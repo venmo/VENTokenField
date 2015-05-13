@@ -33,6 +33,9 @@
 
     [tester enterTextIntoCurrentFirstResponder:@"Andy;"];
     [tester waitForViewWithAccessibilityLabel:@"Andy,"];
+    
+    [tester enterTextIntoCurrentFirstResponder:@"Sam--"];
+    [tester waitForViewWithAccessibilityLabel:@"Sam,"];
 
     // Make sure everything else is still there.
     [tester waitForViewWithAccessibilityLabel:@"Ayaka,"];
@@ -41,14 +44,17 @@
     [tester waitForViewWithAccessibilityLabel:@"Octocat,"];
     [tester waitForViewWithAccessibilityLabel:@"Steven,"];
     [tester waitForViewWithAccessibilityLabel:@"Andy,"];
+    [tester waitForViewWithAccessibilityLabel:@"Sam,"];
 
     // Delete
     [tester enterTextIntoCurrentFirstResponder:@"\b"];
     [tester enterTextIntoCurrentFirstResponder:@"\b"];
-    [tester waitForAbsenceOfViewWithAccessibilityLabel:@"Andy,"];
+    [tester waitForAbsenceOfViewWithAccessibilityLabel:@"Sam,"];
 
     // Clear remaining names to reset state for next test
     [tester tapViewWithAccessibilityLabel:@"To"];
+    [tester enterTextIntoCurrentFirstResponder:@"\b"];
+    [tester enterTextIntoCurrentFirstResponder:@"\b"];
     [tester enterTextIntoCurrentFirstResponder:@"\b"];
     [tester enterTextIntoCurrentFirstResponder:@"\b"];
     [tester enterTextIntoCurrentFirstResponder:@"\b"];
@@ -100,13 +106,16 @@
 
     [tester enterTextIntoCurrentFirstResponder:@"Andy;"];
     [tester waitForViewWithAccessibilityLabel:@"Andy,"];
+    
+    [tester enterTextIntoCurrentFirstResponder:@"Sam--"];
+    [tester waitForViewWithAccessibilityLabel:@"Sam,"];
 
     [tester tapViewWithAccessibilityLabel:@"Resign First Responder"];
     [tester waitForAbsenceOfSoftwareKeyboard];
     [tester tapViewWithAccessibilityLabel:@"Collapse token field"];
 
     // Confirm the collapse label
-    [tester waitForViewWithAccessibilityLabel:@"6 people"];
+    [tester waitForViewWithAccessibilityLabel:@"7 people"];
 
     // Remove one name and check again
     [tester tapScreenAtPoint:tokenField.center];
@@ -116,7 +125,7 @@
     [tester tapViewWithAccessibilityLabel:@"Resign First Responder"];
     [tester waitForAbsenceOfSoftwareKeyboard];
     [tester tapViewWithAccessibilityLabel:@"Collapse token field"];
-    [tester waitForViewWithAccessibilityLabel:@"5 people"];
+    [tester waitForViewWithAccessibilityLabel:@"6 people"];
 }
 
 @end
