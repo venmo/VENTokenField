@@ -44,7 +44,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 @property (strong, nonatomic) VENBackspaceTextField *inputTextField;
 @property (strong, nonatomic) UIColor *colorScheme;
 @property (strong, nonatomic) UILabel *collapsedLabel;
-
+@property (nonatomic) NSInteger indexJustBeforeDeletedToken;
+@property (nonatomic) BOOL hasDeletedToken;
 @end
 
 
@@ -227,6 +228,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     } else {
         [self focusInputTextField];
     }
+    
 }
 
 - (BOOL)isCollapsed
@@ -461,6 +463,18 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self setCursorVisibility];
 }
 
+- (void)scrollToHighlightedToken
+{
+    for (VENToken *token in self.tokens) {
+        if (token.highlighted)
+        {
+            CGRect locationOfToken = token.frame;
+            [self.scrollView scrollRectToVisible:locationOfToken animated:YES];
+            break;
+        }
+    }
+}
+
 - (void)setCursorVisibility
 {
     NSArray *highlightedTokens = [self.tokens filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(VENToken *evaluatedObject, NSDictionary *bindings) {
@@ -473,6 +487,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     } else {
         [self.invisibleTextField becomeFirstResponder];
     }
+    
+    [self scrollToHighlightedToken];
 }
 
 - (void)updateInputTextField
@@ -563,7 +579,14 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         BOOL didDeleteToken = NO;
         for (VENToken *token in self.tokens) {
             if (token.highlighted) {
-                [self.delegate tokenField:self didDeleteTokenAtIndex:[self.tokens indexOfObject:token]];
+                NSInteger indexOfToken = [self.tokens indexOfObject:token];
+                [self.delegate tokenField:self didDeleteTokenAtIndex:indexOfToken];
+                
+                if (indexOfToken >= 1) {
+                    VENToken *tokenBeforeDeletedToken = self.tokens[indexOfToken-1];
+                    tokenBeforeDeletedToken.highlighted = YES;
+                }
+                
                 didDeleteToken = YES;
                 break;
             }
