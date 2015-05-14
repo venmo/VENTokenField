@@ -74,6 +74,8 @@
 @property (copy, nonatomic) NSString *placeholderText;
 @property (copy, nonatomic) NSString *inputTextFieldAccessibilityLabel;
 
+@property (nonatomic) BOOL isDeletingTokens;
+
 - (void)setColorScheme:(UIColor *)color;
 
 @end

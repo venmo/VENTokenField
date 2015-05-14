@@ -108,8 +108,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
     [self layoutScrollView];
     [self reloadData];
-    
-    // When deleting items in the middle of the list rather than at the end, the highlighted token is lost when the view shrinks, so observe for when the view shrinks and highlight the appropriate token
+
 }
 
 - (void)collapse
@@ -186,7 +185,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         [self layoutTokensAndInputWithFrameAdjustment:NO];
     }
 
-    if (newHeight < self.oldHeight)
+    if (newHeight < self.oldHeight && self.isDeletingTokens)
     {
         [self continueHighlightingTokensDuringDeletionInMiddleOfListWhenHeightIsReduced];
     }
