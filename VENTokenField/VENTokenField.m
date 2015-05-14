@@ -577,7 +577,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
             default:
                 break;
         }
-        [self.scrollView addSubview:self.placeholderTextLabel];
+        [self.scrollView insertSubview:self.placeholderTextLabel belowSubview:self.inputTextField];
     } else {
         [self.placeholderTextLabel removeFromSuperview];
     }
