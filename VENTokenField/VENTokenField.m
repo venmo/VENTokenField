@@ -95,6 +95,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.colorScheme = [UIColor blueColor];
     self.toLabelTextColor = [UIColor colorWithRed:112/255.0f green:124/255.0f blue:124/255.0f alpha:1.0f];
     self.inputTextFieldTextColor = [UIColor colorWithRed:38/255.0f green:39/255.0f blue:41/255.0f alpha:1.0f];
+    self.alignment = VENTokenFieldAlignmentLeft;
     
     // Accessing bare value to avoid kicking off a premature layout run.
     _toLabelText = NSLocalizedString(@"To:", nil);
@@ -168,6 +169,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return self.inputTextField.text;
 }
 
+- (void)setAlignment:(VENTokenFieldAlignment)alignment {
+    _alignment = alignment;
+    self.collapsedLabel.textAlignment = (NSTextAlignment)alignment;
+}
+
 
 #pragma mark - View Layout
 
@@ -191,6 +197,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     CGFloat currentX = 0;
     [self layoutToLabelInView:self origin:CGPointMake(self.horizontalInset, self.verticalInset) currentX:&currentX];
     [self layoutCollapsedLabelWithCurrentX:&currentX];
+    self.collapsedLabel.textAlignment = (NSTextAlignment)self.alignment;
 
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                         action:@selector(handleSingleTap:)];

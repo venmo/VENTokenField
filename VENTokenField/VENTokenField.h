@@ -40,9 +40,9 @@
 @end
 
 typedef NS_ENUM(NSInteger, VENTokenFieldAlignment) {
-    VENTokenFieldAlignmentLeft = 0,
-    VENTokenFieldAlignmentCenter,
-    VENTokenFieldAlignmentRight
+    VENTokenFieldAlignmentLeft = NSTextAlignmentLeft,
+    VENTokenFieldAlignmentCenter = NSTextAlignmentCenter,
+    VENTokenFieldAlignmentRight = NSTextAlignmentRight
 };
 
 
