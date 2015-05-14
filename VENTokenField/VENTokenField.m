@@ -212,7 +212,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
     [self layoutToLabelInView:self.scrollView origin:CGPointZero currentX:&currentX];
     [self layoutTokensWithCurrentX:&currentX currentY:&currentY];
-    [self realignTokensWithAlignment:self.alignment];
     [self layoutInputTextFieldWithCurrentX:&currentX currentY:&currentY];
 
     if (shouldAdjustFrame) {
@@ -325,9 +324,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         *currentX += token.width + self.tokenPadding;
         [self.scrollView addSubview:token];
     }
+    [self realignTokensWithCurrentX:currentX alignment:self.alignment];
 }
 
-- (void)realignTokensWithAlignment:(VENTokenFieldAlignment)alignment {
+- (void)realignTokensWithCurrentX:(CGFloat *)currentX alignment:(VENTokenFieldAlignment)alignment
+{
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     for (VENToken *token in self.tokens) {
         if (dict[@(token.y)]) {
@@ -338,18 +339,27 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
     // Could be parallelized: compute all new frames on background threads.
     // Once done, assign new frames to tokens on main thread.
+    CGFloat currentY = 0;
     for (NSNumber *rowY in [dict allKeys]) {
-        [self realignRowOfTokens:dict[rowY] withAlignment:alignment];
+        [self realignRowOfTokens:dict[rowY] currentX:currentX currentY:&currentY alignment:alignment];
     }
 }
 
-- (void)realignRowOfTokens:(NSArray *)tokens withAlignment:(VENTokenFieldAlignment)alignment {
+- (void)realignRowOfTokens:(NSArray *)tokens
+                  currentX:(CGFloat *)currentX
+                  currentY:(CGFloat *)currentY
+                 alignment:(VENTokenFieldAlignment)alignment
+{
     // This method is unreliant on the order of tokens. It could be faster if it was reliant.
-    VENToken *firstToken = tokens[0];
+    VENToken *firstToken = [tokens firstObject];
+    VENToken *lastToken = [tokens firstObject];
     CGFloat totalLineWidth = 0;
     for (VENToken *token in tokens) {
         if (token.x < firstToken.x) {
             firstToken = token;
+        }
+        if (token.x > lastToken.x) {
+            lastToken = token;
         }
         totalLineWidth += token.width;
     }
@@ -368,6 +378,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
     for (VENToken *token in tokens) {
         token.x += frameAdjustment;
+    }
+    if (firstToken.y >= *currentY) {
+        *currentX = lastToken.x + lastToken.width;
     }
 }
 
