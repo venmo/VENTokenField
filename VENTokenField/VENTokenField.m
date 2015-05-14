@@ -179,6 +179,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 #pragma mark - View Layout
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:@"VENDidShrinkFrameNotification"];
+}
+
 - (void)layoutSubviews
 {
     CGFloat newHeight = self.bounds.size.height;
