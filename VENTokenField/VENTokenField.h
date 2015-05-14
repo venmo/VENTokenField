@@ -64,6 +64,7 @@ typedef NS_ENUM(NSInteger, VENTokenFieldAlignment) {
 @property (assign, nonatomic) CGFloat verticalInset;
 @property (assign, nonatomic) CGFloat horizontalInset;
 @property (assign, nonatomic) CGFloat tokenPadding;
+@property (assign, nonatomic) CGFloat minInputWidth DEPRECATED_ATTRIBUTE;
 
 @property (assign, nonatomic) VENTokenFieldAlignment alignment;
 @property (assign, nonatomic) UIKeyboardType inputTextFieldKeyboardType;
