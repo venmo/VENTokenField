@@ -212,6 +212,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
     [self layoutToLabelInView:self.scrollView origin:CGPointZero currentX:&currentX];
     [self layoutTokensWithCurrentX:&currentX currentY:&currentY];
+    [self realignTokensWithAlignment:self.alignment];
     [self layoutInputTextFieldWithCurrentX:&currentX currentY:&currentY];
 
     if (shouldAdjustFrame) {
@@ -323,6 +324,50 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         }
         *currentX += token.width + self.tokenPadding;
         [self.scrollView addSubview:token];
+    }
+}
+
+- (void)realignTokensWithAlignment:(VENTokenFieldAlignment)alignment {
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    for (VENToken *token in self.tokens) {
+        if (dict[@(token.y)]) {
+            dict[@(token.y)] = [dict[@(token.y)] arrayByAddingObject:token];
+        } else {
+            dict[@(token.y)] = @[token];
+        }
+    }
+    // Could be parallelized: compute all new frames on background threads.
+    // Once done, assign new frames to tokens on main thread.
+    for (NSNumber *rowY in [dict allKeys]) {
+        [self realignRowOfTokens:dict[rowY] withAlignment:alignment];
+    }
+}
+
+- (void)realignRowOfTokens:(NSArray *)tokens withAlignment:(VENTokenFieldAlignment)alignment {
+    // This method is unreliant on the order of tokens. It could be faster if it was reliant.
+    VENToken *firstToken = tokens[0];
+    CGFloat totalLineWidth = 0;
+    for (VENToken *token in tokens) {
+        if (token.x < firstToken.x) {
+            firstToken = token;
+        }
+        totalLineWidth += token.width;
+    }
+    CGFloat frameAdjustment = 0;
+    switch (self.alignment) {
+        case VENTokenFieldAlignmentRight: {
+            frameAdjustment = self.scrollView.contentSize.width - firstToken.x - totalLineWidth;
+            break;
+        }
+        case VENTokenFieldAlignmentCenter: {
+            frameAdjustment = (self.scrollView.contentSize.width - firstToken.x - totalLineWidth) / 2.0;
+            break;
+        }
+        default:
+            break;
+    }
+    for (VENToken *token in tokens) {
+        token.x += frameAdjustment;
     }
 }
 
