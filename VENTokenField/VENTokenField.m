@@ -45,6 +45,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 @property (strong, nonatomic) UIColor *colorScheme;
 @property (strong, nonatomic) UILabel *collapsedLabel;
 @property (strong, nonatomic) NSString *inputTextFieldText;
+@property (strong, nonatomic) UILabel *placeholderTextLabel;
 
 @end
 
@@ -123,7 +124,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (void)setPlaceholderText:(NSString *)placeholderText
 {
     _placeholderText = placeholderText;
-    self.inputTextField.placeholder = _placeholderText;
+    self.placeholderTextLabel.text = _placeholderText;
+    self.placeholderTextLabel.width = [_placeholderText sizeWithAttributes:@{NSFontAttributeName:self.placeholderTextLabel.font}].width;
 }
 
 -(void)setInputTextFieldAccessibilityLabel:(NSString *)inputTextFieldAccessibilityLabel {
@@ -170,9 +172,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return self.inputTextField.text;
 }
 
-- (void)setAlignment:(VENTokenFieldAlignment)alignment {
+- (void)setAlignment:(VENTokenFieldAlignment)alignment
+{
     _alignment = alignment;
     self.collapsedLabel.textAlignment = (NSTextAlignment)alignment;
+    self.placeholderTextLabel.textAlignment = (NSTextAlignment)alignment;
 }
 
 
@@ -228,7 +232,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, currentY + [self heightForToken])];
 
-    [self updateInputTextField];
+    [self updatePlaceholderTextLabel];
 
     if (inputFieldShouldBecomeFirstResponder) {
         [self inputTextFieldBecomeFirstResponder];
@@ -445,6 +449,18 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return _toLabel;
 }
 
+- (UILabel *)placeholderTextLabel
+{
+    if (!_placeholderTextLabel) {
+        _placeholderTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0,
+                                                                          [self heightForToken])];
+        _placeholderTextLabel.font = self.inputTextField.font;
+        _placeholderTextLabel.textAlignment = (NSTextAlignment)self.alignment;
+        _placeholderTextLabel.textColor = [UIColor colorWithWhite:.8 alpha:1];
+    }
+    return _placeholderTextLabel;
+}
+
 - (void)adjustHeightForCurrentY:(CGFloat)currentY
 {
     if (currentY + [self heightForToken] > CGRectGetHeight(self.frame)) { // needs to grow
@@ -474,7 +490,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         _inputTextField.tintColor = self.colorScheme;
         _inputTextField.delegate = self;
         _inputTextField.backspaceDelegate = self;
-        _inputTextField.placeholder = self.placeholderText;
         _inputTextField.accessibilityLabel = self.inputTextFieldAccessibilityLabel ?: NSLocalizedString(@"To", nil);
         _inputTextField.inputAccessoryView = self.inputTextFieldAccessoryView;
         [_inputTextField addTarget:self action:@selector(inputTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
@@ -549,9 +564,23 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
 }
 
-- (void)updateInputTextField
+- (void)updatePlaceholderTextLabel
 {
-    self.inputTextField.placeholder = [self.tokens count] ? nil : self.placeholderText;
+    if (![self.tokens count] && self.inputTextFieldText.length == 0) {
+        switch (self.alignment) {
+            case VENTokenFieldAlignmentCenter:
+                self.placeholderTextLabel.centerX = self.inputTextField.x;
+                break;
+            case VENTokenFieldAlignmentLeft:
+                self.placeholderTextLabel.x = self.inputTextField.x;
+                break;
+            default:
+                break;
+        }
+        [self.scrollView addSubview:self.placeholderTextLabel];
+    } else {
+        [self.placeholderTextLabel removeFromSuperview];
+    }
 }
 
 - (void)focusInputTextField
