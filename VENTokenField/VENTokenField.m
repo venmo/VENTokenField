@@ -176,7 +176,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)layoutSubviews
 {
-    CGFloat newHeight = self.bounds.size.height;
+    CGFloat newHeight = self.scrollView.contentSize.height;
     [super layoutSubviews];
     self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame) - self.horizontalInset * 2, CGRectGetHeight(self.frame) - self.verticalInset * 2);
     if ([self isCollapsed]) {
@@ -184,12 +184,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     } else {
         [self layoutTokensAndInputWithFrameAdjustment:NO];
     }
-
-    if (newHeight < self.oldHeight && self.isDeletingTokens)
+    if (newHeight < self.oldHeight && self.isDeletingTokens )
     {
         [self continueHighlightingTokensDuringDeletionInMiddleOfListWhenHeightIsReduced];
     }
-    self.oldHeight = self.bounds.size.height;
+    self.oldHeight = self.scrollView.contentSize.height;
 }
 
 - (void)continueHighlightingTokensDuringDeletionInMiddleOfListWhenHeightIsReduced
