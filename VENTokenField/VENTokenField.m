@@ -26,6 +26,7 @@
 #import "VENToken.h"
 #import "VENBackspaceTextField.h"
 
+#define VENDidShrinkBoundsHeightNotification @"VENDidShrinkBoundsHeightNotification"
 
 static const CGFloat VENTokenFieldDefaultVerticalInset      = 7.0;
 static const CGFloat VENTokenFieldDefaultHorizontalInset    = 15.0;
@@ -110,7 +111,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self layoutScrollView];
     [self reloadData];
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"VENDidShrinkFrameNotification" object:self queue:nil usingBlock:^(NSNotification *note) {
+    [[NSNotificationCenter defaultCenter] addObserverForName:VENDidShrinkBoundsHeightNotification object:self queue:nil usingBlock:^(NSNotification *note) {
         VENToken *tokenToHighlight = self.tokens[self.indexOfTokenPriorToDeletedToken];
         tokenToHighlight.highlighted = YES;
     }];
@@ -180,7 +181,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 #pragma mark - View Layout
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:@"VENDidShrinkFrameNotification"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:VENDidShrinkBoundsHeightNotification];
 }
 
 - (void)layoutSubviews
@@ -196,7 +197,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
     if (newHeight < self.oldHeight)
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"VENDidShrinkFrameNotification" object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:VENDidShrinkBoundsHeightNotification object:self];
     }
     self.oldHeight = self.bounds.size.height;
 }
