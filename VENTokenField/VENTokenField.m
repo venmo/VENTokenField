@@ -565,6 +565,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         switch (self.tokenAlignment) {
             case VENTokenFieldAlignmentCenter:
                 self.placeholderTextLabel.centerX = self.inputTextField.x;
+                self.inputTextField.x = self.placeholderTextLabel.x;
                 break;
             case VENTokenFieldAlignmentLeft:
                 self.placeholderTextLabel.x = self.inputTextField.x;
