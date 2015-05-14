@@ -555,7 +555,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     for (NSString *delimiter in self.delimiters) {
         if (newString.length > delimiter.length &&
             [[newString substringFromIndex:newString.length - delimiter.length] isEqualToString:delimiter]) {
-            NSString *enteredString = [textField.text substringToIndex:newString.length - delimiter.length];
+            NSString *enteredString = [newString substringToIndex:newString.length - delimiter.length];
             if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
                 if (enteredString.length) {
                     [self.delegate tokenField:self didEnterText:enteredString];
