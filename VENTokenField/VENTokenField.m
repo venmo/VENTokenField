@@ -30,7 +30,6 @@ static const CGFloat VENTokenFieldDefaultVerticalInset      = 7.0;
 static const CGFloat VENTokenFieldDefaultHorizontalInset    = 15.0;
 static const CGFloat VENTokenFieldDefaultToLabelPadding     = 5.0;
 static const CGFloat VENTokenFieldDefaultTokenPadding       = 2.0;
-static const CGFloat VENTokenFieldDefaultMinInputWidth      = 20.0;
 static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 
@@ -93,7 +92,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.verticalInset = VENTokenFieldDefaultVerticalInset;
     self.horizontalInset = VENTokenFieldDefaultHorizontalInset;
     self.tokenPadding = VENTokenFieldDefaultTokenPadding;
-    self.minInputWidth = VENTokenFieldDefaultMinInputWidth;
     self.colorScheme = [UIColor blueColor];
     self.toLabelTextColor = [UIColor colorWithRed:112/255.0f green:124/255.0f blue:124/255.0f alpha:1.0f];
     self.inputTextFieldTextColor = [UIColor colorWithRed:38/255.0f green:39/255.0f blue:41/255.0f alpha:1.0f];
