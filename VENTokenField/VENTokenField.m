@@ -30,7 +30,7 @@ static const CGFloat VENTokenFieldDefaultVerticalInset      = 7.0;
 static const CGFloat VENTokenFieldDefaultHorizontalInset    = 15.0;
 static const CGFloat VENTokenFieldDefaultToLabelPadding     = 5.0;
 static const CGFloat VENTokenFieldDefaultTokenPadding       = 2.0;
-static const CGFloat VENTokenFieldDefaultMinInputWidth      = 80.0;
+static const CGFloat VENTokenFieldDefaultMinInputWidth      = 20.0;
 static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 
@@ -44,6 +44,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 @property (strong, nonatomic) VENBackspaceTextField *inputTextField;
 @property (strong, nonatomic) UIColor *colorScheme;
 @property (strong, nonatomic) UILabel *collapsedLabel;
+@property (strong, nonatomic) NSString *inputTextFieldText;
 
 @end
 
@@ -257,16 +258,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)layoutInputTextFieldWithCurrentX:(CGFloat *)currentX currentY:(CGFloat *)currentY
 {
-    CGFloat inputTextFieldWidth = self.scrollView.contentSize.width - *currentX;
-    if (inputTextFieldWidth < self.minInputWidth) {
-        inputTextFieldWidth = self.scrollView.contentSize.width;
-        *currentY += [self heightForToken];
-        *currentX = 0;
-    }
-
     VENBackspaceTextField *inputTextField = self.inputTextField;
-    inputTextField.text = @"";
-    inputTextField.frame = CGRectMake(*currentX, *currentY + 1, inputTextFieldWidth, [self heightForToken] - 1);
+    inputTextField.text = self.inputTextFieldText;
+    inputTextField.frame = CGRectMake(*currentX, *currentY + 1, self.scrollView.contentSize.width - *currentX, [self heightForToken] - 1);
     inputTextField.tintColor = self.colorScheme;
     [self.scrollView addSubview:inputTextField];
 }
@@ -305,7 +299,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     for (NSUInteger i = 0; i < [self numberOfTokens]; i++) {
         NSString *title = [self titleForTokenAtIndex:i];
         VENToken *token = [[VENToken alloc] init];
-
         __weak VENToken *weakToken = token;
         __weak VENTokenField *weakSelf = self;
         token.didTapTokenBlock = ^{
@@ -331,13 +324,32 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         *currentX += token.width + self.tokenPadding;
         [self.scrollView addSubview:token];
     }
-    [self realignTokensWithCurrentX:currentX alignment:self.alignment];
+
+    VENToken *placeholderToken = [[VENToken alloc] init];
+    [placeholderToken setTitleText:[self.inputTextFieldText stringByAppendingString:@"| "]]; // account for text field cursor and space
+    if (*currentX + placeholderToken.width <= self.scrollView.contentSize.width) { // token fits in current line
+        placeholderToken.frame = CGRectMake(*currentX, *currentY, placeholderToken.width, placeholderToken.height);
+    } else {
+        *currentY += placeholderToken.height;
+        *currentX = 0;
+        CGFloat tokenWidth = placeholderToken.width;
+        if (tokenWidth > self.scrollView.contentSize.width) { // token is wider than max width
+            tokenWidth = self.scrollView.contentSize.width;
+        }
+        placeholderToken.frame = CGRectMake(*currentX, *currentY, tokenWidth, placeholderToken.height);
+    }
+
+    [self realignTokens:[self.tokens arrayByAddingObject:placeholderToken]
+               currentX:currentX
+              alignment:self.alignment];
 }
 
-- (void)realignTokensWithCurrentX:(CGFloat *)currentX alignment:(VENTokenFieldAlignment)alignment
+- (void)realignTokens:(NSArray *)tokens
+             currentX:(CGFloat *)currentX
+            alignment:(VENTokenFieldAlignment)alignment
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    for (VENToken *token in self.tokens) {
+    for (VENToken *token in tokens) {
         if (dict[@(token.y)]) {
             dict[@(token.y)] = [dict[@(token.y)] arrayByAddingObject:token];
         } else {
@@ -383,7 +395,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         token.x += frameAdjustment;
     }
     if (firstToken.y >= *currentY) {
-        *currentX = lastToken.x + lastToken.width;
+        *currentX = lastToken.x;
         *currentY = lastToken.y;
     }
 }
@@ -560,11 +572,14 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return self.colorScheme;
 }
 
+
 #pragma mark - Data Source
 
 - (NSString *)titleForTokenAtIndex:(NSUInteger)index
 {
-    if ([self.dataSource respondsToSelector:@selector(tokenField:titleForTokenAtIndex:)]) {
+    if (index == [self numberOfTokens]) {
+        return self.inputTextFieldText;
+    } else if ([self.dataSource respondsToSelector:@selector(tokenField:titleForTokenAtIndex:)]) {
         return [self.dataSource tokenField:self titleForTokenAtIndex:index];
     }
     
@@ -590,16 +605,23 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 }
 
 
+#pragma mark - Delegate
+
+- (void)didEnterText:(NSString *)text {
+    if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
+        if ([text length]) {
+            self.inputTextFieldText = @"";
+            [self.delegate tokenField:self didEnterText:text];
+        }
+    }
+}
+
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
-        if ([textField.text length]) {
-            [self.delegate tokenField:self didEnterText:textField.text];
-        }
-    }
-    
+    [self didEnterText:textField.text];
     return NO;
 }
 
@@ -613,6 +635,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     [self unhighlightAllTokens];
+    if (textField == self.inputTextField) {
+        self.inputTextFieldText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        [self reloadData];
+        return NO;
+    }
     return YES;
 }
 
