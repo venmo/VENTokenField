@@ -598,7 +598,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
                     self.indexOfTokenPriorToDeletedToken = indexOfToken-1;
                     NSLog(@"indexofprior is %tu", self.indexOfTokenPriorToDeletedToken);
                     
-                    if (indexOfToken < self.tokens.count-1) {
+                    if (indexOfToken < self.tokens.count) {
                         VENToken *tokenBeforeDeletedToken = self.tokens[self.indexOfTokenPriorToDeletedToken];
                         tokenBeforeDeletedToken.highlighted = YES;
                     }
