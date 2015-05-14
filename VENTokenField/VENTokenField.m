@@ -26,6 +26,7 @@
 #import "VENToken.h"
 #import "VENBackspaceTextField.h"
 
+
 static const CGFloat VENTokenFieldDefaultVerticalInset      = 7.0;
 static const CGFloat VENTokenFieldDefaultHorizontalInset    = 15.0;
 static const CGFloat VENTokenFieldDefaultToLabelPadding     = 5.0;
@@ -39,13 +40,13 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) NSMutableArray *tokens;
 @property (assign, nonatomic) CGFloat originalHeight;
+@property (nonatomic) CGFloat oldHeight;
 @property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 @property (strong, nonatomic) VENBackspaceTextField *invisibleTextField;
 @property (strong, nonatomic) VENBackspaceTextField *inputTextField;
 @property (strong, nonatomic) UIColor *colorScheme;
 @property (strong, nonatomic) UILabel *collapsedLabel;
-@property (nonatomic) NSInteger indexJustBeforeDeletedToken;
-@property (nonatomic) BOOL hasDeletedToken;
+@property (nonatomic) NSInteger indexOfTokenPriorToDeletedToken;
 @end
 
 
@@ -101,12 +102,18 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     _toLabelText = NSLocalizedString(@"To:", nil);
 
     self.originalHeight = CGRectGetHeight(self.frame);
+    self.oldHeight = self.originalHeight;
 
     // Add invisible text field to handle backspace when we don't have a real first responder.
     [self layoutInvisibleTextField];
 
     [self layoutScrollView];
     [self reloadData];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"VENDidShrinkFrameNotification" object:self queue:nil usingBlock:^(NSNotification *note) {
+        VENToken *tokenToHighlight = self.tokens[self.indexOfTokenPriorToDeletedToken];
+        tokenToHighlight.highlighted = YES;
+    }];
 }
 
 - (void)collapse
@@ -174,6 +181,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)layoutSubviews
 {
+    CGFloat newHeight = self.bounds.size.height;
     [super layoutSubviews];
     self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame) - self.horizontalInset * 2, CGRectGetHeight(self.frame) - self.verticalInset * 2);
     if ([self isCollapsed]) {
@@ -181,6 +189,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     } else {
         [self layoutTokensAndInputWithFrameAdjustment:NO];
     }
+
+    if (newHeight < self.oldHeight)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"VENDidShrinkFrameNotification" object:self];
+    }
+    self.oldHeight = self.bounds.size.height;
 }
 
 - (void)layoutCollapsedLabel
@@ -383,8 +397,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         }
     } else { // needs to shrink
         if (currentY + [self heightForToken] > self.originalHeight) {
+            // This is called no matter whether the frame height is being reduced or not when deleting tokens
             [self setHeight:currentY + [self heightForToken] + self.verticalInset * 2];
         } else {
+            // This is called only when the frame is being reduced to its original height
             [self setHeight:self.originalHeight];
         }
     }
@@ -459,20 +475,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     for (VENToken *token in self.tokens) {
         token.highlighted = NO;
     }
-    
     [self setCursorVisibility];
-}
-
-- (void)scrollToHighlightedToken
-{
-    for (VENToken *token in self.tokens) {
-        if (token.highlighted)
-        {
-            CGRect locationOfToken = token.frame;
-            [self.scrollView scrollRectToVisible:locationOfToken animated:YES];
-            break;
-        }
-    }
 }
 
 - (void)setCursorVisibility
@@ -486,9 +489,14 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         [self inputTextFieldBecomeFirstResponder];
     } else {
         [self.invisibleTextField becomeFirstResponder];
+        
+        // Scroll to highlighted token
+        
+        VENToken *tokenOfInterest = [highlightedTokens firstObject];
+        CGRect locationOfToken = tokenOfInterest.frame;
+        [self.scrollView scrollRectToVisible:locationOfToken animated:YES];
     }
-    
-    [self scrollToHighlightedToken];
+
 }
 
 - (void)updateInputTextField
@@ -582,8 +590,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
                 NSInteger indexOfToken = [self.tokens indexOfObject:token];
                 [self.delegate tokenField:self didDeleteTokenAtIndex:indexOfToken];
                 
+                // Highlight the token prior to the token deleted
                 if (indexOfToken >= 1) {
-                    VENToken *tokenBeforeDeletedToken = self.tokens[indexOfToken-1];
+                    self.indexOfTokenPriorToDeletedToken = indexOfToken-1;
+                    VENToken *tokenBeforeDeletedToken = self.tokens[self.indexOfTokenPriorToDeletedToken];
                     tokenBeforeDeletedToken.highlighted = YES;
                 }
                 
