@@ -372,10 +372,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
     CGFloat frameAdjustment = 0;
     switch (self.alignment) {
-        case VENTokenFieldAlignmentRight: {
-            frameAdjustment = self.scrollView.contentSize.width - firstToken.x - totalLineWidth;
-            break;
-        }
         case VENTokenFieldAlignmentCenter: {
             frameAdjustment = (self.scrollView.contentSize.width - firstToken.x - totalLineWidth) / 2.0;
             break;
@@ -388,6 +384,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
     if (firstToken.y >= *currentY) {
         *currentX = lastToken.x + lastToken.width;
+        *currentY = lastToken.y;
     }
 }
 
