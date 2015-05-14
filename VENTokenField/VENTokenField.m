@@ -111,6 +111,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self layoutScrollView];
     [self reloadData];
     
+    // When deleting items in the middle of the list rather than at the end, the highlighted token is lost when the view shrinks, so observe for when the view shrinks and highlight the appropriate token
+    
     [[NSNotificationCenter defaultCenter] addObserverForName:VENDidShrinkBoundsHeightNotification object:self queue:nil usingBlock:^(NSNotification *note) {
         VENToken *tokenToHighlight = self.tokens[self.indexOfTokenPriorToDeletedToken];
         tokenToHighlight.highlighted = YES;
@@ -495,7 +497,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     } else {
         [self.invisibleTextField becomeFirstResponder];
         
-        // Scroll to highlighted token
+        // Scroll to highlighted token - beware that the scrollView is jumpy
         
         VENToken *tokenOfInterest = [highlightedTokens firstObject];
         CGRect locationOfToken = tokenOfInterest.frame;
@@ -595,7 +597,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
                 NSInteger indexOfToken = [self.tokens indexOfObject:token];
                 [self.delegate tokenField:self didDeleteTokenAtIndex:indexOfToken];
                 
-                // Highlight the token prior to the token deleted
+                // Highlight the token prior to the token deleted, only if we are deleting from the middle of the list
                 if (indexOfToken >= 1 && indexOfToken < self.tokens.count-1) {
                     self.indexOfTokenPriorToDeletedToken = indexOfToken-1;
                     VENToken *tokenBeforeDeletedToken = self.tokens[self.indexOfTokenPriorToDeletedToken];
