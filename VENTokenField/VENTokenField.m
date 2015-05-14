@@ -496,12 +496,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         [self inputTextFieldBecomeFirstResponder];
     } else {
         [self.invisibleTextField becomeFirstResponder];
-        
-        // Scroll to highlighted token - beware that the scrollView is jumpy
-        
-        VENToken *tokenOfInterest = [highlightedTokens firstObject];
-        CGRect locationOfToken = tokenOfInterest.frame;
-        [self.scrollView scrollRectToVisible:locationOfToken animated:YES];
     }
 
 }
