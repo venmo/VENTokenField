@@ -95,7 +95,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.colorScheme = [UIColor blueColor];
     self.toLabelTextColor = [UIColor colorWithRed:112/255.0f green:124/255.0f blue:124/255.0f alpha:1.0f];
     self.inputTextFieldTextColor = [UIColor colorWithRed:38/255.0f green:39/255.0f blue:41/255.0f alpha:1.0f];
-    self.alignment = VENTokenFieldAlignmentLeft;
+    self.tokenAlignment = VENTokenFieldAlignmentLeft;
     
     // Accessing bare value to avoid kicking off a premature layout run.
     _toLabelText = NSLocalizedString(@"To:", nil);
@@ -170,9 +170,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return self.inputTextField.text;
 }
 
-- (void)setAlignment:(VENTokenFieldAlignment)alignment
+- (void)setTokenAlignment:(VENTokenFieldAlignment)alignment
 {
-    _alignment = alignment;
+    _tokenAlignment = alignment;
     self.collapsedLabel.textAlignment = (NSTextAlignment)alignment;
     self.placeholderTextLabel.textAlignment = (NSTextAlignment)alignment;
 }
@@ -200,7 +200,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     CGFloat currentX = 0;
     [self layoutToLabelInView:self origin:CGPointMake(self.horizontalInset, self.verticalInset) currentX:&currentX];
     [self layoutCollapsedLabelWithCurrentX:&currentX];
-    self.collapsedLabel.textAlignment = (NSTextAlignment)self.alignment;
+    self.collapsedLabel.textAlignment = (NSTextAlignment)self.tokenAlignment;
 
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                         action:@selector(handleSingleTap:)];
@@ -343,7 +343,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
     [self realignTokens:[self.tokens arrayByAddingObject:placeholderToken]
                currentX:currentX
-              alignment:self.alignment];
+              alignment:self.tokenAlignment];
 }
 
 - (void)realignTokens:(NSArray *)tokens
@@ -385,7 +385,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         totalLineWidth += token.width;
     }
     CGFloat frameAdjustment = 0;
-    switch (self.alignment) {
+    switch (self.tokenAlignment) {
         case VENTokenFieldAlignmentCenter: {
             frameAdjustment = (self.scrollView.contentSize.width - firstToken.x - totalLineWidth) / 2.0;
             break;
@@ -453,7 +453,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         _placeholderTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0,
                                                                           [self heightForToken])];
         _placeholderTextLabel.font = self.inputTextField.font;
-        _placeholderTextLabel.textAlignment = (NSTextAlignment)self.alignment;
+        _placeholderTextLabel.textAlignment = (NSTextAlignment)self.tokenAlignment;
         _placeholderTextLabel.textColor = [UIColor colorWithWhite:.8 alpha:1];
     }
     return _placeholderTextLabel;
@@ -565,7 +565,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (void)updatePlaceholderTextLabel
 {
     if (![self.tokens count] && self.inputTextFieldText.length == 0) {
-        switch (self.alignment) {
+        switch (self.tokenAlignment) {
             case VENTokenFieldAlignmentCenter:
                 self.placeholderTextLabel.centerX = self.inputTextField.x;
                 break;
