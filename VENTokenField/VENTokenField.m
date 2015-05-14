@@ -594,13 +594,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
                 NSInteger indexOfToken = [self.tokens indexOfObject:token];
                 [self.delegate tokenField:self didDeleteTokenAtIndex:indexOfToken];
                 // Highlight the token prior to the token deleted, only if we are deleting from the middle of the list
-                if (indexOfToken >= 1) {
-                    self.indexOfTokenPriorToDeletedToken = indexOfToken-1;
-                    
-                    if (indexOfToken < self.tokens.count) {
-                        VENToken *tokenBeforeDeletedToken = self.tokens[self.indexOfTokenPriorToDeletedToken];
-                        tokenBeforeDeletedToken.highlighted = YES;
-                    }
+
+                self.indexOfTokenPriorToDeletedToken = indexOfToken > 0 ? indexOfToken-1 : 0;
+
+                if (indexOfToken < self.tokens.count) {
+                    VENToken *tokenBeforeDeletedToken = self.tokens[self.indexOfTokenPriorToDeletedToken];
+                    tokenBeforeDeletedToken.highlighted = YES;
                 }
                 
                 didDeleteToken = YES;
