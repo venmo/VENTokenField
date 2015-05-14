@@ -188,10 +188,15 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
     if (newHeight < self.oldHeight && self.indexOfTokenPriorToDeletedToken != 0)
     {
-        VENToken *tokenToHighlight = self.tokens[self.indexOfTokenPriorToDeletedToken];
-        tokenToHighlight.highlighted = YES;
+        [self continueHighlightingTokensDuringDeletionInMiddleOfListWhenHeightIsReduced];
     }
     self.oldHeight = self.bounds.size.height;
+}
+
+- (void)continueHighlightingTokensDuringDeletionInMiddleOfListWhenHeightIsReduced
+{
+    VENToken *tokenToHighlight = self.tokens[self.indexOfTokenPriorToDeletedToken];
+    tokenToHighlight.highlighted = YES;
 }
 
 - (void)layoutCollapsedLabel
@@ -486,14 +491,16 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         [self inputTextFieldBecomeFirstResponder];
     } else {
         [self.invisibleTextField becomeFirstResponder];
-        
-        // Scroll to highlighted token - beware that the scrollView is jumpy
-        
-        VENToken *tokenOfInterest = [highlightedTokens firstObject];
-        CGRect locationOfToken = tokenOfInterest.frame;
-        [self.scrollView scrollRectToVisible:locationOfToken animated:YES];
+        [self scrollToHighlightedToken:[highlightedTokens firstObject]];
     }
+}
 
+- (void)scrollToHighlightedToken:(VENToken *)token
+{
+    // Scroll to highlighted token - beware that the scrollView is jumpy
+    VENToken *tokenOfInterest = token;
+    CGRect locationOfToken = tokenOfInterest.frame;
+    [self.scrollView scrollRectToVisible:locationOfToken animated:YES];
 }
 
 - (void)updateInputTextField
