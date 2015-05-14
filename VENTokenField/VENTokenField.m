@@ -186,7 +186,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         [self layoutTokensAndInputWithFrameAdjustment:NO];
     }
 
-    if (newHeight < self.oldHeight)
+    if (newHeight < self.oldHeight && self.indexOfTokenPriorToDeletedToken != 0)
     {
         VENToken *tokenToHighlight = self.tokens[self.indexOfTokenPriorToDeletedToken];
         tokenToHighlight.highlighted = YES;
