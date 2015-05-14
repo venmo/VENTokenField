@@ -312,38 +312,32 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         
         [self.tokens addObject:token];
 
-        if (*currentX + token.width <= self.scrollView.contentSize.width) { // token fits in current line
-            token.frame = CGRectMake(*currentX, *currentY, token.width, token.height);
-        } else {
-            *currentY += token.height;
-            *currentX = 0;
-            CGFloat tokenWidth = token.width;
-            if (tokenWidth > self.scrollView.contentSize.width) { // token is wider than max width
-                tokenWidth = self.scrollView.contentSize.width;
-            }
-            token.frame = CGRectMake(*currentX, *currentY, tokenWidth, token.height);
-        }
+        token.frame = [self frameForToken:token currentX:currentX currentY:currentY];
         *currentX += token.width + self.tokenPadding;
         [self.scrollView addSubview:token];
     }
 
     VENToken *placeholderToken = [[VENToken alloc] init];
     [placeholderToken setTitleText:[self.inputTextFieldText stringByAppendingString:@"| "]]; // account for text field cursor and space
-    if (*currentX + placeholderToken.width <= self.scrollView.contentSize.width) { // token fits in current line
-        placeholderToken.frame = CGRectMake(*currentX, *currentY, placeholderToken.width, placeholderToken.height);
-    } else {
-        *currentY += placeholderToken.height;
-        *currentX = 0;
-        CGFloat tokenWidth = placeholderToken.width;
-        if (tokenWidth > self.scrollView.contentSize.width) { // token is wider than max width
-            tokenWidth = self.scrollView.contentSize.width;
-        }
-        placeholderToken.frame = CGRectMake(*currentX, *currentY, tokenWidth, placeholderToken.height);
-    }
+    placeholderToken.frame = [self frameForToken:placeholderToken currentX:currentX currentY:currentY];
 
     [self realignTokens:[self.tokens arrayByAddingObject:placeholderToken]
                currentX:currentX
               alignment:self.tokenAlignment];
+}
+
+- (CGRect)frameForToken:(VENToken *)token currentX:(CGFloat *)currentX currentY:(CGFloat *)currentY {
+    if (*currentX + token.width <= self.scrollView.contentSize.width) { // token fits in current line
+        return CGRectMake(*currentX, *currentY, token.width, token.height);
+    } else {
+        *currentY += token.height;
+        *currentX = 0;
+        CGFloat tokenWidth = token.width;
+        if (tokenWidth > self.scrollView.contentSize.width) { // token is wider than max width
+            tokenWidth = self.scrollView.contentSize.width;
+        }
+        return CGRectMake(*currentX, *currentY, tokenWidth, token.height);
+    }
 }
 
 - (void)realignTokens:(NSArray *)tokens
@@ -455,6 +449,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         _placeholderTextLabel.font = self.inputTextField.font;
         _placeholderTextLabel.textAlignment = (NSTextAlignment)self.tokenAlignment;
         _placeholderTextLabel.textColor = [UIColor colorWithWhite:.8 alpha:1];
+        [_placeholderTextLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self.inputTextField
+                                                                                            action:@selector(becomeFirstResponder)]];
+        _placeholderTextLabel.userInteractionEnabled = YES;
     }
     return _placeholderTextLabel;
 }
