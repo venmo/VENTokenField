@@ -596,7 +596,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
                 [self.delegate tokenField:self didDeleteTokenAtIndex:indexOfToken];
                 
                 // Highlight the token prior to the token deleted
-                if (indexOfToken >= 1) {
+                if (indexOfToken >= 1 && indexOfToken < self.tokens.count-1) {
                     self.indexOfTokenPriorToDeletedToken = indexOfToken-1;
                     VENToken *tokenBeforeDeletedToken = self.tokens[self.indexOfTokenPriorToDeletedToken];
                     tokenBeforeDeletedToken.highlighted = YES;
