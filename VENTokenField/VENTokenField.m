@@ -577,6 +577,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     [self unhighlightAllTokens];
+    self.isDeletingTokens = NO;
+    [self focusInputTextField];
     return YES;
 }
 
