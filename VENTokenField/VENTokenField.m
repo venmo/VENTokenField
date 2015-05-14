@@ -26,8 +26,6 @@
 #import "VENToken.h"
 #import "VENBackspaceTextField.h"
 
-#define VENDidShrinkBoundsHeightNotification @"VENDidShrinkBoundsHeightNotification"
-
 static const CGFloat VENTokenFieldDefaultVerticalInset      = 7.0;
 static const CGFloat VENTokenFieldDefaultHorizontalInset    = 15.0;
 static const CGFloat VENTokenFieldDefaultToLabelPadding     = 5.0;
@@ -112,11 +110,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self reloadData];
     
     // When deleting items in the middle of the list rather than at the end, the highlighted token is lost when the view shrinks, so observe for when the view shrinks and highlight the appropriate token
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:VENDidShrinkBoundsHeightNotification object:self queue:nil usingBlock:^(NSNotification *note) {
-        VENToken *tokenToHighlight = self.tokens[self.indexOfTokenPriorToDeletedToken];
-        tokenToHighlight.highlighted = YES;
-    }];
 }
 
 - (void)collapse
@@ -182,10 +175,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 #pragma mark - View Layout
 
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:VENDidShrinkBoundsHeightNotification];
-}
-
 - (void)layoutSubviews
 {
     CGFloat newHeight = self.bounds.size.height;
@@ -199,7 +188,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
     if (newHeight < self.oldHeight)
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:VENDidShrinkBoundsHeightNotification object:self];
+        VENToken *tokenToHighlight = self.tokens[self.indexOfTokenPriorToDeletedToken];
+        tokenToHighlight.highlighted = YES;
     }
     self.oldHeight = self.bounds.size.height;
 }
