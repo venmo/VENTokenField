@@ -186,7 +186,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         [self layoutTokensAndInputWithFrameAdjustment:NO];
     }
 
-    if (newHeight < self.oldHeight && self.indexOfTokenPriorToDeletedToken != 0)
+    if (newHeight < self.oldHeight)
     {
         [self continueHighlightingTokensDuringDeletionInMiddleOfListWhenHeightIsReduced];
     }
@@ -593,12 +593,15 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
             if (token.highlighted) {
                 NSInteger indexOfToken = [self.tokens indexOfObject:token];
                 [self.delegate tokenField:self didDeleteTokenAtIndex:indexOfToken];
-                
                 // Highlight the token prior to the token deleted, only if we are deleting from the middle of the list
-                if (indexOfToken >= 1 && indexOfToken < self.tokens.count-1) {
+                if (indexOfToken >= 1) {
                     self.indexOfTokenPriorToDeletedToken = indexOfToken-1;
-                    VENToken *tokenBeforeDeletedToken = self.tokens[self.indexOfTokenPriorToDeletedToken];
-                    tokenBeforeDeletedToken.highlighted = YES;
+                    NSLog(@"indexofprior is %tu", self.indexOfTokenPriorToDeletedToken);
+                    
+                    if (indexOfToken < self.tokens.count-1) {
+                        VENToken *tokenBeforeDeletedToken = self.tokens[self.indexOfTokenPriorToDeletedToken];
+                        tokenBeforeDeletedToken.highlighted = YES;
+                    }
                 }
                 
                 didDeleteToken = YES;
