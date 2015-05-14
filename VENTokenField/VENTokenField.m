@@ -242,7 +242,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     } else {
         [self focusInputTextField];
     }
-    
 }
 
 - (BOOL)isCollapsed
@@ -510,7 +509,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 {
     CGPoint contentOffset = self.scrollView.contentOffset;
     CGFloat targetY = self.inputTextField.y + [self heightForToken] - self.maxHeight;
-    if (targetY > contentOffset.y) {
+    
+    if (targetY > contentOffset.y && !self.isDeletingTokens) {
         [self.scrollView setContentOffset:CGPointMake(contentOffset.x, targetY) animated:NO];
     }
 }
