@@ -30,7 +30,6 @@ static const CGFloat VENTokenFieldDefaultVerticalInset      = 7.0;
 static const CGFloat VENTokenFieldDefaultHorizontalInset    = 15.0;
 static const CGFloat VENTokenFieldDefaultToLabelPadding     = 5.0;
 static const CGFloat VENTokenFieldDefaultTokenPadding       = 2.0;
-static const CGFloat VENTokenFieldDefaultMinInputWidth      = 80.0;
 static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 
@@ -44,6 +43,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 @property (strong, nonatomic) VENBackspaceTextField *inputTextField;
 @property (strong, nonatomic) UIColor *colorScheme;
 @property (strong, nonatomic) UILabel *collapsedLabel;
+@property (strong, nonatomic) NSString *inputTextFieldText;
+@property (strong, nonatomic) UILabel *placeholderTextLabel;
 
 @end
 
@@ -91,10 +92,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.verticalInset = VENTokenFieldDefaultVerticalInset;
     self.horizontalInset = VENTokenFieldDefaultHorizontalInset;
     self.tokenPadding = VENTokenFieldDefaultTokenPadding;
-    self.minInputWidth = VENTokenFieldDefaultMinInputWidth;
     self.colorScheme = [UIColor blueColor];
     self.toLabelTextColor = [UIColor colorWithRed:112/255.0f green:124/255.0f blue:124/255.0f alpha:1.0f];
     self.inputTextFieldTextColor = [UIColor colorWithRed:38/255.0f green:39/255.0f blue:41/255.0f alpha:1.0f];
+    self.tokenAlignment = VENTokenFieldAlignmentLeft;
     
     // Accessing bare value to avoid kicking off a premature layout run.
     _toLabelText = NSLocalizedString(@"To:", nil);
@@ -121,7 +122,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (void)setPlaceholderText:(NSString *)placeholderText
 {
     _placeholderText = placeholderText;
-    self.inputTextField.placeholder = _placeholderText;
+    self.placeholderTextLabel.text = _placeholderText;
+    self.placeholderTextLabel.width = [_placeholderText sizeWithAttributes:@{NSFontAttributeName:self.placeholderTextLabel.font}].width;
 }
 
 -(void)setInputTextFieldAccessibilityLabel:(NSString *)inputTextFieldAccessibilityLabel {
@@ -168,6 +170,13 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return self.inputTextField.text;
 }
 
+- (void)setTokenAlignment:(VENTokenFieldAlignment)alignment
+{
+    _tokenAlignment = alignment;
+    self.collapsedLabel.textAlignment = (NSTextAlignment)alignment;
+    self.placeholderTextLabel.textAlignment = (NSTextAlignment)alignment;
+}
+
 
 #pragma mark - View Layout
 
@@ -191,6 +200,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     CGFloat currentX = 0;
     [self layoutToLabelInView:self origin:CGPointMake(self.horizontalInset, self.verticalInset) currentX:&currentX];
     [self layoutCollapsedLabelWithCurrentX:&currentX];
+    self.collapsedLabel.textAlignment = (NSTextAlignment)self.tokenAlignment;
 
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                         action:@selector(handleSingleTap:)];
@@ -220,7 +230,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, currentY + [self heightForToken])];
 
-    [self updateInputTextField];
+    [self updatePlaceholderTextLabel];
 
     if (inputFieldShouldBecomeFirstResponder) {
         [self inputTextFieldBecomeFirstResponder];
@@ -250,16 +260,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)layoutInputTextFieldWithCurrentX:(CGFloat *)currentX currentY:(CGFloat *)currentY
 {
-    CGFloat inputTextFieldWidth = self.scrollView.contentSize.width - *currentX;
-    if (inputTextFieldWidth < self.minInputWidth) {
-        inputTextFieldWidth = self.scrollView.contentSize.width;
-        *currentY += [self heightForToken];
-        *currentX = 0;
-    }
-
     VENBackspaceTextField *inputTextField = self.inputTextField;
-    inputTextField.text = @"";
-    inputTextField.frame = CGRectMake(*currentX, *currentY + 1, inputTextFieldWidth, [self heightForToken] - 1);
+    inputTextField.text = self.inputTextFieldText;
+    inputTextField.frame = CGRectMake(*currentX, *currentY + 1, self.scrollView.contentSize.width - *currentX, [self heightForToken] - 1);
     inputTextField.tintColor = self.colorScheme;
     [self.scrollView addSubview:inputTextField];
 }
@@ -298,7 +301,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     for (NSUInteger i = 0; i < [self numberOfTokens]; i++) {
         NSString *title = [self titleForTokenAtIndex:i];
         VENToken *token = [[VENToken alloc] init];
-
         __weak VENToken *weakToken = token;
         __weak VENTokenField *weakSelf = self;
         token.didTapTokenBlock = ^{
@@ -310,19 +312,87 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         
         [self.tokens addObject:token];
 
-        if (*currentX + token.width <= self.scrollView.contentSize.width) { // token fits in current line
-            token.frame = CGRectMake(*currentX, *currentY, token.width, token.height);
-        } else {
-            *currentY += token.height;
-            *currentX = 0;
-            CGFloat tokenWidth = token.width;
-            if (tokenWidth > self.scrollView.contentSize.width) { // token is wider than max width
-                tokenWidth = self.scrollView.contentSize.width;
-            }
-            token.frame = CGRectMake(*currentX, *currentY, tokenWidth, token.height);
-        }
+        token.frame = [self frameForToken:token currentX:currentX currentY:currentY];
         *currentX += token.width + self.tokenPadding;
         [self.scrollView addSubview:token];
+    }
+
+    VENToken *placeholderToken = [[VENToken alloc] init];
+    [placeholderToken setTitleText:[self.inputTextFieldText stringByAppendingString:@"| "]]; // account for text field cursor and space
+    placeholderToken.frame = [self frameForToken:placeholderToken currentX:currentX currentY:currentY];
+
+    [self realignTokens:[self.tokens arrayByAddingObject:placeholderToken]
+               currentX:currentX
+              alignment:self.tokenAlignment];
+}
+
+- (CGRect)frameForToken:(VENToken *)token currentX:(CGFloat *)currentX currentY:(CGFloat *)currentY {
+    if (*currentX + token.width <= self.scrollView.contentSize.width) { // token fits in current line
+        return CGRectMake(*currentX, *currentY, token.width, token.height);
+    } else {
+        *currentY += token.height;
+        *currentX = 0;
+        CGFloat tokenWidth = token.width;
+        if (tokenWidth > self.scrollView.contentSize.width) { // token is wider than max width
+            tokenWidth = self.scrollView.contentSize.width;
+        }
+        return CGRectMake(*currentX, *currentY, tokenWidth, token.height);
+    }
+}
+
+- (void)realignTokens:(NSArray *)tokens
+             currentX:(CGFloat *)currentX
+            alignment:(VENTokenFieldAlignment)alignment
+{
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    for (VENToken *token in tokens) {
+        if (dict[@(token.y)]) {
+            dict[@(token.y)] = [dict[@(token.y)] arrayByAddingObject:token];
+        } else {
+            dict[@(token.y)] = @[token];
+        }
+    }
+    // Could be parallelized: compute all new frames on background threads.
+    // Once done, assign new frames to tokens on main thread.
+    CGFloat currentY = 0;
+    for (NSNumber *rowY in [dict allKeys]) {
+        [self realignRowOfTokens:dict[rowY] currentX:currentX currentY:&currentY alignment:alignment];
+    }
+}
+
+- (void)realignRowOfTokens:(NSArray *)tokens
+                  currentX:(CGFloat *)currentX
+                  currentY:(CGFloat *)currentY
+                 alignment:(VENTokenFieldAlignment)alignment
+{
+    // This method is unreliant on the order of tokens. It could be faster if it was reliant.
+    VENToken *firstToken = [tokens firstObject];
+    VENToken *lastToken = [tokens firstObject];
+    CGFloat totalLineWidth = 0;
+    for (VENToken *token in tokens) {
+        if (token.x < firstToken.x) {
+            firstToken = token;
+        }
+        if (token.x > lastToken.x) {
+            lastToken = token;
+        }
+        totalLineWidth += token.width;
+    }
+    CGFloat frameAdjustment = 0;
+    switch (self.tokenAlignment) {
+        case VENTokenFieldAlignmentCenter: {
+            frameAdjustment = (self.scrollView.contentSize.width - firstToken.x - totalLineWidth) / 2.0;
+            break;
+        }
+        default:
+            break;
+    }
+    for (VENToken *token in tokens) {
+        token.x += frameAdjustment;
+    }
+    if (firstToken.y >= *currentY) {
+        *currentX = lastToken.x;
+        *currentY = lastToken.y;
     }
 }
 
@@ -371,6 +441,21 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return _toLabel;
 }
 
+- (UILabel *)placeholderTextLabel
+{
+    if (!_placeholderTextLabel) {
+        _placeholderTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0,
+                                                                          [self heightForToken])];
+        _placeholderTextLabel.font = self.inputTextField.font;
+        _placeholderTextLabel.textAlignment = (NSTextAlignment)self.tokenAlignment;
+        _placeholderTextLabel.textColor = [UIColor colorWithWhite:.8 alpha:1];
+        [_placeholderTextLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self.inputTextField
+                                                                                            action:@selector(becomeFirstResponder)]];
+        _placeholderTextLabel.userInteractionEnabled = YES;
+    }
+    return _placeholderTextLabel;
+}
+
 - (void)adjustHeightForCurrentY:(CGFloat)currentY
 {
     if (currentY + [self heightForToken] > CGRectGetHeight(self.frame)) { // needs to grow
@@ -400,7 +485,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         _inputTextField.tintColor = self.colorScheme;
         _inputTextField.delegate = self;
         _inputTextField.backspaceDelegate = self;
-        _inputTextField.placeholder = self.placeholderText;
         _inputTextField.accessibilityLabel = self.inputTextFieldAccessibilityLabel ?: NSLocalizedString(@"To", nil);
         _inputTextField.inputAccessoryView = self.inputTextFieldAccessoryView;
         [_inputTextField addTarget:self action:@selector(inputTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
@@ -475,9 +559,24 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
 }
 
-- (void)updateInputTextField
+- (void)updatePlaceholderTextLabel
 {
-    self.inputTextField.placeholder = [self.tokens count] ? nil : self.placeholderText;
+    if (![self.tokens count] && self.inputTextFieldText.length == 0) {
+        switch (self.tokenAlignment) {
+            case VENTokenFieldAlignmentCenter:
+                self.placeholderTextLabel.centerX = self.inputTextField.x;
+                self.inputTextField.x = self.placeholderTextLabel.x;
+                break;
+            case VENTokenFieldAlignmentLeft:
+                self.placeholderTextLabel.x = self.inputTextField.x;
+                break;
+            default:
+                break;
+        }
+        [self.scrollView insertSubview:self.placeholderTextLabel belowSubview:self.inputTextField];
+    } else {
+        [self.placeholderTextLabel removeFromSuperview];
+    }
 }
 
 - (void)focusInputTextField
@@ -498,11 +597,14 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return self.colorScheme;
 }
 
+
 #pragma mark - Data Source
 
 - (NSString *)titleForTokenAtIndex:(NSUInteger)index
 {
-    if ([self.dataSource respondsToSelector:@selector(tokenField:titleForTokenAtIndex:)]) {
+    if (index == [self numberOfTokens]) {
+        return self.inputTextFieldText;
+    } else if ([self.dataSource respondsToSelector:@selector(tokenField:titleForTokenAtIndex:)]) {
         return [self.dataSource tokenField:self titleForTokenAtIndex:index];
     }
     
@@ -528,16 +630,23 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 }
 
 
+#pragma mark - Delegate
+
+- (void)didEnterText:(NSString *)text {
+    if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
+        if ([text length]) {
+            self.inputTextFieldText = @"";
+            [self.delegate tokenField:self didEnterText:text];
+        }
+    }
+}
+
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
-        if ([textField.text length]) {
-            [self.delegate tokenField:self didEnterText:textField.text];
-        }
-    }
-    
+    [self didEnterText:textField.text];
     return NO;
 }
 
@@ -551,6 +660,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     [self unhighlightAllTokens];
+    if (textField == self.inputTextField) {
+        self.inputTextFieldText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        [self reloadData];
+        return NO;
+    }
     return YES;
 }
 

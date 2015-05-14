@@ -39,6 +39,11 @@
 - (UIColor *)tokenField:(VENTokenField *)tokenField colorSchemeForTokenAtIndex:(NSUInteger)index;
 @end
 
+typedef NS_ENUM(NSInteger, VENTokenFieldAlignment) {
+    VENTokenFieldAlignmentLeft = NSTextAlignmentLeft,
+    VENTokenFieldAlignmentCenter = NSTextAlignmentCenter
+};
+
 
 @interface VENTokenField : UIView
 
@@ -59,8 +64,9 @@
 @property (assign, nonatomic) CGFloat verticalInset;
 @property (assign, nonatomic) CGFloat horizontalInset;
 @property (assign, nonatomic) CGFloat tokenPadding;
-@property (assign, nonatomic) CGFloat minInputWidth;
+@property (assign, nonatomic) CGFloat minInputWidth DEPRECATED_ATTRIBUTE;
 
+@property (assign, nonatomic) VENTokenFieldAlignment tokenAlignment;
 @property (assign, nonatomic) UIKeyboardType inputTextFieldKeyboardType;
 @property (assign, nonatomic) UITextAutocorrectionType autocorrectionType;
 @property (assign, nonatomic) UITextAutocapitalizationType autocapitalizationType;
