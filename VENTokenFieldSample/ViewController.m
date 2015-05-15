@@ -43,12 +43,14 @@
 
 - (void)tokenField:(VENTokenField *)tokenField didEnterText:(NSString *)text
 {
+    self.tokenField.isDeletingTokens = NO;
     [self.names addObject:text];
     [self.tokenField reloadData];
 }
 
 - (void)tokenField:(VENTokenField *)tokenField didDeleteTokenAtIndex:(NSUInteger)index
 {
+    self.tokenField.isDeletingTokens = YES;
     [self.names removeObjectAtIndex:index];
     [self.tokenField reloadData];
 }

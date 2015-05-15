@@ -39,12 +39,13 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) NSMutableArray *tokens;
 @property (assign, nonatomic) CGFloat originalHeight;
+@property (nonatomic) CGFloat oldHeight;
 @property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 @property (strong, nonatomic) VENBackspaceTextField *invisibleTextField;
 @property (strong, nonatomic) VENBackspaceTextField *inputTextField;
 @property (strong, nonatomic) UIColor *colorScheme;
 @property (strong, nonatomic) UILabel *collapsedLabel;
-
+@property (nonatomic) NSInteger indexOfTokenPriorToDeletedToken;
 @end
 
 
@@ -100,12 +101,14 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     _toLabelText = NSLocalizedString(@"To:", nil);
 
     self.originalHeight = CGRectGetHeight(self.frame);
+    self.oldHeight = self.originalHeight;
 
     // Add invisible text field to handle backspace when we don't have a real first responder.
     [self layoutInvisibleTextField];
 
     [self layoutScrollView];
     [self reloadData];
+
 }
 
 - (void)collapse
@@ -173,6 +176,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)layoutSubviews
 {
+    CGFloat newHeight = self.scrollView.contentSize.height;
     [super layoutSubviews];
     self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame) - self.horizontalInset * 2, CGRectGetHeight(self.frame) - self.verticalInset * 2);
     if ([self isCollapsed]) {
@@ -180,6 +184,17 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     } else {
         [self layoutTokensAndInputWithFrameAdjustment:NO];
     }
+    if (newHeight < self.oldHeight && self.isDeletingTokens )
+    {
+        [self continueHighlightingTokensDuringDeletionInMiddleOfListWhenHeightIsReduced];
+    }
+    self.oldHeight = self.scrollView.contentSize.height;
+}
+
+- (void)continueHighlightingTokensDuringDeletionInMiddleOfListWhenHeightIsReduced
+{
+    VENToken *tokenToHighlight = self.tokens[self.indexOfTokenPriorToDeletedToken];
+    tokenToHighlight.highlighted = YES;
 }
 
 - (void)layoutCollapsedLabel
@@ -381,8 +396,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         }
     } else { // needs to shrink
         if (currentY + [self heightForToken] > self.originalHeight) {
+            // This is called no matter whether the frame height is being reduced or not when deleting tokens
             [self setHeight:currentY + [self heightForToken] + self.verticalInset * 2];
         } else {
+            // This is called only when the frame is being reduced to its original height
             [self setHeight:self.originalHeight];
         }
     }
@@ -457,7 +474,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     for (VENToken *token in self.tokens) {
         token.highlighted = NO;
     }
-    
     [self setCursorVisibility];
 }
 
@@ -472,7 +488,15 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         [self inputTextFieldBecomeFirstResponder];
     } else {
         [self.invisibleTextField becomeFirstResponder];
+        [self scrollToHighlightedToken:[highlightedTokens firstObject]];
     }
+}
+
+- (void)scrollToHighlightedToken:(VENToken *)token
+{
+    VENToken *tokenOfInterest = token;
+    CGRect locationOfToken = tokenOfInterest.frame;
+    [self.scrollView scrollRectToVisible:locationOfToken animated:YES];
 }
 
 - (void)updateInputTextField
@@ -484,7 +508,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 {
     CGPoint contentOffset = self.scrollView.contentOffset;
     CGFloat targetY = self.inputTextField.y + [self heightForToken] - self.maxHeight;
-    if (targetY > contentOffset.y) {
+    
+    if (targetY > contentOffset.y && !self.isDeletingTokens) {
         [self.scrollView setContentOffset:CGPointMake(contentOffset.x, targetY) animated:NO];
     }
 }
@@ -551,6 +576,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     [self unhighlightAllTokens];
+    self.isDeletingTokens = NO;
+    [self focusInputTextField];
     return YES;
 }
 
@@ -563,7 +590,17 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         BOOL didDeleteToken = NO;
         for (VENToken *token in self.tokens) {
             if (token.highlighted) {
-                [self.delegate tokenField:self didDeleteTokenAtIndex:[self.tokens indexOfObject:token]];
+                NSInteger indexOfToken = [self.tokens indexOfObject:token];
+                [self.delegate tokenField:self didDeleteTokenAtIndex:indexOfToken];
+                // Highlight the token prior to the token deleted, only if we are deleting from the middle of the list
+
+                self.indexOfTokenPriorToDeletedToken = indexOfToken > 0 ? indexOfToken-1 : 0;
+
+                if (indexOfToken < self.tokens.count) {
+                    VENToken *tokenBeforeDeletedToken = self.tokens[self.indexOfTokenPriorToDeletedToken];
+                    tokenBeforeDeletedToken.highlighted = YES;
+                }
+                
                 didDeleteToken = YES;
                 break;
             }
