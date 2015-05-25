@@ -340,6 +340,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self.invisibleTextField setAutocorrectionType:self.autocorrectionType];
     [self.invisibleTextField setAutocapitalizationType:self.autocapitalizationType];
     self.invisibleTextField.backspaceDelegate = self;
+    self.invisibleTextField.delegate = self;
     [self addSubview:self.invisibleTextField];
 }
 
@@ -498,6 +499,22 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return self.colorScheme;
 }
 
+- (void)deleteHighlightedTokens {
+    BOOL didDeleteToken = NO;
+    for (VENToken *token in self.tokens) {
+        if (token.highlighted) {
+            [self.delegate tokenField:self didDeleteTokenAtIndex:[self.tokens indexOfObject:token]];
+            didDeleteToken = YES;
+            break;
+        }
+    }
+    if (!didDeleteToken) {
+        VENToken *lastToken = [self.tokens lastObject];
+        lastToken.highlighted = YES;
+    }
+    [self setCursorVisibility];
+}
+
 #pragma mark - Data Source
 
 - (NSString *)titleForTokenAtIndex:(NSUInteger)index
@@ -550,8 +567,20 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    [self unhighlightAllTokens];
-    return YES;
+    if (textField == self.invisibleTextField) {
+        
+        // Delete the highlighted token.
+        [self deleteHighlightedTokens];
+        
+        // Append the text that would normally go into the invisible text field, into the visible text field.
+        self.inputTextField.text = [self.inputTextField.text stringByAppendingString:string];
+        
+        // Return NO so that the invisible text field never contains text.
+        return NO;
+    } else {
+        [self unhighlightAllTokens];
+        return YES;
+    }
 }
 
 
@@ -560,20 +589,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (void)textFieldDidEnterBackspace:(VENBackspaceTextField *)textField
 {
     if ([self.delegate respondsToSelector:@selector(tokenField:didDeleteTokenAtIndex:)] && [self numberOfTokens]) {
-        BOOL didDeleteToken = NO;
-        for (VENToken *token in self.tokens) {
-            if (token.highlighted) {
-                [self.delegate tokenField:self didDeleteTokenAtIndex:[self.tokens indexOfObject:token]];
-                didDeleteToken = YES;
-                break;
-            }
-        }
-        if (!didDeleteToken) {
-            VENToken *lastToken = [self.tokens lastObject];
-            lastToken.highlighted = YES;
-        }
-        [self setCursorVisibility];
+        [self deleteHighlightedTokens];
     }
 }
+
+
 
 @end

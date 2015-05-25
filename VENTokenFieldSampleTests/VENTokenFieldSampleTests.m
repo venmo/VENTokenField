@@ -47,6 +47,18 @@
     [tester enterTextIntoCurrentFirstResponder:@"\b"];
 }
 
+- (void)testOverwritingHighlightedToken
+{
+    [tester enterTextIntoCurrentFirstResponder:@"Bob\n"];
+    [tester waitForViewWithAccessibilityLabel:@"Bob,"];
+    [tester enterTextIntoCurrentFirstResponder:@"\b"];
+    [tester enterTextIntoCurrentFirstResponder:@"Rob\n"];
+    [tester waitForViewWithAccessibilityLabel:@"Rob,"];
+    [tester enterTextIntoCurrentFirstResponder:@"\b"];
+    [tester enterTextIntoCurrentFirstResponder:@"\b"];
+    
+}
+
 - (void)testResignFirstResponder
 {
     [tester tapViewWithAccessibilityLabel:@"To"];
