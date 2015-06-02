@@ -62,6 +62,8 @@
 @property (assign, nonatomic) CGFloat minInputWidth;
 
 @property (assign, nonatomic) UIKeyboardType inputTextFieldKeyboardType;
+@property (assign, nonatomic) UIKeyboardAppearance inputTextFieldKeyboardAppearance;
+
 @property (assign, nonatomic) UITextAutocorrectionType autocorrectionType;
 @property (assign, nonatomic) UITextAutocapitalizationType autocapitalizationType;
 @property (assign, nonatomic) UIView *inputTextFieldAccessoryView;
