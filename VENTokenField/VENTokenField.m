@@ -415,7 +415,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self.invisibleTextField setAutocorrectionType:self.autocorrectionType];
 }
 
-- (void) setInputTextFieldKeyboardAppearance:(UIKeyboardAppearance)inputTextFieldKeyboardAppearance {
+- (void)setInputTextFieldKeyboardAppearance:(UIKeyboardAppearance)inputTextFieldKeyboardAppearance
+{
     _inputTextFieldKeyboardAppearance = inputTextFieldKeyboardAppearance;
     [self.inputTextField setKeyboardAppearance:self.inputTextFieldKeyboardAppearance];
 }
