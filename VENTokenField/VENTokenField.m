@@ -93,6 +93,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.tokenPadding = VENTokenFieldDefaultTokenPadding;
     self.minInputWidth = VENTokenFieldDefaultMinInputWidth;
     self.colorScheme = [UIColor blueColor];
+    self.tokenFont = [UIFont fontWithName:@"HelveticaNeue" size:15.5];
     self.toLabelTextColor = [UIColor colorWithRed:112/255.0f green:124/255.0f blue:124/255.0f alpha:1.0f];
     self.inputTextFieldTextColor = [UIColor colorWithRed:38/255.0f green:39/255.0f blue:41/255.0f alpha:1.0f];
     
@@ -129,6 +130,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.inputTextField.accessibilityLabel = _inputTextFieldAccessibilityLabel;
 }
 
+- (void)setInputTextFieldFont:(UIFont *)inputTextFieldFont
+{
+    _inputTextFieldFont = inputTextFieldFont;
+    self.inputTextField.font = inputTextFieldFont;
+}
+
 - (void)setInputTextFieldTextColor:(UIColor *)inputTextFieldTextColor
 {
     _inputTextFieldTextColor = inputTextFieldTextColor;
@@ -155,6 +162,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     for (VENToken *token in self.tokens) {
         [token setColorScheme:color];
     }
+}
+
+- (void)setTokenFont:(UIFont *)tokenFont {
+    _tokenFont = tokenFont;
+    [self setNeedsLayout];
 }
 
 - (void)setInputTextFieldAccessoryView:(UIView *)inputTextFieldAccessoryView
@@ -300,6 +312,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     for (NSUInteger i = 0; i < [self numberOfTokens]; i++) {
         NSString *title = [self titleForTokenAtIndex:i];
         VENToken *token = [[VENToken alloc] init];
+        token.font = self.tokenFont;
 
         __weak VENToken *weakToken = token;
         __weak VENTokenField *weakSelf = self;

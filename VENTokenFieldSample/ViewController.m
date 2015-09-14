@@ -39,6 +39,16 @@
     [self.tokenField resignFirstResponder];
 }
 
+- (IBAction)fontChanged:(UISwitch *)sender
+{
+    if (sender.isOn) {
+        self.tokenField.tokenFont = [UIFont fontWithName:@"HelveticaNeueBold" size:15.5];
+    }
+    else {
+        self.tokenField.tokenFont = [UIFont fontWithName:@"HelveticaNeue" size:15.5];
+    }
+}
+
 
 #pragma mark - VENTokenFieldDelegate
 
