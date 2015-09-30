@@ -22,6 +22,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class VENBackspaceTextField;
 
 @protocol VENBackspaceTextFieldDelegate <UITextFieldDelegate>
@@ -34,3 +36,5 @@
 @property (weak, nonatomic) id<VENBackspaceTextFieldDelegate> backspaceDelegate;
 
 @end
+
+NS_ASSUME_NONNULL_END
