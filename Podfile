@@ -6,6 +6,6 @@ target "VENTokenFieldSample" do
 end
 
 target "VENTokenFieldSampleTests" do
-  pod 'KIF', '~> 3.1'
+  pod 'KIF', '~> 3.3'
 end
 

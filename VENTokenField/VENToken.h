@@ -22,12 +22,16 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface VENToken : UIView
 
 @property (assign, nonatomic) BOOL highlighted;
-@property (copy, nonatomic) void (^didTapTokenBlock) (void);
+@property (copy, nonatomic, nullable) void (^didTapTokenBlock) (void);
 @property (strong, nonatomic) UIColor *colorScheme;
 
 - (void)setTitleText:(NSString *)text;
 
 @end
+
+NS_ASSUME_NONNULL_END
