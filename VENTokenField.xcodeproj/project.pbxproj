@@ -43,9 +43,6 @@
 		B6173DFF1952760200E293BB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B6173E0D1952760200E293BB /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		B6173E101952760200E293BB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		B6173E171952760200E293BB /* VENTokenFieldTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VENTokenFieldTests-Info.plist"; sourceTree = "<group>"; };
-		B6173E191952760200E293BB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		B6173E1B1952760200E293BB /* VENTokenFieldTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VENTokenFieldTests.m; sourceTree = "<group>"; };
 		B692A46F1954D9CA00344E36 /* VENTokenFieldSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VENTokenFieldSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B692A4711954D9CA00344E36 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		B692A4761954D9CA00344E36 /* VENTokenFieldSample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VENTokenFieldSample-Info.plist"; sourceTree = "<group>"; };
@@ -96,7 +93,6 @@
 		B6173DF31952760200E293BB = {
 			isa = PBXGroup;
 			children = (
-				B6173E151952760200E293BB /* VENTokenFieldTests */,
 				B692A4741954D9CA00344E36 /* VENTokenFieldSample */,
 				B692A4921954D9CA00344E36 /* VENTokenFieldSampleTests */,
 				B6173DFE1952760200E293BB /* Frameworks */,
@@ -126,24 +122,6 @@
 				2A1A551C476247859B5B77C8 /* libPods-VENTokenFieldSampleTests.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		B6173E151952760200E293BB /* VENTokenFieldTests */ = {
-			isa = PBXGroup;
-			children = (
-				B6173E1B1952760200E293BB /* VENTokenFieldTests.m */,
-				B6173E161952760200E293BB /* Supporting Files */,
-			);
-			path = VENTokenFieldTests;
-			sourceTree = "<group>";
-		};
-		B6173E161952760200E293BB /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				B6173E171952760200E293BB /* VENTokenFieldTests-Info.plist */,
-				B6173E181952760200E293BB /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		B692A4741954D9CA00344E36 /* VENTokenFieldSample */ = {
@@ -389,14 +367,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		B6173E181952760200E293BB /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B6173E191952760200E293BB /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		B692A4771954D9CA00344E36 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
