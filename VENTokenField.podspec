@@ -9,9 +9,9 @@ Pod::Spec.new do |s|
   s.screenshot   = 'http://i.imgur.com/a1FfEBi.gif'
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { 'Saurabh Agrawal' => 'saurabh.agrawal@hudl.com'}
-  s.source       = { :git => 'https://github.com/hudl/VENTokenField.git', :tag => "v#{s.version}" }
   s.source_files = 'VENTokenField/**/*.{h,m}'
   s.resources   = ["VENTokenField/**/*.{xib,png}"]
+  s.source       = { :git => 'https://github.com/hudl/VENTokenField.git', :tag => s.version.to_s }
   s.dependency 'FrameAccessor', '~> 1.0'
   s.platform     = :ios, '7.0'
   s.requires_arc = true
