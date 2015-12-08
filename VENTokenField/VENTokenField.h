@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
+#import "VENBackspaceTextField.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -30,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)tokenField:(VENTokenField *)tokenField didEnterText:(NSString *)text;
 - (void)tokenField:(VENTokenField *)tokenField didDeleteTokenAtIndex:(NSUInteger)index;
 - (void)tokenField:(VENTokenField *)tokenField didChangeText:(nullable NSString *)text;
+- (void)tokenField:(VENTokenField *)tokenField didChangeHeight:(CGFloat)height;
 - (void)tokenFieldDidBeginEditing:(VENTokenField *)tokenField;
 @end
 
@@ -41,16 +43,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIColor *)tokenField:(VENTokenField *)tokenField colorSchemeForTokenAtIndex:(NSUInteger)index;
 @end
 
-
 @interface VENTokenField : UIView
 
 @property (weak, nonatomic) id<VENTokenFieldDelegate> delegate;
 @property (weak, nonatomic) id<VENTokenFieldDataSource> dataSource;
 
+- (VENBackspaceTextField *)inputTextField;
 - (void)reloadData;
 - (void)collapse;
 - (nullable NSString *)inputText;
-
+- (void)inputTextFieldDidChange:(UITextField *)textField;
+- (void)textFieldDidEnterBackspace:(VENBackspaceTextField *)textField;
 
 /**-----------------------------------------------------------------------------
  * @name Customization
@@ -58,6 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 @property (assign, nonatomic) CGFloat maxHeight;
+@property (assign, nonatomic) BOOL editEnabled;
 @property (assign, nonatomic) CGFloat verticalInset;
 @property (assign, nonatomic) CGFloat horizontalInset;
 @property (assign, nonatomic) CGFloat tokenPadding;

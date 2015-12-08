@@ -30,11 +30,19 @@
 
 @implementation VENToken
 
+static UIFont *_font;
+
++ (void)setTokenFont:(UIFont *)font
+{
+    _font = font;
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     self = [[[NSBundle bundleForClass:[self class]] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil] firstObject];
-    if (self) {
+    if (self)
+    {
         [self setUpInit];
     }
     return self;
@@ -42,10 +50,15 @@
 
 - (void)setUpInit
 {
-    self.backgroundView.layer.cornerRadius = 5;
+    self.backgroundView.layer.cornerRadius = 2;
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapToken:)];
     self.colorScheme = [UIColor blueColor];
     self.titleLabel.textColor = self.colorScheme;
+    if (_font == nil)
+    {
+        _font = [UIFont systemFontOfSize:14];
+    }
+    self.titleLabel.font = _font;
     [self addGestureRecognizer:self.tapGestureRecognizer];
 }
 
@@ -54,7 +67,7 @@
     self.titleLabel.text = text;
     self.titleLabel.textColor = self.colorScheme;
     [self.titleLabel sizeToFit];
-    self.frame = CGRectMake(CGRectGetMinX(self.frame), CGRectGetMinY(self.frame), CGRectGetMaxX(self.titleLabel.frame) + 3, CGRectGetHeight(self.frame));
+    self.frame = CGRectMake(CGRectGetMinX(self.frame), CGRectGetMinY(self.frame), CGRectGetMaxX(self.titleLabel.frame) + 4, CGRectGetHeight(self.frame));
     [self.titleLabel sizeToFit];
 }
 
@@ -74,12 +87,12 @@
     [self setHighlighted:_highlighted];
 }
 
-
 #pragma mark - Private
 
 - (void)didTapToken:(UITapGestureRecognizer *)tapGestureRecognizer
 {
-    if (self.didTapTokenBlock) {
+    if (self.didTapTokenBlock)
+    {
         self.didTapTokenBlock();
     }
 }

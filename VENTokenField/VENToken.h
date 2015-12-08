@@ -31,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIColor *colorScheme;
 
 - (void)setTitleText:(NSString *)text;
++ (void)setTokenFont:(UIFont *)font;
 
 @end
 
