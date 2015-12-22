@@ -390,9 +390,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
             height = self.originalHeight;
         }
     }
-    if (oldHeight != height
-        && [self.delegate respondsToSelector:@selector(tokenField:didChangeContentHeight:)]) {
-        [self.delegate tokenField:self didChangeContentHeight:height];
+    if (oldHeight != height) {
+        [self setHeight:height];
+        if ([self.delegate respondsToSelector:@selector(tokenField:didChangeContentHeight:)]) {
+            [self.delegate tokenField:self didChangeContentHeight:height];
+        }
     }
 }
 
