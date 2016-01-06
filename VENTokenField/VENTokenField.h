@@ -31,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)tokenField:(VENTokenField *)tokenField didDeleteTokenAtIndex:(NSUInteger)index;
 - (void)tokenField:(VENTokenField *)tokenField didChangeText:(nullable NSString *)text;
 - (void)tokenFieldDidBeginEditing:(VENTokenField *)tokenField;
+- (void)tokenField:(VENTokenField *)tokenField didChangeContentHeight:(CGFloat)height;
 @end
 
 @protocol VENTokenFieldDataSource <NSObject>
