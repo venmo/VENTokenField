@@ -110,6 +110,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)collapse
 {
+    VENBackspaceTextField *textField = [self inputTextField];
+    if ([textField.text length]) {
+        [self.delegate tokenField:self didEnterText:textField.text];
+    }
     [self layoutCollapsedLabel];
 }
 
