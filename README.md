@@ -24,10 +24,11 @@ Similar to ```UITableView```, ```VENTokenField``` provides two protocols: ```<VE
 ### VENTokenFieldDelegate
 This protocol notifies you when things happen in the token field that you might want to know about.
 
-* ```tokenField:didEnterText:``` is called when a user hits the return key on the input field.
+* ```tokenField:didEnterText:``` is called when a user hits the return key on the input field, completing a token.
 * ```tokenField:didDeleteTokenAtIndex:``` is called when a user deletes a token at a particular index.
 * ```tokenField:didChangeText:``` is called when a user changes the text in the input field.
 * ```tokenFieldDidBeginEditing:``` is called when the input field becomes first responder.
+* ```tokenFieldDidReturn:``` is called when the user hits the return key on the input field with no partial text entered.
 
 ### VENTokenFieldDataSource
 This protocol allows you to provide info about what you want to present in the token field.
