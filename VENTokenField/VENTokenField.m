@@ -21,9 +21,7 @@
 // THE SOFTWARE.
 
 #import "VENTokenField.h"
-
 #import <FrameAccessor/FrameAccessor.h>
-#import "VENToken.h"
 #import "VENBackspaceTextField.h"
 
 static const CGFloat VENTokenFieldDefaultVerticalInset      = 7.0;
@@ -300,6 +298,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     for (NSUInteger i = 0; i < [self numberOfTokens]; i++) {
         NSString *title = [self titleForTokenAtIndex:i];
         VENToken *token = [[VENToken alloc] init];
+        if ([self.dataSource respondsToSelector:@selector(tokenViewForTokenField:)]) {
+            token = [self.dataSource tokenViewForTokenField:self];
+        }
 
         __weak VENToken *weakToken = token;
         __weak VENTokenField *weakSelf = self;
@@ -559,6 +560,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    [self.delegate tokenFieldWillBeginToEdit:self];
     if (textField == self.inputTextField) {
         [self unhighlightAllTokens];
     }
@@ -581,6 +583,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         }
     }
     return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    [self.delegate tokenFieldDidEndEditing:self];
 }
 
 
