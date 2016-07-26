@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 
 #import "VENTokenField.h"
-#import "VENToken.h"
 #import <FrameAccessor/FrameAccessor.h>
 #import "VENBackspaceTextField.h"
 
@@ -298,7 +297,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 {
     for (NSUInteger i = 0; i < [self numberOfTokens]; i++) {
         NSString *title = [self titleForTokenAtIndex:i];
-        VENToken *token = [[[self subclassForVENToken] alloc] init];
+        VENToken *token = [[VENToken alloc] init];
+        if ([self.dataSource respondsToSelector:@selector(tokenViewForTokenField:)]) {
+            token = [self.dataSource tokenViewForTokenField:self];
+        }
 
         __weak VENToken *weakToken = token;
         __weak VENTokenField *weakSelf = self;
@@ -540,17 +542,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     }
     
     return @"";
-}
-
-- (Class)subclassForVENToken {
-    Class standardVenTokenClass = [VENToken class];
-    if ([self.dataSource respondsToSelector:@selector(tokenViewForTokenField:)]) {
-        Class ventokenSubclass = [self.dataSource tokenViewForTokenField:self];
-        if ([ventokenSubclass isSubclassOfClass:standardVenTokenClass]) {
-            return ventokenSubclass;
-        }
-    }
-    return standardVenTokenClass;
 }
 
 

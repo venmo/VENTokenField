@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
+#import "VENToken.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -42,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSUInteger)numberOfTokensInTokenField:(VENTokenField *)tokenField;
 - (NSString *)tokenFieldCollapsedText:(VENTokenField *)tokenField;
 - (UIColor *)tokenField:(VENTokenField *)tokenField colorSchemeForTokenAtIndex:(NSUInteger)index;
-- (Class)tokenViewForTokenField:(VENTokenField *)tokenField;
+- (VENToken *)tokenViewForTokenField:(VENTokenField *)tokenField;
 @end
 
 
