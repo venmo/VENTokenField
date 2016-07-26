@@ -62,7 +62,7 @@
 {
     _highlighted = highlighted;
     UIColor *textColor = highlighted ? [UIColor whiteColor] : self.colorScheme;
-    UIColor *backgroundColor = highlighted ? self.colorScheme : [UIColor clearColor];
+    UIColor *backgroundColor = highlighted ? self.backgroundColorWhenHighlighted : [UIColor clearColor];
     self.titleLabel.textColor = textColor;
     self.backgroundView.backgroundColor = backgroundColor;
 }

@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0EDC359051B446EA93FED072 /* libPods-VENTokenFieldSample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4D07417DD394445AE7C0DB7 /* libPods-VENTokenFieldSample.a */; };
-		86F69D66D5764443910DBA2F /* libPods-VENTokenFieldSampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A1A551C476247859B5B77C8 /* libPods-VENTokenFieldSampleTests.a */; };
+		3E2D481F4CCD88F4C3380379 /* libPods-VENTokenFieldSampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8807CC5484518129DA3DB93B /* libPods-VENTokenFieldSampleTests.a */; };
 		B692A4701954D9CA00344E36 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6173DFF1952760200E293BB /* Foundation.framework */; };
 		B692A4721954D9CA00344E36 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B692A4711954D9CA00344E36 /* CoreGraphics.framework */; };
 		B692A4731954D9CA00344E36 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6173E101952760200E293BB /* UIKit.framework */; };
@@ -23,6 +22,7 @@
 		B692A48F1954D9CA00344E36 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6173E101952760200E293BB /* UIKit.framework */; };
 		B692A4971954D9CA00344E36 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B692A4951954D9CA00344E36 /* InfoPlist.strings */; };
 		B692A4991954D9CA00344E36 /* VENTokenFieldSampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B692A4981954D9CA00344E36 /* VENTokenFieldSampleTests.m */; };
+		EA4BEC7B19A88CB1F7B73B8A /* libPods-VENTokenFieldSample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3517625C879AD9FE57936AAC /* libPods-VENTokenFieldSample.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,10 +36,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		13471D074FC78D9374DC065D /* Pods-VENTokenFieldSample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VENTokenFieldSample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VENTokenFieldSample/Pods-VENTokenFieldSample.debug.xcconfig"; sourceTree = "<group>"; };
-		2A1A551C476247859B5B77C8 /* libPods-VENTokenFieldSampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VENTokenFieldSampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		81443E8407414150B80BA653 /* libPods-VENTokenField.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VENTokenField.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		892E8CAA5668EC118102E19F /* Pods-VENTokenFieldSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VENTokenFieldSample.release.xcconfig"; path = "Pods/Target Support Files/Pods-VENTokenFieldSample/Pods-VENTokenFieldSample.release.xcconfig"; sourceTree = "<group>"; };
+		14AFA4C80D03407CCD3757F1 /* Pods-VENTokenFieldSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VENTokenFieldSample.release.xcconfig"; path = "Pods/Target Support Files/Pods-VENTokenFieldSample/Pods-VENTokenFieldSample.release.xcconfig"; sourceTree = "<group>"; };
+		17E1030E9D5A0E45E3DB2E1D /* Pods-VENTokenFieldSample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VENTokenFieldSample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VENTokenFieldSample/Pods-VENTokenFieldSample.debug.xcconfig"; sourceTree = "<group>"; };
+		3517625C879AD9FE57936AAC /* libPods-VENTokenFieldSample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VENTokenFieldSample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C74E9D2CD2096321CADA711 /* Pods-VENTokenFieldSampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VENTokenFieldSampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-VENTokenFieldSampleTests/Pods-VENTokenFieldSampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		8807CC5484518129DA3DB93B /* libPods-VENTokenFieldSampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VENTokenFieldSampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6173DFF1952760200E293BB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B6173E0D1952760200E293BB /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		B6173E101952760200E293BB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -59,9 +60,7 @@
 		B692A4941954D9CA00344E36 /* VENTokenFieldSampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VENTokenFieldSampleTests-Info.plist"; sourceTree = "<group>"; };
 		B692A4961954D9CA00344E36 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B692A4981954D9CA00344E36 /* VENTokenFieldSampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VENTokenFieldSampleTests.m; sourceTree = "<group>"; };
-		C4D07417DD394445AE7C0DB7 /* libPods-VENTokenFieldSample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VENTokenFieldSample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CC25A6AFCDA20C99D6704030 /* Pods-VENTokenFieldSampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VENTokenFieldSampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VENTokenFieldSampleTests/Pods-VENTokenFieldSampleTests.debug.xcconfig"; sourceTree = "<group>"; };
-		D4635CD45D6A16F4BFC34335 /* Pods-VENTokenFieldSampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VENTokenFieldSampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-VENTokenFieldSampleTests/Pods-VENTokenFieldSampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		B8B5DAFB3180ACF074668FB1 /* Pods-VENTokenFieldSampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VENTokenFieldSampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VENTokenFieldSampleTests/Pods-VENTokenFieldSampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +71,7 @@
 				B692A4721954D9CA00344E36 /* CoreGraphics.framework in Frameworks */,
 				B692A4731954D9CA00344E36 /* UIKit.framework in Frameworks */,
 				B692A4701954D9CA00344E36 /* Foundation.framework in Frameworks */,
-				0EDC359051B446EA93FED072 /* libPods-VENTokenFieldSample.a in Frameworks */,
+				EA4BEC7B19A88CB1F7B73B8A /* libPods-VENTokenFieldSample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +82,7 @@
 				B692A48D1954D9CA00344E36 /* XCTest.framework in Frameworks */,
 				B692A48F1954D9CA00344E36 /* UIKit.framework in Frameworks */,
 				B692A48E1954D9CA00344E36 /* Foundation.framework in Frameworks */,
-				86F69D66D5764443910DBA2F /* libPods-VENTokenFieldSampleTests.a in Frameworks */,
+				3E2D481F4CCD88F4C3380379 /* libPods-VENTokenFieldSampleTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,7 +96,7 @@
 				B692A4921954D9CA00344E36 /* VENTokenFieldSampleTests */,
 				B6173DFE1952760200E293BB /* Frameworks */,
 				B6173DFD1952760200E293BB /* Products */,
-				F148C8EC7B80CD3153108B54 /* Pods */,
+				BD3255C60021D35F83349076 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -117,9 +116,8 @@
 				B6173E0D1952760200E293BB /* XCTest.framework */,
 				B6173E101952760200E293BB /* UIKit.framework */,
 				B692A4711954D9CA00344E36 /* CoreGraphics.framework */,
-				81443E8407414150B80BA653 /* libPods-VENTokenField.a */,
-				C4D07417DD394445AE7C0DB7 /* libPods-VENTokenFieldSample.a */,
-				2A1A551C476247859B5B77C8 /* libPods-VENTokenFieldSampleTests.a */,
+				3517625C879AD9FE57936AAC /* libPods-VENTokenFieldSample.a */,
+				8807CC5484518129DA3DB93B /* libPods-VENTokenFieldSampleTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -167,13 +165,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		F148C8EC7B80CD3153108B54 /* Pods */ = {
+		BD3255C60021D35F83349076 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				13471D074FC78D9374DC065D /* Pods-VENTokenFieldSample.debug.xcconfig */,
-				892E8CAA5668EC118102E19F /* Pods-VENTokenFieldSample.release.xcconfig */,
-				CC25A6AFCDA20C99D6704030 /* Pods-VENTokenFieldSampleTests.debug.xcconfig */,
-				D4635CD45D6A16F4BFC34335 /* Pods-VENTokenFieldSampleTests.release.xcconfig */,
+				17E1030E9D5A0E45E3DB2E1D /* Pods-VENTokenFieldSample.debug.xcconfig */,
+				14AFA4C80D03407CCD3757F1 /* Pods-VENTokenFieldSample.release.xcconfig */,
+				B8B5DAFB3180ACF074668FB1 /* Pods-VENTokenFieldSampleTests.debug.xcconfig */,
+				7C74E9D2CD2096321CADA711 /* Pods-VENTokenFieldSampleTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -185,11 +183,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B692A49A1954D9CA00344E36 /* Build configuration list for PBXNativeTarget "VENTokenFieldSample" */;
 			buildPhases = (
-				7D53C252A09A4DDBA4961517 /* Check Pods Manifest.lock */,
+				1EAC0DF254BF20242BAB37D7 /* 📦 Check Pods Manifest.lock */,
 				B692A46B1954D9CA00344E36 /* Sources */,
 				B692A46C1954D9CA00344E36 /* Frameworks */,
 				B692A46D1954D9CA00344E36 /* Resources */,
-				83A0589C45D944989E3B327C /* Copy Pods Resources */,
+				9B21F862C1C1ADE442BDD3F4 /* 📦 Embed Pods Frameworks */,
+				942362C47DD8A828F727BBEB /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -204,11 +203,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B692A49D1954D9CA00344E36 /* Build configuration list for PBXNativeTarget "VENTokenFieldSampleTests" */;
 			buildPhases = (
-				D5857AF01C324E059F218F89 /* Check Pods Manifest.lock */,
+				651251BDA1A5CD6AEDAB1749 /* 📦 Check Pods Manifest.lock */,
 				B692A4881954D9CA00344E36 /* Sources */,
 				B692A4891954D9CA00344E36 /* Frameworks */,
 				B692A48A1954D9CA00344E36 /* Resources */,
-				745245AF77574DF0A11EFB13 /* Copy Pods Resources */,
+				8336A315C0F8A34CC0DD2D20 /* 📦 Embed Pods Frameworks */,
+				5B7D8A600F8F170F0F2E68AF /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -275,14 +275,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		745245AF77574DF0A11EFB13 /* Copy Pods Resources */ = {
+		1EAC0DF254BF20242BAB37D7 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		5B7D8A600F8F170F0F2E68AF /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -290,14 +305,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VENTokenFieldSampleTests/Pods-VENTokenFieldSampleTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7D53C252A09A4DDBA4961517 /* Check Pods Manifest.lock */ = {
+		651251BDA1A5CD6AEDAB1749 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -305,14 +320,29 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		83A0589C45D944989E3B327C /* Copy Pods Resources */ = {
+		8336A315C0F8A34CC0DD2D20 /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VENTokenFieldSampleTests/Pods-VENTokenFieldSampleTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		942362C47DD8A828F727BBEB /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -320,19 +350,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VENTokenFieldSample/Pods-VENTokenFieldSample-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D5857AF01C324E059F218F89 /* Check Pods Manifest.lock */ = {
+		9B21F862C1C1ADE442BDD3F4 /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VENTokenFieldSample/Pods-VENTokenFieldSample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -469,7 +499,7 @@
 		};
 		B692A49B1954D9CA00344E36 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 13471D074FC78D9374DC065D /* Pods-VENTokenFieldSample.debug.xcconfig */;
+			baseConfigurationReference = 17E1030E9D5A0E45E3DB2E1D /* Pods-VENTokenFieldSample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -493,7 +523,7 @@
 		};
 		B692A49C1954D9CA00344E36 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 892E8CAA5668EC118102E19F /* Pods-VENTokenFieldSample.release.xcconfig */;
+			baseConfigurationReference = 14AFA4C80D03407CCD3757F1 /* Pods-VENTokenFieldSample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -513,7 +543,7 @@
 		};
 		B692A49E1954D9CA00344E36 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CC25A6AFCDA20C99D6704030 /* Pods-VENTokenFieldSampleTests.debug.xcconfig */;
+			baseConfigurationReference = B8B5DAFB3180ACF074668FB1 /* Pods-VENTokenFieldSampleTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/VENTokenFieldSample.app/VENTokenFieldSample";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -537,7 +567,7 @@
 		};
 		B692A49F1954D9CA00344E36 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D4635CD45D6A16F4BFC34335 /* Pods-VENTokenFieldSampleTests.release.xcconfig */;
+			baseConfigurationReference = 7C74E9D2CD2096321CADA711 /* Pods-VENTokenFieldSampleTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/VENTokenFieldSample.app/VENTokenFieldSample";
 				FRAMEWORK_SEARCH_PATHS = (

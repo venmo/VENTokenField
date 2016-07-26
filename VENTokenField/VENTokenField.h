@@ -40,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSUInteger)numberOfTokensInTokenField:(VENTokenField *)tokenField;
 - (NSString *)tokenFieldCollapsedText:(VENTokenField *)tokenField;
 - (UIColor *)tokenField:(VENTokenField *)tokenField colorSchemeForTokenAtIndex:(NSUInteger)index;
+- (Class)tokenViewForTokenField:(VENTokenField *)tokenField;
 @end
 
 
