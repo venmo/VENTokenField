@@ -61,7 +61,7 @@
 - (void)setHighlighted:(BOOL)highlighted
 {
     _highlighted = highlighted;
-    UIColor *textColor = highlighted ? [UIColor whiteColor] : self.colorScheme;
+    UIColor *textColor = highlighted ? self.highlightedTextColor : self.colorScheme;
     UIColor *backgroundColor = highlighted ? self.colorScheme : [UIColor clearColor];
     self.titleLabel.textColor = textColor;
     self.backgroundView.backgroundColor = backgroundColor;
