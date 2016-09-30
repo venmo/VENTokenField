@@ -342,6 +342,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self.invisibleTextField setAutocorrectionType:self.autocorrectionType];
     [self.invisibleTextField setAutocapitalizationType:self.autocapitalizationType];
     self.invisibleTextField.backspaceDelegate = self;
+    [self.invisibleTextField addTarget:self action:@selector(invisibleTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [self addSubview:self.invisibleTextField];
 }
 
@@ -449,6 +450,14 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     if ([self.delegate respondsToSelector:@selector(tokenField:didChangeText:)]) {
         [self.delegate tokenField:self didChangeText:textField.text];
     }
+}
+
+- (void)invisibleTextFieldDidChange:(UITextField *)textField
+{
+    _inputTextField.text = [_inputTextField.text?:@"" stringByAppendingString:_invisibleTextField.text];
+    _invisibleTextField.text = nil;
+    [_inputTextField becomeFirstResponder];
+    [self inputTextFieldDidChange:_inputTextField];
 }
 
 - (void)handleSingleTap:(UITapGestureRecognizer *)gestureRecognizer
