@@ -99,6 +99,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     // Accessing bare value to avoid kicking off a premature layout run.
     _toLabelText = NSLocalizedString(@"To:", nil);
 
+    [self layoutIfNeeded];
     self.originalHeight = CGRectGetHeight(self.frame);
 
     // Add invisible text field to handle backspace when we don't have a real first responder.
