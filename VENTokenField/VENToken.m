@@ -53,6 +53,7 @@
 {
     self.titleLabel.text = text;
     self.titleLabel.textColor = self.colorScheme;
+    self.titleLabel.font = self.font;
     [self.titleLabel sizeToFit];
     self.frame = CGRectMake(CGRectGetMinX(self.frame), CGRectGetMinY(self.frame), CGRectGetMaxX(self.titleLabel.frame) + 3, CGRectGetHeight(self.frame));
     [self.titleLabel sizeToFit];
@@ -72,6 +73,11 @@
     _colorScheme = colorScheme;
     self.titleLabel.textColor = self.colorScheme;
     [self setHighlighted:_highlighted];
+}
+
+- (void)setFont:(UIFont *)font {
+    _font = font;
+    [self setTitleText:self.titleLabel.text];
 }
 
 
