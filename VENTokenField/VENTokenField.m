@@ -22,7 +22,6 @@
 
 #import "VENTokenField.h"
 
-#import <FrameAccessor/FrameAccessor.h>
 #import "VENToken.h"
 #import "VENBackspaceTextField.h"
 
@@ -183,6 +182,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return self.inputTextField.text;
 }
 
+- (void)setHeight:(CGFloat)newHeight
+{
+    CGRect newFrame = self.frame;
+    newFrame.size.height = newHeight;
+    self.frame = newFrame;
+}
 
 #pragma mark - View Layout
 
@@ -283,7 +288,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)layoutCollapsedLabelWithCurrentX:(CGFloat *)currentX
 {
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(*currentX, CGRectGetMinY(self.toLabel.frame), self.width - *currentX - self.horizontalInset, self.toLabel.height)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(*currentX, CGRectGetMinY(self.toLabel.frame), self.frame.size.width - *currentX - self.horizontalInset, self.toLabel.frame.size.height)];
     label.font = [UIFont fontWithName:@"HelveticaNeue" size:15.5];
     label.text = [self collapsedText];
     label.textColor = self.colorScheme;
@@ -328,18 +333,18 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         
         [self.tokens addObject:token];
 
-        if (*currentX + token.width <= self.scrollView.contentSize.width) { // token fits in current line
-            token.frame = CGRectMake(*currentX, *currentY, token.width, token.height);
+        if (*currentX + token.frame.size.width <= self.scrollView.contentSize.width) { // token fits in current line
+            token.frame = CGRectMake(*currentX, *currentY, token.frame.size.width, token.frame.size.height);
         } else {
-            *currentY += token.height;
+            *currentY += token.frame.size.height;
             *currentX = 0;
-            CGFloat tokenWidth = token.width;
+            CGFloat tokenWidth = token.frame.size.width;
             if (tokenWidth > self.scrollView.contentSize.width) { // token is wider than max width
                 tokenWidth = self.scrollView.contentSize.width;
             }
-            token.frame = CGRectMake(*currentX, *currentY, tokenWidth, token.height);
+            token.frame = CGRectMake(*currentX, *currentY, tokenWidth, token.frame.size.height);
         }
-        *currentX += token.width + self.tokenPadding;
+        *currentX += token.frame.size.width + self.tokenPadding;
         [self.scrollView addSubview:token];
     }
 }
@@ -379,9 +384,14 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         _toLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _toLabel.textColor = self.toLabelTextColor;
         _toLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:15.5];
-        _toLabel.x = 0;
+        CGRect newFrame = _toLabel.frame;
+        newFrame.origin.x = 0;
+        _toLabel.frame = newFrame;
         [_toLabel sizeToFit];
-        [_toLabel setHeight:[self heightForToken]];
+        
+        newFrame = _toLabel.frame;
+        newFrame.size.height = [self heightForToken];
+        _toLabel.frame = newFrame;
     }
     if (![_toLabel.text isEqualToString:_toLabelText]) {
         _toLabel.text = _toLabelText;
@@ -391,7 +401,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)adjustHeightForCurrentY:(CGFloat)currentY
 {
-    CGFloat oldHeight = self.height;
+    CGFloat oldHeight = self.frame.size.height;
     CGFloat height;
     if (currentY + [self heightForToken] > CGRectGetHeight(self.frame)) { // needs to grow
         if (currentY + [self heightForToken] <= self.maxHeight) {
@@ -515,7 +525,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (void)focusInputTextField
 {
     CGPoint contentOffset = self.scrollView.contentOffset;
-    CGFloat targetY = self.inputTextField.y + [self heightForToken] - self.maxHeight;
+    CGFloat targetY = self.inputTextField.frame.origin.y + [self heightForToken] - self.maxHeight;
     if (targetY > contentOffset.y) {
         [self.scrollView setContentOffset:CGPointMake(contentOffset.x, targetY) animated:NO];
     }

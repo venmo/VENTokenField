@@ -1,10 +1,8 @@
 PODS:
-  - FrameAccessor (1.3.2)
   - KIF (3.3.0):
     - KIF/Core (= 3.3.0)
   - KIF/Core (3.3.0)
-  - VENTokenField (2.5.2):
-    - FrameAccessor (~> 1.0)
+  - VENTokenField (2.5.3)
 
 DEPENDENCIES:
   - KIF (~> 3.3)
@@ -15,9 +13,8 @@ EXTERNAL SOURCES:
     :path: "."
 
 SPEC CHECKSUMS:
-  FrameAccessor: 0f7ba6ce37be9a5d0302a27c731dca70af8d438b
   KIF: 0a82046d06f3648799cac522d2d0f7934214caac
-  VENTokenField: 5a19b838fb97f040e3d4c93f584b4adeaf3fc1ee
+  VENTokenField: 902f4dc49021432f58e4d33e9b3ffba60309cc18
 
 PODFILE CHECKSUM: 92f4cf4610d196f4ab9baf6341f89a941abad136
 
