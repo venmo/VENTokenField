@@ -42,9 +42,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIColor *)tokenField:(VENTokenField *)tokenField colorSchemeForTokenAtIndex:(NSUInteger)index;
 @end
 
-
+@class VENBackspaceTextField;
 @interface VENTokenField : UIView
 
+@property (strong, nonatomic) VENBackspaceTextField *inputTextField;
 @property (weak, nonatomic) id<VENTokenFieldDelegate> delegate;
 @property (weak, nonatomic) id<VENTokenFieldDataSource> dataSource;
 

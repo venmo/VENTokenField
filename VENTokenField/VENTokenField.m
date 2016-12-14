@@ -41,7 +41,6 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 @property (assign, nonatomic) CGFloat originalHeight;
 @property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 @property (strong, nonatomic) VENBackspaceTextField *invisibleTextField;
-@property (strong, nonatomic) VENBackspaceTextField *inputTextField;
 @property (strong, nonatomic) UIColor *colorScheme;
 @property (strong, nonatomic) UILabel *collapsedLabel;
 
@@ -561,6 +560,15 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 {
     if (textField == self.inputTextField) {
         [self unhighlightAllTokens];
+    }
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
+        if ([textField.text length]) {
+            [self.delegate tokenField:self didEnterText:textField.text];
+        }
     }
 }
 
