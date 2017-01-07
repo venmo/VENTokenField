@@ -81,6 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *toLabel;
 
 @property (strong, nonatomic, nullable) NSArray *delimiters;
+@property (strong, nonatomic, nullable) NSString *tokenSeparator;
 @property (copy, nonatomic, nullable) NSString *placeholderText;
 @property (copy, nonatomic, nullable) NSString *inputTextFieldAccessibilityLabel;
 
