@@ -30,7 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (copy, nonatomic, nullable) void (^didTapTokenBlock) (void);
 @property (strong, nonatomic) UIColor *colorScheme;
 @property (strong, nonatomic) UIFont *font;
-@property (strong, nonatomic) IBOutlet UIView *backgroundView;
 
 - (void)setTitleText:(NSString *)text;
 
