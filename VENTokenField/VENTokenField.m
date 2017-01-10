@@ -323,7 +323,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         VENToken *token = [[[self subclassForTokens] alloc] init];
         token.font = self.tokenFont;
 
-        __weak VENToken *weakToken = token;
+        __weak UIView<VENTokenObject> *weakToken = token;
         __weak VENTokenField *weakSelf = self;
         token.didTapTokenBlock = ^{
             [weakSelf didTapToken:weakToken];
@@ -483,9 +483,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self becomeFirstResponder];
 }
 
-- (void)didTapToken:(VENToken *)token
+- (void)didTapToken:(UIView<VENTokenObject> *)token
 {
-    for (VENToken *aToken in self.tokens) {
+    for (UIView<VENTokenObject> *aToken in self.tokens) {
         if (aToken == token) {
             aToken.highlighted = !aToken.highlighted;
         } else {
@@ -497,7 +497,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)unhighlightAllTokens
 {
-    for (VENToken *token in self.tokens) {
+    for (UIView<VENTokenObject> *token in self.tokens) {
         token.highlighted = NO;
     }
     
@@ -506,7 +506,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)setCursorVisibility
 {
-    NSArray *highlightedTokens = [self.tokens filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(VENToken *evaluatedObject, NSDictionary *bindings) {
+    NSArray *highlightedTokens = [self.tokens filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(UIView<VENTokenObject> *evaluatedObject, NSDictionary *bindings) {
         return evaluatedObject.highlighted;
     }]];
     
@@ -576,7 +576,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
     if ([self.dataSource respondsToSelector:@selector(subclassForTokensInTokenField:)]) {
         Class providedSubclass = [self.dataSource subclassForTokensInTokenField:self];
-        if ([providedSubclass isSubclassOfClass:defaultClass]) {
+        if ([providedSubclass isSubclassOfClass:[UIView class]]
+            && [providedSubclass conformsToProtocol:@protocol(VENTokenObject)]) {
             return providedSubclass;
         }
     }
@@ -631,7 +632,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 {
     if ([self.delegate respondsToSelector:@selector(tokenField:didDeleteTokenAtIndex:)] && [self numberOfTokens]) {
         BOOL didDeleteToken = NO;
-        for (VENToken *token in self.tokens) {
+        for (UIView<VENTokenObject> *token in self.tokens) {
             if (token.highlighted) {
                 [self.delegate tokenField:self didDeleteTokenAtIndex:[self.tokens indexOfObject:token]];
                 didDeleteToken = YES;
@@ -639,7 +640,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
             }
         }
         if (!didDeleteToken) {
-            VENToken *lastToken = [self.tokens lastObject];
+            UIView<VENTokenObject> *lastToken = [self.tokens lastObject];
             lastToken.highlighted = YES;
         }
         [self setCursorVisibility];
