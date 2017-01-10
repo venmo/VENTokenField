@@ -25,7 +25,6 @@
 @interface VENToken ()
 @property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
-@property (strong, nonatomic) IBOutlet UIView *backgroundView;
 @end
 
 @implementation VENToken
