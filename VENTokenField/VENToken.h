@@ -24,7 +24,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface VENToken : UIView
+@protocol VENTokenObject <NSObject>
 
 @property (assign, nonatomic) BOOL highlighted;
 @property (copy, nonatomic, nullable) void (^didTapTokenBlock) (void);
@@ -33,6 +33,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setTitleText:(NSString *)text;
 
+@end
+
+@interface VENToken : UIView <VENTokenObject>
+@property (assign, nonatomic) BOOL highlighted;
+@property (copy, nonatomic, nullable) void (^didTapTokenBlock) (void);
+@property (strong, nonatomic) UIColor *colorScheme;
+@property (strong, nonatomic) UIFont *font;
 @end
 
 NS_ASSUME_NONNULL_END
