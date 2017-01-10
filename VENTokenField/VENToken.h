@@ -31,7 +31,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIColor *colorScheme;
 @property (strong, nonatomic) UIFont *font;
 @property (strong, nonatomic) IBOutlet UIView *backgroundView;
-@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 
 - (void)setTitleText:(NSString *)text;
 
