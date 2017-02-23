@@ -488,6 +488,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     for (UIView<VENTokenObject> *aToken in self.tokens) {
         if (aToken == token) {
             aToken.highlighted = !aToken.highlighted;
+            NSUInteger index = [self.tokens indexOfObject:aToken];
+            [self.delegate tokenField:self didTapTokenAtIndex:index];
         } else {
             aToken.highlighted = NO;
         }
