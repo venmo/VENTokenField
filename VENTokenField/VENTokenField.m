@@ -329,7 +329,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
             [weakSelf didTapToken:weakToken];
         };
 
-        [token setTitleText:[NSString stringWithFormat:@"%@%@", title, self.tokenSeparator]];
+        NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@", title, self.tokenSeparator] attributes:nil];
+        if (self.separatorAttributes && self.tokenSeparator.length > 0) {
+            [text addAttributes:self.separatorAttributes range:NSMakeRange(title.length, self.tokenSeparator.length)];
+        }
+        [token setTitleText:text];
         token.colorScheme = [self colorSchemeForTokenAtIndex:i];
         
         [self.tokens addObject:token];

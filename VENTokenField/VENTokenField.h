@@ -79,6 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIFont *inputTextFieldFont;
 @property (strong, nonatomic) UIColor *inputTextFieldTextColor;
 @property (strong, nonatomic) UIFont *tokenFont;
+@property (strong, nonatomic) NSDictionary *separatorAttributes;
 
 @property (strong, nonatomic) UILabel *toLabel;
 
