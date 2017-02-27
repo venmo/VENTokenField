@@ -49,9 +49,9 @@
     [self addGestureRecognizer:self.tapGestureRecognizer];
 }
 
-- (void)setTitleText:(NSString *)text
+- (void)setTitleText:(NSAttributedString *)text
 {
-    self.titleLabel.text = text;
+    self.titleLabel.attributedText = text;
     self.titleLabel.textColor = self.colorScheme;
     self.titleLabel.font = self.font;
     [self.titleLabel sizeToFit];
