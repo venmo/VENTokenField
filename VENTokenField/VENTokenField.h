@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
+#import "VENBackspaceTextField.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -49,6 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (weak, nonatomic) id<VENTokenFieldDelegate> delegate;
 @property (weak, nonatomic) id<VENTokenFieldDataSource> dataSource;
+@property (strong, nonatomic) VENBackspaceTextField *inputTextField;
 
 - (void)reloadData;
 - (void)collapse;
