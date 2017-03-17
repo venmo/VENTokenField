@@ -24,15 +24,16 @@
 
 @implementation VENBackspaceTextField
 
-- (BOOL)keyboardInputShouldDelete:(UITextField *)textField
-{
+/**
+ Implementing backspace logic in deleteBackward since third party keyboards don't seem to call keyboardInputShouldDelete
+*/
+- (void)deleteBackward {
     if (self.text.length == 0) {
         if ([self.backspaceDelegate respondsToSelector:@selector(textFieldDidEnterBackspace:)]) {
             [self.backspaceDelegate textFieldDidEnterBackspace:self];
         }
     }
-
-    return YES;
+    [super deleteBackward];
 }
 
 @end
