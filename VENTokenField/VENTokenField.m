@@ -311,7 +311,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.toLabel.frame = newFrame;
     
     [view addSubview:self.toLabel];
-    *currentX += self.toLabel.hidden ? CGRectGetMinX(self.toLabel.frame) : CGRectGetMaxX(self.toLabel.frame) + self.toLabelPadding;
+
+    if ([self.dataSource respondsToSelector:@selector(marginBetweenToFieldAndTokens)]) {
+        *currentX += [self.dataSource marginBetweenToFieldAndTokens];
+    } else {
+        *currentX += self.toLabel.hidden ? CGRectGetMinX(self.toLabel.frame) : CGRectGetMaxX(self.toLabel.frame) + self.toLabelPadding;
+    }
 }
 
 - (void)layoutTokensWithCurrentX:(CGFloat *)currentX currentY:(CGFloat *)currentY
@@ -337,6 +342,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         [token setTitleText:text];
         
         [self.tokens addObject:token];
+
+        // we need this adjustment to horizontally align the tokens with the toLabel
+        if (i == 0) {
+            CGFloat toLabelMidY = self.toLabel.frame.origin.y + self.toLabel.frame.size.height/2;
+            *currentY = toLabelMidY - token.frame.size.height/2;
+        }
 
         if (*currentX + token.frame.size.width <= self.scrollView.contentSize.width) { // token fits in current line
             token.frame = CGRectMake(*currentX, *currentY, token.frame.size.width, token.frame.size.height);
