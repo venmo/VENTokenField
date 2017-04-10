@@ -312,11 +312,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     
     [view addSubview:self.toLabel];
 
-    if ([self.dataSource respondsToSelector:@selector(marginBetweenToFieldAndTokens)]) {
-        *currentX += [self.dataSource marginBetweenToFieldAndTokens];
-    } else {
-        *currentX += self.toLabel.hidden ? CGRectGetMinX(self.toLabel.frame) : CGRectGetMaxX(self.toLabel.frame) + self.toLabelPadding;
-    }
+    // we directly set this to toLabelPadding instead of taking the toLabel width into account because
+    // we want to have equal horizontal paddings across the toLabels of all VENTokenFields
+    *currentX += self.toLabelPadding;
 }
 
 - (void)layoutTokensWithCurrentX:(CGFloat *)currentX currentY:(CGFloat *)currentY
