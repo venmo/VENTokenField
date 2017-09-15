@@ -280,7 +280,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     if (clearInput) {
         inputTextField.text = @"";
     }
-    inputTextField.frame = CGRectMake(*currentX, *currentY + 1, inputTextFieldWidth, [self heightForToken] - 1);
+
+    // 0.5 makes the baseline of the input field align with the baseline of the labels
+    inputTextField.frame = CGRectMake(*currentX, *currentY + 0.5, inputTextFieldWidth, [self heightForToken] - 1);
     inputTextField.tintColor = self.colorScheme;
     [self.scrollView addSubview:inputTextField];
 }
@@ -323,6 +325,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     for (NSUInteger i = 0; i < [self numberOfTokens]; i++) {
         NSString *title = [self titleForTokenAtIndex:i];
         VENToken *token = [[[self subclassForTokens] alloc] init];
+
+        // This ensures that we reset the height of the class passed in if necessary
+        token.frame = CGRectMake(0, 0, 0, [self heightForToken]);
         token.font = self.tokenFont;
 
         __weak UIView<VENTokenObject> *weakToken = token;
@@ -369,7 +374,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (CGFloat)heightForToken
 {
-    return 30;
+    return 24;
 }
 
 - (void)layoutInvisibleTextField
