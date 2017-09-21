@@ -322,7 +322,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)layoutTokensWithCurrentX:(CGFloat *)currentX currentY:(CGFloat *)currentY
 {
-    for (NSUInteger i = 0; i < [self numberOfTokens]; i++) {
+    NSUInteger numberOfTokens = [self numberOfTokens];
+    for (NSUInteger i = 0; i < numberOfTokens; i++) {
         NSString *title = [self titleForTokenAtIndex:i];
         VENToken *token = [[[self subclassForTokens] alloc] init];
 
@@ -338,9 +339,14 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
         token.colorScheme = [self colorSchemeForTokenAtIndex:i];
 
-        NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@", title, self.tokenSeparator] attributes:nil];
+        // We only include the separator if it's separating two tokens
+        // Otherwise, we just use a space so that it provides some padding to the text field
+        BOOL includeSeparator = (i != numberOfTokens - 1);
+        NSString *suffix = includeSeparator ? self.tokenSeparator : @" ";
+
+        NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@", title, suffix] attributes:nil];
         [text addAttributes:@{NSForegroundColorAttributeName:token.colorScheme} range:NSMakeRange(0, text.length)];
-        if (self.separatorAttributes && self.tokenSeparator.length > 0) {
+        if (includeSeparator && self.separatorAttributes && self.tokenSeparator.length > 0) {
             [text addAttributes:self.separatorAttributes range:NSMakeRange(title.length, self.tokenSeparator.length)];
         }
         [token setTitleText:text];
