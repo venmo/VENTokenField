@@ -341,7 +341,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
         // We only include the separator if it's separating two tokens
         // Otherwise, we just use a space so that it provides some padding to the text field
-        BOOL includeSeparator = (i != numberOfTokens - 1);
+        BOOL includeSeparator = (i < numberOfTokens - 1);
         NSString *suffix = includeSeparator ? self.tokenSeparator : @" ";
 
         NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@", title, suffix] attributes:nil];
