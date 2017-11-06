@@ -34,13 +34,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)tokenFieldDidBeginEditing:(VENTokenField *)tokenField;
 - (void)tokenField:(VENTokenField *)tokenField didChangeContentHeight:(CGFloat)height;
 - (void)tokenField:(VENTokenField *)tokenField didTapTokenAtIndex:(NSUInteger)index;
+- (void)tokenFieldDidTapCollapsed:(VENTokenField *)tokenField;
 @end
 
 @protocol VENTokenFieldDataSource <NSObject>
 @optional
 - (NSString *)tokenField:(VENTokenField *)tokenField titleForTokenAtIndex:(NSUInteger)index;
 - (NSUInteger)numberOfTokensInTokenField:(VENTokenField *)tokenField;
-- (NSString *)tokenFieldCollapsedText:(VENTokenField *)tokenField;
+- (NSString *)tokenFieldCollapsedText:(VENTokenField *)tokenField fittingWidth:(CGFloat)width;
 - (UIColor *)tokenField:(VENTokenField *)tokenField colorSchemeForTokenAtIndex:(NSUInteger)index;
 - (Class)subclassForTokensInTokenField:(VENTokenField *)tokenField;
 @end
@@ -84,6 +85,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSDictionary *separatorAttributes;
 
 @property (strong, nonatomic) UILabel *toLabel;
+
+@property (strong, nonatomic) UIFont *collapsedFont;
 
 @property (strong, nonatomic, nullable) NSArray *delimiters;
 @property (strong, nonatomic, nullable) NSString *tokenSeparator;
