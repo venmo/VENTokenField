@@ -113,6 +113,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (void)collapse
 {
     [self layoutCollapsedLabel];
+    if ([self.delegate respondsToSelector:@selector(tokenField:didChangeContentHeight:)]) {
+        [self.delegate tokenField:self didChangeContentHeight:self.frame.size.height];
+    }
 }
 
 - (void)reloadData
@@ -205,11 +208,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 {
     [self.collapsedLabel removeFromSuperview];
     self.scrollView.hidden = YES;
-    [self setHeight:self.originalHeight];
 
     CGFloat currentX = 0;
     [self layoutToLabelInView:self origin:CGPointMake(self.horizontalInset, self.verticalInset) currentX:&currentX];
     [self layoutCollapsedLabelWithCurrentX:&currentX];
+
+    [self setHeight:CGRectGetMaxY(self.collapsedLabel.frame)];
 
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                         action:@selector(handleSingleTap:)];
@@ -289,12 +293,17 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)layoutCollapsedLabelWithCurrentX:(CGFloat *)currentX
 {
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(*currentX, CGRectGetMinY(self.toLabel.frame), self.frame.size.width - *currentX - self.horizontalInset, self.toLabel.frame.size.height)];
-    label.font = [UIFont fontWithName:@"HelveticaNeue" size:15.5];
-    label.text = [self collapsedText];
+    *currentX += 15; // Matches margins we use in the token cell
+    CGRect frame = CGRectMake(*currentX, CGRectGetMinY(self.toLabel.frame), self.frame.size.width - *currentX - self.horizontalInset, self.toLabel.frame.size.height);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    if (self.collapsedFont) {
+        label.font = self.collapsedFont;
+    } else {
+        label.font = [UIFont fontWithName:@"HelveticaNeue" size:15.5];
+    }
+    label.text = [self collapsedTextWithSize:frame.size];
     label.textColor = self.colorScheme;
-    label.minimumScaleFactor = 5./label.font.pointSize;
-    label.adjustsFontSizeToFitWidth = YES;
+
     [self addSubview:label];
     self.collapsedLabel = label;
 }
@@ -505,7 +514,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)handleSingleTap:(UITapGestureRecognizer *)gestureRecognizer
 {
-    [self becomeFirstResponder];
+    if ([self.delegate respondsToSelector:@selector(tokenFieldDidTapCollapsed:)]) {
+        [self.delegate tokenFieldDidTapCollapsed:self];
+    } else {
+        [self becomeFirstResponder];
+    }
 }
 
 - (void)didTapToken:(UIView<VENTokenObject> *)token
@@ -588,10 +601,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     return 0;
 }
 
-- (NSString *)collapsedText
+- (NSString *)collapsedTextWithSize:(CGSize)size
 {
-    if ([self.dataSource respondsToSelector:@selector(tokenFieldCollapsedText:)]) {
-        return [self.dataSource tokenFieldCollapsedText:self];
+    if ([self.dataSource respondsToSelector:@selector(tokenFieldCollapsedText:fittingWidth:)]) {
+        return [self.dataSource tokenFieldCollapsedText:self fittingWidth:size.width];
     }
     
     return @"";
