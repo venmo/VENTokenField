@@ -81,19 +81,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *toLabelText;
 @property (strong, nonatomic) UIFont *inputTextFieldFont;
 @property (strong, nonatomic) UIColor *inputTextFieldTextColor;
-@property (strong, nonatomic) UIFont *tokenFont;
-@property (strong, nonatomic) NSDictionary *separatorAttributes;
 
 @property (strong, nonatomic) UILabel *toLabel;
-
 @property (strong, nonatomic) UIFont *collapsedFont;
-
-@property (strong, nonatomic, nullable) NSArray *delimiters;
-@property (strong, nonatomic, nullable) NSString *tokenSeparator;
 @property (copy, nonatomic, nullable) NSString *placeholderText;
 @property (copy, nonatomic, nullable) NSString *inputTextFieldAccessibilityLabel;
-
-- (void)setColorScheme:(UIColor *)color;
 
 @end
 
