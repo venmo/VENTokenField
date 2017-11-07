@@ -68,13 +68,6 @@
     self.backgroundView.backgroundColor = backgroundColor;
 }
 
-- (void)setColorScheme:(UIColor *)colorScheme
-{
-    _colorScheme = colorScheme;
-    self.titleLabel.textColor = self.colorScheme;
-    [self setHighlighted:_highlighted];
-}
-
 - (void)setFont:(UIFont *)font {
     _font = font;
     [self setTitleText:self.titleLabel.text];

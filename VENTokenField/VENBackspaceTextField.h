@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VENBackspaceTextField : UITextField
 
+@property (nonatomic) BOOL onlyBackspaceAllowed;
 @property (weak, nonatomic) id<VENBackspaceTextFieldDelegate> backspaceDelegate;
 
 @end
