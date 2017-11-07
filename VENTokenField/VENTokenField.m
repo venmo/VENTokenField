@@ -274,7 +274,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)layoutCollapsedLabelWithCurrentX:(CGFloat *)currentX
 {
-    *currentX += 15; // Matches margins we use in the token cell
+    *currentX += 17; // Matches margins we use in the token cell
     CGRect frame = CGRectMake(*currentX, CGRectGetMinY(self.toLabel.frame), self.frame.size.width - *currentX - self.horizontalInset, self.toLabel.frame.size.height);
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     if (self.collapsedFont) {
