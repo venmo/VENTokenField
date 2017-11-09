@@ -603,7 +603,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == self.invisibleTextField && [self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
+    if (textField != self.invisibleTextField && [self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
         if ([textField.text length]) {
             [self.delegate tokenField:self didEnterText:textField.text];
         }
