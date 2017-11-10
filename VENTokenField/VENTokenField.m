@@ -108,14 +108,28 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)collapse
 {
+    if ([self isCollapsed]) {
+        return;
+    }
+
+    CGFloat oldHeight = self.frame.size.height;
     [self layoutCollapsedLabel];
-    if ([self.delegate respondsToSelector:@selector(tokenField:didChangeContentHeight:)]) {
+    if (oldHeight != self.frame.size.height && [self.delegate respondsToSelector:@selector(tokenField:didChangeContentHeight:)]) {
         [self.delegate tokenField:self didChangeContentHeight:self.frame.size.height];
     }
 }
 
+- (void)expand
+{
+     [self layoutTokensAndInputWithFrameAdjustment:YES];
+}
+
 - (void)reloadData
 {
+    if ([self isCollapsed]) {
+        return;
+    }
+
     [self layoutTokensAndInputWithFrameAdjustment:YES];
 }
 
