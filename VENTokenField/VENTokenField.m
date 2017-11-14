@@ -89,7 +89,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.horizontalInset = VENTokenFieldDefaultHorizontalInset;
     self.tokenPadding = VENTokenFieldDefaultTokenPadding;
     self.minInputWidth = VENTokenFieldDefaultMinInputWidth;
-    self.toLabelPadding = VENTokenFieldDefaultToLabelPadding;
+    self.toLabelTrailingPadding = VENTokenFieldDefaultToLabelPadding;
+    self.toLabelLeadingPadding = VENTokenFieldDefaultToLabelPadding;
     self.toLabelTextColor = [UIColor colorWithRed:112/255.0f green:124/255.0f blue:124/255.0f alpha:1.0f];
     self.inputTextFieldTextColor = [UIColor colorWithRed:38/255.0f green:39/255.0f blue:41/255.0f alpha:1.0f];
 
@@ -191,7 +192,13 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+
     self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.frame) - self.horizontalInset * 2, CGRectGetHeight(self.frame) - self.verticalInset * 2);
+    self.scrollView.contentInset = UIEdgeInsetsMake(self.verticalInset,
+                                                    self.horizontalInset,
+                                                    self.verticalInset,
+                                                    self.horizontalInset);
+
     if ([self isCollapsed]) {
         [self layoutCollapsedLabel];
     } else {
@@ -288,7 +295,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)layoutCollapsedLabelWithCurrentX:(CGFloat *)currentX
 {
-    *currentX += 17; // Matches margins we use in the token cell
+    *currentX += self.horizontalInset + self.toLabelLeadingPadding;
     CGRect frame = CGRectMake(*currentX, CGRectGetMinY(self.toLabel.frame), self.frame.size.width - *currentX - self.horizontalInset, self.toLabel.frame.size.height);
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     if (self.collapsedFont) {
@@ -309,7 +316,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     self.toLabel = [self toLabel];
     
     CGRect newFrame = self.toLabel.frame;
-    newFrame.origin = origin;
+    newFrame.origin = CGPointMake(origin.x + self.toLabelLeadingPadding, origin.y);
     
     [self.toLabel sizeToFit];
     newFrame.size.width = CGRectGetWidth(self.toLabel.frame);
@@ -321,7 +328,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     // we directly set this to toLabelPadding instead of taking the toLabel width into account because
     // we want to have equal horizontal paddings across the toLabels of all VENTokenFields
     //*currentX += self.toLabel.hidden ? CGRectGetMinX(self.toLabel.frame) : CGRectGetMaxX(self.toLabel.frame) + self.toLabelPadding;
-    *currentX += self.toLabelPadding;
+    *currentX += self.toLabelTrailingPadding;
 }
 
 - (void)layoutTokensWithCurrentX:(CGFloat *)currentX currentY:(CGFloat *)currentY
