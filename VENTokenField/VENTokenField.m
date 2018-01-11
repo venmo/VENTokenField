@@ -675,6 +675,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         [self unhighlightAllTokens];
     }
 
+    if ([self.delegate respondsToSelector:@selector(tokenField:shouldChangeCharactersInRange:replacementString:)]) {
+        return [self.delegate tokenField:self shouldChangeCharactersInRange:range replacementString:string];
+    }
+
     return YES;
 }
 
