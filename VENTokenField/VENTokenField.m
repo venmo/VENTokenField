@@ -675,11 +675,24 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         [self unhighlightAllTokens];
     }
 
-    if ([self.delegate respondsToSelector:@selector(tokenField:shouldChangeCharactersInRange:replacementString:)]) {
-        return [self.delegate tokenField:self shouldChangeCharactersInRange:range replacementString:string];
+    BOOL hasHighlightedToken = NO;
+    for (UIView<VENTokenObject> *token in self.tokens) {
+        if (token.highlighted) {
+            hasHighlightedToken = YES;
+            break;
+        }
     }
 
-    return YES;
+    if (hasHighlightedToken) {
+        [self textFieldDidEnterBackspace:(VENBackspaceTextField*) textField];
+        return YES;
+    } else {
+        if ([self.delegate respondsToSelector:@selector(tokenField:shouldChangeCharactersInRange:replacementString:)]) {
+            return [self.delegate tokenField:self shouldChangeCharactersInRange:range replacementString:string];
+        }
+
+        return YES;
+    }
 }
 
 
