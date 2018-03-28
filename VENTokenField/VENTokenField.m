@@ -359,7 +359,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         }
 
         if (*currentX + token.frame.size.width <= self.scrollView.contentSize.width) { // token fits in current line
-            token.frame = CGRectMake(*currentX, *currentY, token.frame.size.width, token.frame.size.height);
+            token.frame = CGRectMake(*currentX, *currentY, ceil(token.frame.size.width), token.frame.size.height);
         } else {
             *currentY += token.frame.size.height;
             *currentX = 0;
@@ -367,7 +367,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
             if (tokenWidth > self.scrollView.contentSize.width) { // token is wider than max width
                 tokenWidth = self.scrollView.contentSize.width;
             }
-            token.frame = CGRectMake(*currentX, *currentY, tokenWidth, token.frame.size.height);
+            token.frame = CGRectMake(*currentX, *currentY, ceil(tokenWidth), token.frame.size.height);
         }
         *currentX += token.frame.size.width + self.tokenPadding;
         [self.scrollView addSubview:token];
