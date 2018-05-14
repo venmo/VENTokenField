@@ -34,8 +34,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 @interface VENTokenField () <VENBackspaceTextFieldDelegate>
 
-@property (strong, nonatomic) UIScrollView *scrollView;
-@property (strong, nonatomic) NSMutableArray *tokens;
+@property (readwrite, strong, nonatomic) NSMutableArray *tokens;
 @property (assign, nonatomic) CGFloat originalHeight;
 @property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 @property (strong, nonatomic) VENBackspaceTextField *invisibleTextField;
@@ -337,6 +336,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     for (NSUInteger i = 0; i < numberOfTokens; i++) {
         NSString *title = [self titleForTokenAtIndex:i];
         VENToken *token = [[[self subclassForTokens] alloc] init];
+
+        if ([self.delegate respondsToSelector:@selector(tokenField:didCreateToken:)]) {
+            [self.delegate tokenField:self didCreateToken:token];
+        }
 
         // This ensures that we reset the height of the class passed in if necessary
         token.frame = CGRectMake(0, 0, 0, [self heightForToken]);
