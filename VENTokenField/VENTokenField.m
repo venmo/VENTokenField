@@ -216,9 +216,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
     [self setHeight:CGRectGetMaxY(self.collapsedLabel.frame)];
 
-    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                        action:@selector(handleSingleTap:)];
-    [self addGestureRecognizer:self.tapGestureRecognizer];
+    if (!self.tapGestureRecognizer) {
+        self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+        [self addGestureRecognizer:self.tapGestureRecognizer];
+    }
 }
 
 - (void)layoutTokensAndInputWithFrameAdjustment:(BOOL)shouldAdjustFrame
@@ -227,7 +228,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     BOOL inputFieldShouldBecomeFirstResponder = self.inputTextField.isFirstResponder;
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.scrollView.hidden = NO;
-    [self removeGestureRecognizer:self.tapGestureRecognizer];
+    if (self.tapGestureRecognizer) {
+        [self removeGestureRecognizer:self.tapGestureRecognizer];
+        self.tapGestureRecognizer = nil;
+    }
 
     self.tokens = [NSMutableArray array];
 
@@ -313,15 +317,15 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 {
     [self.toLabel removeFromSuperview];
     self.toLabel = [self toLabel];
-    
+
     CGRect newFrame = self.toLabel.frame;
     newFrame.origin = CGPointMake(origin.x + self.toLabelLeadingPadding, origin.y);
-    
+
     [self.toLabel sizeToFit];
     newFrame.size.width = CGRectGetWidth(self.toLabel.frame);
-    
+
     self.toLabel.frame = newFrame;
-    
+
     [view addSubview:self.toLabel];
 
     // we directly set this to toLabelPadding instead of taking the toLabel width into account because
@@ -352,7 +356,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
         BOOL showSeparator = (i < numberOfTokens - 1) || [self.inputTextField isFirstResponder];
         [token setTitleText:title showSeparator:showSeparator];
-        
+
         [self.tokens addObject:token];
 
         // we need this adjustment to horizontally align the tokens with the toLabel
@@ -418,7 +422,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         newFrame.origin.x = 0;
         _toLabel.frame = newFrame;
         [_toLabel sizeToFit];
-        
+
         newFrame = _toLabel.frame;
         newFrame.size.height = [self heightForToken];
         _toLabel.frame = newFrame;
@@ -534,7 +538,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     for (UIView<VENTokenObject> *token in self.tokens) {
         token.highlighted = NO;
     }
-    
+
     [self setCursorVisibility];
 }
 
@@ -543,7 +547,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     NSArray *highlightedTokens = [self.tokens filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(UIView<VENTokenObject> *evaluatedObject, NSDictionary *bindings) {
         return evaluatedObject.highlighted;
     }]];
-    
+
     BOOL visible = [highlightedTokens count] == 0;
     if (visible) {
         [self inputTextFieldBecomeFirstResponder];
@@ -585,7 +589,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     if ([self.dataSource respondsToSelector:@selector(tokenField:titleForTokenAtIndex:)]) {
         return [self.dataSource tokenField:self titleForTokenAtIndex:index];
     }
-    
+
     return [NSString string];
 }
 
@@ -594,7 +598,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     if ([self.dataSource respondsToSelector:@selector(numberOfTokensInTokenField:)]) {
         return [self.dataSource numberOfTokensInTokenField:self];
     }
-    
+
     return 0;
 }
 
@@ -603,7 +607,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     if ([self.dataSource respondsToSelector:@selector(tokenFieldCollapsedText:fittingWidth:)]) {
         return [self.dataSource tokenFieldCollapsedText:self fittingWidth:size.width];
     }
-    
+
     return @"";
 }
 
@@ -632,7 +636,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
             [self.delegate tokenField:self didEnterText:textField.text];
         }
     }
-    
+
     return NO;
 }
 
