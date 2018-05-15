@@ -22,6 +22,7 @@
 
 #import <UIKit/UIKit.h>
 #import "VENBackspaceTextField.h"
+#import "VENToken.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -36,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)tokenField:(VENTokenField *)tokenField didTapTokenAtIndex:(NSUInteger)index;
 - (void)tokenFieldDidTapCollapsed:(VENTokenField *)tokenField;
 - (BOOL)tokenField:(VENTokenField *)tokenField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
+- (void)tokenField:(VENTokenField *)tokenField didCreateToken:(UIView *)token;
 @end
 
 @protocol VENTokenFieldDataSource <NSObject>
@@ -53,13 +55,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) id<VENTokenFieldDelegate> delegate;
 @property (weak, nonatomic) id<VENTokenFieldDataSource> dataSource;
 @property (strong, nonatomic) VENBackspaceTextField *inputTextField;
+@property (strong, nonatomic) UIScrollView *scrollView;
+@property (readonly, strong, nonatomic) NSMutableArray *tokens;
 
 - (void)reloadData;
 - (void)collapse;
 - (void)expand;
 - (void)unhighlightAllTokens;
 - (nullable NSString *)inputText;
-
+- (BOOL)isCollapsed;
+- (void)didTapToken:(UIView<VENTokenObject> *)token;
 
 /**-----------------------------------------------------------------------------
  * @name Customization
