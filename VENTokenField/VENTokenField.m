@@ -214,7 +214,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self layoutToLabelInView:self origin:CGPointMake(self.horizontalInset, self.verticalInset) currentX:&currentX];
     [self layoutCollapsedLabelWithCurrentX:&currentX];
 
-    [self setHeight:CGRectGetMaxY(self.collapsedLabel.frame)];
+    [self setHeight:CGRectGetMaxY(self.collapsedLabel.frame) + self.verticalInset];
 
     if (!self.tapGestureRecognizer) {
         self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
