@@ -62,7 +62,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (BOOL)isFirstResponder
 {
-    return [self.inputTextField isFirstResponder];
+    return [self.inputTextField isFirstResponder] || [self.invisibleTextField isFirstResponder];
 }
 
 - (BOOL)becomeFirstResponder
@@ -75,7 +75,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (BOOL)resignFirstResponder
 {
     [super resignFirstResponder];
-    return [self.inputTextField resignFirstResponder];
+    return [self.inputTextField resignFirstResponder] || [self.invisibleTextField resignFirstResponder];
 }
 
 - (void)setUpInit
