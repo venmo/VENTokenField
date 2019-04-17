@@ -1,9 +1,9 @@
 source 'https://github.com/CocoaPods/Specs.git'
-source 'https://github.com/hudl/podspecs.git'
+source 'git@github.com:hudl/podspecs.git'
 platform :ios, "7.0"
 
 target "VENTokenFieldSample" do
-  pod 'VENTokenField', '~> 2.5.1-0.1'
+  pod 'VENTokenField', :path => './'
 end
 
 target "VENTokenFieldSampleTests" do
