@@ -55,6 +55,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)inputTextFieldDidChange:(UITextField *)textField;
 - (void)textFieldDidEnterBackspace:(VENBackspaceTextField *)textField;
 
+/// Should be called when parent view's layoutSubviews() is called. 
+/// This view calculates itself on wake up / init and does not respond to changes afterwards.
+- (void)layoutScrollView;
+
 /**-----------------------------------------------------------------------------
  * @name Customization
  * -----------------------------------------------------------------------------
