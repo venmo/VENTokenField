@@ -291,8 +291,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         inputTextField.text = @"";
     }
 
-    // 0.5 makes the baseline of the input field align with the baseline of the labels
-    inputTextField.frame = CGRectMake(*currentX, *currentY + 0.5, inputTextFieldWidth, [self heightForToken] - 1);
+    // 1.0 extra y pixel makes the baseline of the input field align with the baseline of the labels
+    inputTextField.frame = CGRectMake(*currentX, *currentY + 1, inputTextFieldWidth, [self heightForToken] - 1);
     [self.scrollView addSubview:inputTextField];
 }
 
