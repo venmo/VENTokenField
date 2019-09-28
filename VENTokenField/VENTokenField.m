@@ -307,7 +307,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         label.font = [UIFont fontWithName:@"HelveticaNeue" size:15.5];
     }
     label.text = [self collapsedTextWithSize:frame.size];
-    label.textColor = [UIColor colorWithWhite:0 alpha:0.7];
+    label.textColor = _inputTextFieldTextColor;
 
     [self addSubview:label];
     self.collapsedLabel = label;
