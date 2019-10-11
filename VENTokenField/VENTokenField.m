@@ -237,6 +237,16 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         self.tapGestureRecognizer = nil;
     }
 
+    if (inputFieldShouldBecomeFirstResponder && [self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
+        if ([self.inputTextField.text length]) {
+            NSString *text = self.inputTextField.text;
+            self.inputTextField.text = @"";
+            [self.delegate tokenField:self didEnterText:text];
+        }
+
+        [self updateLastTokenSeperator];
+    }
+
     self.tokens = [NSMutableArray array];
 
     CGFloat currentX = 0;
