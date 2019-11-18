@@ -312,7 +312,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)layoutCollapsedLabelWithCurrentX:(CGFloat *)currentX
 {
-    *currentX += self.horizontalInset + self.toLabelLeadingPadding;
+    *currentX += self.horizontalInset + 2;
     CGRect frame = CGRectMake(*currentX, CGRectGetMinY(self.toLabel.frame), self.frame.size.width - *currentX - self.horizontalInset, self.toLabel.frame.size.height);
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     if (self.collapsedFont) {
