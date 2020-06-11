@@ -121,7 +121,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)expand
 {
-     [self layoutTokensAndInputWithFrameAdjustment:YES];
+    [self layoutTokensAndInputWithFrameAdjustment:YES];
 }
 
 - (void)reloadData
@@ -547,13 +547,15 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
     [self setCursorVisibility];
 }
 
-- (void)unhighlightAllTokens
+- (void)unhighlightAllTokensSettingCursorVisibility:(BOOL)setCursorVisibility
 {
     for (UIView<VENTokenObject> *token in self.tokens) {
         token.highlighted = NO;
     }
 
-    [self setCursorVisibility];
+    if (setCursorVisibility) {
+        [self setCursorVisibility];
+    }
 }
 
 - (void)setCursorVisibility
@@ -657,7 +659,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     if (textField == self.inputTextField) {
-        [self unhighlightAllTokens];
+        [self unhighlightAllTokensSettingCursorVisibility:YES];
         [self updateLastTokenSeperator];
     }
 }
@@ -693,7 +695,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     if (textField != self.invisibleTextField) {
-        [self unhighlightAllTokens];
+        [self unhighlightAllTokensSettingCursorVisibility:YES];
     }
 
     BOOL hasHighlightedToken = NO;

@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)reloadData;
 - (void)collapse;
 - (void)expand;
-- (void)unhighlightAllTokens;
+- (void)unhighlightAllTokensSettingCursorVisibility:(BOOL)setCursorVisibility;
 - (nullable NSString *)inputText;
 - (BOOL)isCollapsed;
 - (void)didTapToken:(UIView<VENTokenObject> *)token;
