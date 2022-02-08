@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
+#import "VENBackspaceTextField.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -48,10 +49,19 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) id<VENTokenFieldDelegate> delegate;
 @property (weak, nonatomic) id<VENTokenFieldDataSource> dataSource;
 
+@property (strong, nonatomic) UIScrollView *scrollView;
+@property (strong, nonatomic) NSMutableArray *tokens;
+@property (assign, nonatomic) CGFloat originalHeight;
+@property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
+@property (strong, nonatomic) VENBackspaceTextField *invisibleTextField;
+@property (strong, nonatomic) VENBackspaceTextField *inputTextField;
+
+
 - (void)reloadData;
+- (void)reloadDataNotClearInput;
 - (void)collapse;
 - (nullable NSString *)inputText;
-
+- (void) setInputText:(NSString*) inputText;
 
 /**-----------------------------------------------------------------------------
  * @name Customization
@@ -63,6 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) CGFloat horizontalInset;
 @property (assign, nonatomic) CGFloat tokenPadding;
 @property (assign, nonatomic) CGFloat minInputWidth;
+@property (assign, nonatomic) NSInteger itemsPerPage;
 
 @property (assign, nonatomic) UIKeyboardType inputTextFieldKeyboardType;
 @property (assign, nonatomic) UIKeyboardAppearance inputTextFieldKeyboardAppearance;

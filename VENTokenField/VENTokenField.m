@@ -24,7 +24,6 @@
 
 #import <FrameAccessor/FrameAccessor.h>
 #import "VENToken.h"
-#import "VENBackspaceTextField.h"
 
 static const CGFloat VENTokenFieldDefaultVerticalInset      = 7.0;
 static const CGFloat VENTokenFieldDefaultHorizontalInset    = 15.0;
@@ -34,16 +33,12 @@ static const CGFloat VENTokenFieldDefaultMinInputWidth      = 80.0;
 static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 
-@interface VENTokenField () <VENBackspaceTextFieldDelegate>
+@interface VENTokenField () <VENBackspaceTextFieldDelegate, UIScrollViewDelegate>
 
-@property (strong, nonatomic) UIScrollView *scrollView;
-@property (strong, nonatomic) NSMutableArray *tokens;
-@property (assign, nonatomic) CGFloat originalHeight;
-@property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
-@property (strong, nonatomic) VENBackspaceTextField *invisibleTextField;
-@property (strong, nonatomic) VENBackspaceTextField *inputTextField;
 @property (strong, nonatomic) UIColor *colorScheme;
 @property (strong, nonatomic) UILabel *collapsedLabel;
+@property (assign, nonatomic) CGPoint currentPoint;
+@property (assign, nonatomic) NSInteger currentIndex;
 
 @end
 
@@ -116,6 +111,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (void)reloadData
 {
     [self layoutTokensAndInputWithFrameAdjustment:YES];
+}
+
+- (void)reloadDataNotClearInput
+{
+    [self layoutTokensAndInputWithFrameAdjustment:NO];
 }
 
 - (void)setPlaceholderText:(NSString *)placeholderText
@@ -209,6 +209,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
     CGFloat currentX = 0;
     CGFloat currentY = 0;
+    self.currentIndex = 0;
+    self.currentPoint = CGPointZero;
 
     [self layoutToLabelInView:self.scrollView origin:CGPointZero currentX:&currentX];
     [self layoutTokensWithCurrentX:&currentX currentY:&currentY];
@@ -244,7 +246,7 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
                                                     self.verticalInset,
                                                     self.horizontalInset);
     self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-
+    self.scrollView.delegate = self;
     [self addSubview:self.scrollView];
 }
 
@@ -297,7 +299,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)layoutTokensWithCurrentX:(CGFloat *)currentX currentY:(CGFloat *)currentY
 {
-    for (NSUInteger i = 0; i < [self numberOfTokens]; i++) {
+    NSInteger lastIndexOfPage = [self getLastIndexOfPage:0];
+    for (NSUInteger i = 0; i < lastIndexOfPage; i++) {
         NSString *title = [self titleForTokenAtIndex:i];
         VENToken *token = [[VENToken alloc] init];
 
@@ -324,10 +327,82 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
             token.frame = CGRectMake(*currentX, *currentY, tokenWidth, token.height);
         }
         *currentX += token.width + self.tokenPadding;
+        self.currentPoint = CGPointMake(*currentX, *currentY);
+        self.currentIndex = i;
         [self.scrollView addSubview:token];
     }
 }
 
+- (void)layoutTokensWithCurrentXPaging:(CGFloat)currentX currentY:(CGFloat)currentY currentIndex:(NSInteger) index
+{
+    [self addTokenInScrollView:currentX currentY:currentY currentIndex:index];
+    [self layoutInputTextFieldWithCurrentX:&currentX currentY:&currentY clearInput:NO];
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, currentY + [self heightForToken])];
+    [self updateInputTextField];
+}
+
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGPoint offset = self.scrollView.contentOffset;
+       CGRect bounds = self.scrollView.bounds;
+       CGSize size = self.scrollView.contentSize;
+       UIEdgeInsets inset = self.scrollView.contentInset;
+       float y = offset.y + bounds.size.height - inset.bottom;
+       float h = size.height;
+       if(y == h && [self loadPagingIfNeed]) {
+           if (self.currentIndex < [self numberOfTokens] ) {
+               [self layoutTokensWithCurrentXPaging:self.currentPoint.x
+                                           currentY:self.currentPoint.y
+                                       currentIndex:self.currentIndex];
+           }
+       }
+}
+
+- (void) addTokenInScrollView:(CGFloat)currentX currentY:(CGFloat)currentY currentIndex:(NSInteger) index
+{
+    NSInteger lastIndexOfPage = [self getLastIndexOfPage:index];
+    for (NSUInteger i = index + 1; i < lastIndexOfPage; i++) {
+        NSString *title = [self titleForTokenAtIndex:i];
+        VENToken *token = [[VENToken alloc] init];
+
+        __weak VENToken *weakToken = token;
+        __weak VENTokenField *weakSelf = self;
+        token.didTapTokenBlock = ^{
+            [weakSelf didTapToken:weakToken];
+        };
+
+        [token setTitleText:[NSString stringWithFormat:@"%@,", title]];
+        token.colorScheme = [self colorSchemeForTokenAtIndex:i];
+        
+        [self.tokens addObject:token];
+        if (currentX + token.width <= self.scrollView.contentSize.width) { // token fits in current line
+            token.frame = CGRectMake(currentX, currentY, token.width, token.height);
+        } else {
+            currentY += token.height;
+            currentX = 0;
+            CGFloat tokenWidth = token.width;
+            if (tokenWidth > self.scrollView.contentSize.width) { // token is wider than max width
+                tokenWidth = self.scrollView.contentSize.width;
+            }
+            token.frame = CGRectMake(currentX, currentY, tokenWidth, token.height);
+        }
+        currentX += token.width + self.tokenPadding;
+        self.currentPoint = CGPointMake(currentX, currentY);
+        self.currentIndex = i;
+        [self.scrollView addSubview:token];
+    }
+}
+
+- (BOOL) loadPagingIfNeed
+{
+    return self.itemsPerPage != nil && self.itemsPerPage > 0;
+}
+
+- (NSInteger) getLastIndexOfPage:(NSInteger)index
+{
+    NSInteger lastIndex = [self numberOfTokens] < index + self.itemsPerPage ? [self numberOfTokens] : index + self.itemsPerPage;
+    return [self loadPagingIfNeed] ? lastIndex : [self numberOfTokens];
+}
 
 #pragma mark - Private
 
@@ -549,9 +624,10 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
-        if ([textField.text length]) {
-            [self.delegate tokenField:self didEnterText:textField.text];
-        }
+        NSString *enteredString = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        [self resignFirstResponder];
+        self.inputTextField.text = enteredString;
+        [self.delegate tokenField:self didEnterText:enteredString];
     }
     
     return NO;
